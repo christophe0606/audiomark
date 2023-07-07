@@ -47,9 +47,13 @@ SpeexPreprocessState *ee_anr_init_f32(uint32_t *size)
 
             *size = XPH_ANR_INSTANCE_SIZE;
 
+            p_state = (SpeexPreprocessState*)th_malloc(XPH_ANR_INSTANCE_SIZE, COMPONENT_AEC);
+
+       
+
             // speex aligns memory during speex_alloc
-            //spxGlobalHeapPtr = (char *)(*pp_inst);
-            //spxGlobalHeapEnd = spxGlobalHeapPtr + XPH_ANR_INSTANCE_SIZE;
+            spxGlobalHeapPtr = (char *)(p_state);
+            spxGlobalHeapEnd = spxGlobalHeapPtr + XPH_ANR_INSTANCE_SIZE;
             frame_size  = param_anr_f32[0][0];
             sample_rate = param_anr_f32[0][1];
 

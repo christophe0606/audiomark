@@ -54,15 +54,10 @@ public:
     int run() final{
         OUT *b=this->getWriteBuffer();
 
-        printf("Source\n");
-        for(int i=0;i<outputSize;i++)
-        {
-            b[i] = (OUT)mCounter++;
-        }
+        
         return(0);
     };
 
-    int mCounter;
 
 };
 

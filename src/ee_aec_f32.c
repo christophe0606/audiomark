@@ -48,9 +48,11 @@ SpeexEchoState *ee_aec_init_f32(uint32_t *size)
         uint32_t        sample_rate   = 0;
         SpeexEchoState *p_state       = NULL;
 
+        p_state = (SpeexEchoState*)th_malloc(XPH_AEC_INSTANCE_SIZE, COMPONENT_AEC);
+
         // speex aligns memory during speex_alloc
-        //spxGlobalHeapPtr = (char *)(*pp_inst);
-        //spxGlobalHeapEnd = spxGlobalHeapPtr + XPH_AEC_INSTANCE_SIZE;
+        spxGlobalHeapPtr = (char *)(p_state);
+        spxGlobalHeapEnd = spxGlobalHeapPtr + XPH_AEC_INSTANCE_SIZE;
     
         *size = XPH_AEC_INSTANCE_SIZE;
         
