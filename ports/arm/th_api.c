@@ -74,13 +74,13 @@ th_free(void *mem, int req)
 }
 
 void *
-th_memcpy(void *restrict dst, const void *restrict src, size_t n)
+th_memcpy(void *__RESTRICT dst, const void *__RESTRICT src, size_t n)
 {
     return memcpy(dst, src, n);
 }
 
 void *
-th_memmove(void * dst, const void * src, size_t n)
+th_memmove(void *__RESTRICT dst, const void *__RESTRICT src, size_t n)
 {
     return memmove(dst, src, n);
 }

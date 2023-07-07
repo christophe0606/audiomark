@@ -22,11 +22,11 @@ void *th_malloc(size_t size, int req);
 
 void th_free(void *mem, int req);
 
-void *th_memcpy(void *restrict dst, const void *restrict src, size_t n);
+void *th_memcpy(void *__RESTRICT dst, const void *__RESTRICT src, size_t n);
 
 void *th_memset(void *b, int c, size_t len);
 
-void *th_memmove(void * dst, const void * src, size_t n);
+void *th_memmove(void *__RESTRICT dst, const void *__RESTRICT src, size_t n);
 
 void th_nn_init(void);
 
