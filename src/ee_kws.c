@@ -136,6 +136,7 @@ ee_kws_run(kws_instance_t *p_inst,
         return 1;        \
     }
 
+
 int32_t
 ee_kws_f32(int32_t command, void **pp_inst, void *p_data, void *p_params)
 {

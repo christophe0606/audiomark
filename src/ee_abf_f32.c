@@ -128,7 +128,7 @@ adaptive_beamformer_f32(ee_f32_t                  *bf_cmplx_in_pt,
     }
 }
 
-static void
+void
 beamformer_f32_run(abf_f32_instance_t *p_inst,
                    int16_t            *input_buffer_left,
                    int16_t            *input_buffer_right,
@@ -321,7 +321,7 @@ beamformer_f32_run(abf_f32_instance_t *p_inst,
     *returned_state          = 0;
 }
 
-static void
+void
 beamformer_f32_reset(abf_f32_instance_t *p_inst)
 {
     int      i;
@@ -355,6 +355,7 @@ beamformer_f32_reset(abf_f32_instance_t *p_inst)
     p_inst->st->bf_mem.GSC_det_avg                = 0; // 0.94083f;
     p_inst->st->bf_mem.adptBF_coefs_update_enable = 1;
 }
+
 
 int32_t
 ee_abf_f32(int32_t command, void **pp_inst, void *p_data, void *p_params)

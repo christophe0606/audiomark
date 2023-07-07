@@ -39,6 +39,26 @@ static const uint32_t param_anr_f32[1][2] = {
     },
 };
 
+SpeexPreprocessState *ee_anr_init_f32(uint32_t *size)
+{
+            uint32_t              frame_size  = 0;
+            uint32_t              sample_rate = 0;
+            SpeexPreprocessState *p_state     = NULL;
+
+            *size = XPH_ANR_INSTANCE_SIZE;
+
+            // speex aligns memory during speex_alloc
+            //spxGlobalHeapPtr = (char *)(*pp_inst);
+            //spxGlobalHeapEnd = spxGlobalHeapPtr + XPH_ANR_INSTANCE_SIZE;
+            frame_size  = param_anr_f32[0][0];
+            sample_rate = param_anr_f32[0][1];
+
+            p_state = speex_preprocess_state_init(frame_size, sample_rate);
+            speex_preprocess_ctl(p_state, SPEEX_PREPROCESS_SET_ECHO_STATE, 0);
+            return(p_state);
+}
+
+
 int32_t
 ee_anr_f32(int32_t command, void **pp_inst, void *p_data, void *p_params)
 {

@@ -1,7 +1,6 @@
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.14)
 project(audiomark
-	DESCRIPTION "Firmware for the AudoMark Self-Hosted Benchmark"
-	LANGUAGES C
+	DESCRIPTION "Firmware for the AudioMark Self-Hosted Benchmark"
 	VERSION 1.0.0)
 
 set(CMAKE_C_FLAGS "-O2")
@@ -11,6 +10,8 @@ include_directories(lib/speexdsp/include)
 include_directories(lib/speexdsp/include/speex)
 include_directories(lib/speexdsp/libspeexdsp)
 include_directories(src)
+include_directories(src/cmsis_stream)
+include_directories(../CMSIS-Stream/Include/cg/nodes/cpp/)
 
 if(DEFINED PORT_DIR)
 	include(${PORT_DIR}/port.cmake)
@@ -30,6 +31,7 @@ add_definitions(-D__RESTRICT=)
 set(EE_SOURCE
 	# Note: main.c is just for self-hosted testing
 	main.c
+	src/cmsis_stream/scheduler.cpp
 	src/ee_audiomark.c
 
 	src/ee_aec_f32.c

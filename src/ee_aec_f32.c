@@ -41,6 +41,31 @@ static const uint32_t param_aec_f32[1][3] = {
     },
 };
 
+SpeexEchoState *ee_aec_init_f32(uint32_t *size)
+{
+        uint32_t        frame_size    = 0;
+        uint32_t        filter_length = 0;
+        uint32_t        sample_rate   = 0;
+        SpeexEchoState *p_state       = NULL;
+
+        // speex aligns memory during speex_alloc
+        //spxGlobalHeapPtr = (char *)(*pp_inst);
+        //spxGlobalHeapEnd = spxGlobalHeapPtr + XPH_AEC_INSTANCE_SIZE;
+    
+        *size = XPH_AEC_INSTANCE_SIZE;
+        
+        frame_size    = param_aec_f32[0][0];
+        filter_length = param_aec_f32[0][1];
+        sample_rate   = param_aec_f32[0][2];
+
+        p_state = speex_echo_state_init(frame_size, filter_length);
+        speex_echo_ctl(p_state, SPEEX_ECHO_SET_SAMPLING_RATE, &sample_rate);
+            
+        return(p_state);
+}
+
+
+
 int32_t
 ee_aec_f32(int32_t command, void **pp_inst, void *p_data, void *p_params)
 {
