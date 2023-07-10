@@ -14,7 +14,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "ee_audiomark.h"
+extern "C" {
+  #include "ee_audiomark.h"
+}
+
+#include "custom.h"
+#include "GenericNodes.h"
+#include "cg_status.h"
+#include "AppNodes.h"
 
 #define TEST_NBUFFERS 104U
 #define NSAMPLES      256U
@@ -23,90 +30,60 @@
 /* Noise to signal ratio */
 #define NSRM50DB 0.003162f
 
+extern "C" {
 extern const int16_t p_input[TEST_NBUFFERS][NSAMPLES];
 extern const int16_t p_expected[TEST_NBUFFERS][NSAMPLES];
+}
 
 static int16_t p_input_sub[NSAMPLES];
+static int16_t p_output_sub[NSAMPLES];
 
 static xdais_buffer_t xdais[1];
 
+extern "C" {
 // Used deep inside speex_alloc; assigned by component NODE_RESET
 char *spxGlobalHeapPtr;
 char *spxGlobalHeapEnd;
 long  cumulatedMalloc;
+}
 
 int
 main(int argc, char *argv[])
 {
     bool      err           = false;
-    uint32_t  memreq        = 0;
-    uint32_t *p_req         = &memreq;
-    void     *inst          = NULL;
-    uint32_t  parameters[1] = { 0 };
+   
     uint32_t  A             = 0;
     uint32_t  B             = 0;
     float     ratio         = 0.0f;
 
-    if (ee_anr_f32(NODE_MEMREQ, (void **)&p_req, NULL, NULL))
-    {
-        printf("ANR NODE_MEMREQ failed\n");
-        return -1;
-    }
-    printf("ANR MEMREQ = %d bytes\n", memreq);
-
-    inst = malloc(memreq);
-    if (!inst)
-    {
-        printf("ANR malloc() fail\n");
-        return -1;
-    }
-
-    // ANR uses an in-place buffer
-    SETUP_XDAIS(xdais[0], p_input_sub, NFRAMEBYTES);
-
-    // SpeeX will call speex_malloc() on NODE_RESET giving us the real mem used
-    cumulatedMalloc = 0;
-    if (ee_anr_f32(NODE_RESET, (void **)&inst, xdais, &parameters))
-    {
-        printf("ANR NODE_RESET failed\n");
-        return -1;
-    }
-
-    // Sanity check the actual allocation from Speex
-    printf("ANR SpeeX cumulatedMalloc = %ld bytes\n", cumulatedMalloc);
-    if (cumulatedMalloc > memreq)
-    {
-        printf("ANR ran out of memory but didn't complain!\n");
-        return -1;
-    }
+  
+    FIFO<int16_t,NSAMPLES,1,0> fifo5(p_input_sub);
+    FIFO<int16_t,NSAMPLES,1,0> fifo6(p_output_sub);
+    ANR<int16_t,NSAMPLES,
+        int16_t,NSAMPLES> anr(fifo5,fifo6);
 
     for (int i = 0; i < TEST_NBUFFERS; ++i)
     {
         memcpy(p_input_sub, &p_input[i], NFRAMEBYTES);
 
-        if (ee_anr_f32(NODE_RUN, (void **)&inst, xdais, NULL))
-        {
-            err = true;
-            printf("ANR NODE_RUN failed\n");
-            break;
-        }
+        anr.run();
 
         A = 0;
         B = 0;
 
         for (unsigned j = 0; j < NSAMPLES; ++j)
         {
-            A += abs(p_input_sub[j]);
-            B += abs(p_input_sub[j] - p_expected[i][j]);
+            A += abs(p_output_sub[j]);
+            B += abs(p_output_sub[j] - p_expected[i][j]);
 
 #ifdef DEBUG_EXACT_BITS
-            if (p_input_sub[j] != p_expected[i][j])
+            if (p_output_sub[j] != p_expected[i][j])
             {
                 err = true;
                 printf("S[%03d]B[%03d]O[%-5d]E[%-5d] ... FAIL\n",
                        i,
                        j,
-                       p_input_sub[j],
+                       p_output_sub[j],
                        p_expected[i][j]);
             }
 #endif

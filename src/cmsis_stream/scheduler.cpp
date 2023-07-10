@@ -81,74 +81,10 @@ CG_AFTER_INCLUDES
 Description of the scheduling. 
 
 */
-static unsigned int schedule[2601]=
+static unsigned int schedule[65]=
 { 
-8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,
-5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,
-1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,
-4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,
-10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,
-9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,
-2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,
-0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,
-11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,
-8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,
-5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,
-1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,
-7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,
-10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,
-9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,
-2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,
-3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,6,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,
-10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,
-9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,
-2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,
-3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,
-11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,
-8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,
-5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,
-4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,
-7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,
-10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,
-9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,
-0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,
-3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,
-11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,
-8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,
-1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,6,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,
-3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,
-11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,
-8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,
-1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,
-4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,
-7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,
-10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,
-2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,
-0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,
-3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,
-11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,
-8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,
-1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,
-4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,
-7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,
-10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,6,8,10,11,7,3,4,0,
-1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,
-4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,
-7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,
-10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,
-2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,
-0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,
-3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,
-11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,
-5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,
-1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,
-4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,
-7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,
-9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,
-2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,
-0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,8,10,11,7,
-3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,8,10,11,7,3,4,0,1,2,5,9,
-6,
+8,12,13,7,3,4,0,1,2,8,12,13,7,3,4,0,1,2,5,9,10,6,11,8,12,13,7,3,4,0,1,2,5,9,10,6,11,8,12,13,
+7,3,4,0,1,2,5,9,10,6,11,8,12,13,7,3,4,0,1,2,5,9,10,6,11,
 };
 
 CG_BEFORE_FIFO_BUFFERS
@@ -165,63 +101,73 @@ FIFO buffers
 #define FIFOSIZE5 256
 #define FIFOSIZE6 512
 #define FIFOSIZE7 640
-#define FIFOSIZE8 490
-#define FIFOSIZE9 256
-#define FIFOSIZE10 256
+#define FIFOSIZE8 10
+#define FIFOSIZE9 490
+#define FIFOSIZE10 12
 #define FIFOSIZE11 256
 #define FIFOSIZE12 256
+#define FIFOSIZE13 256
+#define FIFOSIZE14 256
 
-#define BUFFERSIZE1 256
+#define BUFFERSIZE0 512
 CG_BEFORE_BUFFER
-int16_t buf1[BUFFERSIZE1]={0};
+uint8_t buf0[BUFFERSIZE0]={0};
 
-#define BUFFERSIZE2 256
+#define BUFFERSIZE1 512
 CG_BEFORE_BUFFER
-int16_t buf2[BUFFERSIZE2]={0};
+uint8_t buf1[BUFFERSIZE1]={0};
 
-#define BUFFERSIZE3 256
+#define BUFFERSIZE2 512
 CG_BEFORE_BUFFER
-int16_t buf3[BUFFERSIZE3]={0};
+uint8_t buf2[BUFFERSIZE2]={0};
 
-#define BUFFERSIZE4 256
+#define BUFFERSIZE3 512
 CG_BEFORE_BUFFER
-int16_t buf4[BUFFERSIZE4]={0};
+uint8_t buf3[BUFFERSIZE3]={0};
 
-#define BUFFERSIZE5 256
+#define BUFFERSIZE4 512
 CG_BEFORE_BUFFER
-int16_t buf5[BUFFERSIZE5]={0};
+uint8_t buf4[BUFFERSIZE4]={0};
 
-#define BUFFERSIZE6 256
+#define BUFFERSIZE5 512
 CG_BEFORE_BUFFER
-int16_t buf6[BUFFERSIZE6]={0};
+uint8_t buf5[BUFFERSIZE5]={0};
 
-#define BUFFERSIZE7 512
+#define BUFFERSIZE6 1280
 CG_BEFORE_BUFFER
-int16_t buf7[BUFFERSIZE7]={0};
+uint8_t buf6[BUFFERSIZE6]={0};
 
-#define BUFFERSIZE8 640
+#define BUFFERSIZE7 10
 CG_BEFORE_BUFFER
-int16_t buf8[BUFFERSIZE8]={0};
+uint8_t buf7[BUFFERSIZE7]={0};
 
-#define BUFFERSIZE9 490
+#define BUFFERSIZE8 490
 CG_BEFORE_BUFFER
-int8_t buf9[BUFFERSIZE9]={0};
+uint8_t buf8[BUFFERSIZE8]={0};
 
-#define BUFFERSIZE10 256
+#define BUFFERSIZE9 12
 CG_BEFORE_BUFFER
-int16_t buf10[BUFFERSIZE10]={0};
+uint8_t buf9[BUFFERSIZE9]={0};
 
-#define BUFFERSIZE11 256
+#define BUFFERSIZE10 512
 CG_BEFORE_BUFFER
-int16_t buf11[BUFFERSIZE11]={0};
+uint8_t buf10[BUFFERSIZE10]={0};
 
-#define BUFFERSIZE12 256
+#define BUFFERSIZE11 512
 CG_BEFORE_BUFFER
-int16_t buf12[BUFFERSIZE12]={0};
+uint8_t buf11[BUFFERSIZE11]={0};
 
-#define BUFFERSIZE13 256
+#define BUFFERSIZE12 512
 CG_BEFORE_BUFFER
-int16_t buf13[BUFFERSIZE13]={0};
+uint8_t buf12[BUFFERSIZE12]={0};
+
+#define BUFFERSIZE13 512
+CG_BEFORE_BUFFER
+uint8_t buf13[BUFFERSIZE13]={0};
+
+#define BUFFERSIZE14 512
+CG_BEFORE_BUFFER
+int16_t buf14[BUFFERSIZE14]={0};
 
 
 typedef struct {
@@ -233,11 +179,13 @@ FIFO<int16_t,FIFOSIZE4,1,0> *fifo4;
 FIFO<int16_t,FIFOSIZE5,1,0> *fifo5;
 FIFO<int16_t,FIFOSIZE6,0,0> *fifo6;
 FIFO<int16_t,FIFOSIZE7,1,0> *fifo7;
-FIFO<int8_t,FIFOSIZE8,0,0> *fifo8;
-FIFO<int16_t,FIFOSIZE9,1,0> *fifo9;
-FIFO<int16_t,FIFOSIZE10,1,0> *fifo10;
+FIFO<int8_t,FIFOSIZE8,1,0> *fifo8;
+FIFO<int8_t,FIFOSIZE9,1,0> *fifo9;
+FIFO<int8_t,FIFOSIZE10,1,0> *fifo10;
 FIFO<int16_t,FIFOSIZE11,1,0> *fifo11;
 FIFO<int16_t,FIFOSIZE12,1,0> *fifo12;
+FIFO<int16_t,FIFOSIZE13,1,0> *fifo13;
+FIFO<int16_t,FIFOSIZE14,1,0> *fifo14;
 } fifos_t;
 
 typedef struct {
@@ -245,10 +193,12 @@ typedef struct {
     AEC<int16_t,256,int16_t,256,int16_t,256> *aec;
     ANR<int16_t,256,int16_t,256> *anr;
     SlidingBuffer<int16_t,640,320> *audioWin;
-    DSNN<int8_t,490> *dsnn;
+    DSNN<int8_t,490,int8_t,12> *dsnn;
     Duplicate<int16_t,256,int16_t,256> *dup0;
     Source<int16_t,256> *left;
     MFCC<int16_t,640,int8_t,10> *mfcc;
+    SlidingBuffer<int8_t,490,480> *mfccWin;
+    Result<int8_t,12> *result;
     Source<int16_t,256> *right;
     Source<int16_t,256> *speaker;
 } nodes_t;
@@ -259,71 +209,84 @@ static fifos_t fifos={0};
 CG_BEFORE_BUFFER
 static nodes_t nodes={0};
 
-int init_scheduler()
+int init_scheduler(int iterations,
+                              const int16_t *left_microphone_capture,
+                              const int16_t *right_microphone_capture,
+                              const int16_t *downlink_audio)
 {
     CG_BEFORE_FIFO_INIT;
-    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,1,0>(buf1);
+    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,1,0>(buf0);
     if (fifos.fifo0==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(buf2);
+    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(buf1);
     if (fifos.fifo1==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo2 = new FIFO<int16_t,FIFOSIZE2,1,0>(buf3);
+    fifos.fifo2 = new FIFO<int16_t,FIFOSIZE2,1,0>(buf2);
     if (fifos.fifo2==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo3 = new FIFO<int16_t,FIFOSIZE3,1,0>(buf4);
+    fifos.fifo3 = new FIFO<int16_t,FIFOSIZE3,1,0>(buf3);
     if (fifos.fifo3==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo4 = new FIFO<int16_t,FIFOSIZE4,1,0>(buf5);
+    fifos.fifo4 = new FIFO<int16_t,FIFOSIZE4,1,0>(buf4);
     if (fifos.fifo4==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo5 = new FIFO<int16_t,FIFOSIZE5,1,0>(buf6);
+    fifos.fifo5 = new FIFO<int16_t,FIFOSIZE5,1,0>(buf5);
     if (fifos.fifo5==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo6 = new FIFO<int16_t,FIFOSIZE6,0,0>(buf7);
+    fifos.fifo6 = new FIFO<int16_t,FIFOSIZE6,0,0>(buf14);
     if (fifos.fifo6==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo7 = new FIFO<int16_t,FIFOSIZE7,1,0>(buf8);
+    fifos.fifo7 = new FIFO<int16_t,FIFOSIZE7,1,0>(buf6);
     if (fifos.fifo7==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo8 = new FIFO<int8_t,FIFOSIZE8,0,0>(buf9);
+    fifos.fifo8 = new FIFO<int8_t,FIFOSIZE8,1,0>(buf7);
     if (fifos.fifo8==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo9 = new FIFO<int16_t,FIFOSIZE9,1,0>(buf10);
+    fifos.fifo9 = new FIFO<int8_t,FIFOSIZE9,1,0>(buf8);
     if (fifos.fifo9==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo10 = new FIFO<int16_t,FIFOSIZE10,1,0>(buf11);
+    fifos.fifo10 = new FIFO<int8_t,FIFOSIZE10,1,0>(buf9);
     if (fifos.fifo10==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo11 = new FIFO<int16_t,FIFOSIZE11,1,0>(buf12);
+    fifos.fifo11 = new FIFO<int16_t,FIFOSIZE11,1,0>(buf10);
     if (fifos.fifo11==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo12 = new FIFO<int16_t,FIFOSIZE12,1,0>(buf13);
+    fifos.fifo12 = new FIFO<int16_t,FIFOSIZE12,1,0>(buf11);
     if (fifos.fifo12==NULL)
+    {
+        return(CG_MEMORY_ALLOCATION_FAILURE);
+    }
+    fifos.fifo13 = new FIFO<int16_t,FIFOSIZE13,1,0>(buf12);
+    if (fifos.fifo13==NULL)
+    {
+        return(CG_MEMORY_ALLOCATION_FAILURE);
+    }
+    fifos.fifo14 = new FIFO<int16_t,FIFOSIZE14,1,0>(buf13);
+    if (fifos.fifo14==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
@@ -334,7 +297,7 @@ int init_scheduler()
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.aec = new AEC<int16_t,256,int16_t,256,int16_t,256>(*(fifos.fifo4),*(fifos.fifo12),*(fifos.fifo5));
+    nodes.aec = new AEC<int16_t,256,int16_t,256,int16_t,256>(*(fifos.fifo4),*(fifos.fifo14),*(fifos.fifo5));
     if (nodes.aec==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -349,17 +312,17 @@ int init_scheduler()
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.dsnn = new DSNN<int8_t,490>(*(fifos.fifo8));
+    nodes.dsnn = new DSNN<int8_t,490,int8_t,12>(*(fifos.fifo9),*(fifos.fifo10));
     if (nodes.dsnn==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.dup0 = new Duplicate<int16_t,256,int16_t,256>(*(fifos.fifo9),{fifos.fifo10,fifos.fifo11,fifos.fifo12});
+    nodes.dup0 = new Duplicate<int16_t,256,int16_t,256>(*(fifos.fifo11),{fifos.fifo12,fifos.fifo13,fifos.fifo14});
     if (nodes.dup0==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.left = new Source<int16_t,256>(*(fifos.fifo0));
+    nodes.left = new Source<int16_t,256>(*(fifos.fifo0),left_microphone_capture);
     if (nodes.left==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -369,12 +332,22 @@ int init_scheduler()
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.right = new Source<int16_t,256>(*(fifos.fifo1));
+    nodes.mfccWin = new SlidingBuffer<int8_t,490,480>(*(fifos.fifo8),*(fifos.fifo9));
+    if (nodes.mfccWin==NULL)
+    {
+        return(CG_MEMORY_ALLOCATION_FAILURE);
+    }
+    nodes.result = new Result<int8_t,12>(*(fifos.fifo10));
+    if (nodes.result==NULL)
+    {
+        return(CG_MEMORY_ALLOCATION_FAILURE);
+    }
+    nodes.right = new Source<int16_t,256>(*(fifos.fifo1),right_microphone_capture);
     if (nodes.right==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.speaker = new Source<int16_t,256>(*(fifos.fifo9));
+    nodes.speaker = new Source<int16_t,256>(*(fifos.fifo11),downlink_audio);
     if (nodes.speaker==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -384,7 +357,10 @@ int init_scheduler()
 
 }
 
-void free_scheduler()
+void free_scheduler(int iterations,
+                              const int16_t *left_microphone_capture,
+                              const int16_t *right_microphone_capture,
+                              const int16_t *downlink_audio)
 {
     if (fifos.fifo0!=NULL)
     {
@@ -438,6 +414,14 @@ void free_scheduler()
     {
        delete fifos.fifo12;
     }
+    if (fifos.fifo13!=NULL)
+    {
+       delete fifos.fifo13;
+    }
+    if (fifos.fifo14!=NULL)
+    {
+       delete fifos.fifo14;
+    }
 
     if (nodes.abf!=NULL)
     {
@@ -471,6 +455,14 @@ void free_scheduler()
     {
         delete nodes.mfcc;
     }
+    if (nodes.mfccWin!=NULL)
+    {
+        delete nodes.mfccWin;
+    }
+    if (nodes.result!=NULL)
+    {
+        delete nodes.result;
+    }
     if (nodes.right!=NULL)
     {
         delete nodes.right;
@@ -483,7 +475,10 @@ void free_scheduler()
 
 
 CG_BEFORE_SCHEDULER_FUNCTION
-uint32_t scheduler(int *error)
+uint32_t scheduler(int *error,int iterations,
+                              const int16_t *left_microphone_capture,
+                              const int16_t *right_microphone_capture,
+                              const int16_t *downlink_audio)
 {
     int cgStaticError=0;
     uint32_t nbSchedule=0;
@@ -496,7 +491,7 @@ uint32_t scheduler(int *error)
     {
         /* Run a schedule iteration */
         CG_BEFORE_ITERATION;
-        for(unsigned long id=0 ; id < 2601; id++)
+        for(unsigned long id=0 ; id < 65; id++)
         {
             CG_BEFORE_NODE_EXECUTION;
 
@@ -529,7 +524,7 @@ uint32_t scheduler(int *error)
                    int16_t* i1;
                    int16_t* o2;
                    i0=fifos.fifo0->getReadBuffer(256);
-                   i1=fifos.fifo10->getReadBuffer(256);
+                   i1=fifos.fifo12->getReadBuffer(256);
                    o2=fifos.fifo2->getWriteBuffer(256);
                    arm_add_q15(i0,i1,o2,256);
                    cgStaticError = 0;
@@ -546,7 +541,7 @@ uint32_t scheduler(int *error)
                    int16_t* i1;
                    int16_t* o2;
                    i0=fifos.fifo1->getReadBuffer(256);
-                   i1=fifos.fifo11->getReadBuffer(256);
+                   i1=fifos.fifo13->getReadBuffer(256);
                    o2=fifos.fifo3->getWriteBuffer(256);
                    arm_add_q15(i0,i1,o2,256);
                    cgStaticError = 0;
@@ -586,11 +581,23 @@ uint32_t scheduler(int *error)
 
                 case 10:
                 {
-                   cgStaticError = nodes.right->run();
+                   cgStaticError = nodes.mfccWin->run();
                 }
                 break;
 
                 case 11:
+                {
+                   cgStaticError = nodes.result->run();
+                }
+                break;
+
+                case 12:
+                {
+                   cgStaticError = nodes.right->run();
+                }
+                break;
+
+                case 13:
                 {
                    cgStaticError = nodes.speaker->run();
                 }

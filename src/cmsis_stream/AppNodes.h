@@ -34,11 +34,17 @@ extern "C" {
 
 #include "SlidingBuffer.h"
 
+int inferences = 0;
+
+
 template<typename OUT,int outputSize>
 class Source: GenericSource<OUT,outputSize>
 {
 public:
-    Source(FIFOBase<OUT> &dst):GenericSource<OUT,outputSize>(dst),mCounter(0){};
+    Source(FIFOBase<OUT> &dst,const OUT *source):
+    GenericSource<OUT,outputSize>(dst),mSource(source){
+        mIndex=0;
+    };
 
     int prepareForRunning() final
     {
@@ -55,10 +61,20 @@ public:
         OUT *b=this->getWriteBuffer();
 
         
-        return(0);
+        memcpy(b,mSource+mIndex,sizeof(OUT)*outputSize);
+        mIndex += outputSize;
+        if (mIndex >= NINPUT_SAMPLES)
+        {
+            mIndex = 0;
+        }
+
+        
+        return(CG_SUCCESS);
     };
 
-
+protected:
+    const OUT *mSource;
+    int mIndex;
 };
 
 extern "C" {
@@ -93,14 +109,10 @@ public:
                 int16_t,nbSamples,
                 int16_t,nbSamples>(src1,src2,dst){
     
-       uint32_t size = (3 * 4) // See note above
-                            + sizeof(abf_f32_fastdata_static_t)
-                            + sizeof(abf_f32_fastdata_working_t)
-                            + sizeof(ee_f32_t *) + sizeof(ee_f32_t *)
-                            + 4; /* TODO : justify this */
-       p_abf_f32_instance = (abf_f32_instance_t*)th_malloc(size,COMPONENT_BMF);
 
-       printf(" bmf = %d\n", size);
+       p_abf_f32_instance = ee_abf_f32_init();
+
+       //printf(" bmf = %d\n", size);
 
        beamformer_f32_reset(p_abf_f32_instance);
     };
@@ -190,7 +202,7 @@ public:
       uint32_t size;
       p_state = ee_aec_init_f32(&size);
 
-      printf(" aec = %d\n", size);
+      //printf(" aec = %d\n", size);
     };
 
     ~AEC()
@@ -253,7 +265,7 @@ public:
       uint32_t size;
       p_state = ee_anr_init_f32(&size);
 
-      printf(" anr = %d\n", size);
+      //printf(" anr = %d\n", size);
     };
 
     ~ANR()
@@ -339,23 +351,29 @@ protected:
 mfcc_instance_t p_mfcc;
 };
 
-template<typename IN, int inputSize>
+template<typename IN, int inputSize,
+         typename OUT, int outputSize>
 class DSNN;
 
 template<int inputSize>
-class DSNN<int8_t,inputSize>: 
-public GenericSink<int8_t, inputSize>
+class DSNN<int8_t,inputSize,
+           int8_t,OUT_DIM>: 
+public GenericNode<int8_t, inputSize,
+                   int8_t,OUT_DIM>
 {
 public:
-    DSNN(FIFOBase<int8_t> &src):GenericSink<int8_t,inputSize>(src){
+    DSNN(FIFOBase<int8_t> &src,FIFOBase<int8_t> &dst):
+    GenericNode<int8_t,inputSize,
+                int8_t,OUT_DIM>(src,dst){
         th_nn_init();
-        printf(" kws = %d\n", 0);
+        //printf(" kws = %d\n", 0);
 
     };
 
     int prepareForRunning() final
     {
-        if (this->willUnderflow()
+        if (this->willUnderflow() || 
+            this->willOverflow()
            )
         {
            return(CG_SKIP_EXECUTION_ID_CODE); // Skip execution
@@ -367,9 +385,47 @@ public:
     int run () final
     {
         int8_t *p_mfcc_fifo=this->getReadBuffer();
-        int8_t prediction[OUT_DIM];
+        int8_t *prediction=this->getWriteBuffer();
+
         
         ee_status_t status = th_nn_classify(p_mfcc_fifo, prediction);
+        inferences ++;
+        return(0);
+    };
+
+};
+
+
+template<typename IN, int inputSize>
+class Result;
+
+template<>
+class Result<int8_t,OUT_DIM>: 
+public GenericSink<int8_t,OUT_DIM>
+{
+public:
+    Result(FIFOBase<int8_t> &src):
+    GenericSink<int8_t,OUT_DIM>(src){
+    
+     
+    };
+
+   
+   
+    int prepareForRunning() final
+    {
+        if (this->willUnderflow())
+        {
+           return(CG_SKIP_EXECUTION_ID_CODE); // Skip execution
+        }
+
+        return(0);
+    };
+    
+    int run() final{
+        
+        int8_t *p_prediction=this->getReadBuffer();
+
 #ifdef DEBUG_PRINTF_CLASSES
         printf("OUTPUT: ");
         char output_class[OUT_DIM][8]
@@ -394,8 +450,10 @@ public:
                ((int)(p_prediction[max_ind] + 128) * 100 / 256));
         printf("\n");
 #endif
+
         return(0);
     };
+
 
 };
 

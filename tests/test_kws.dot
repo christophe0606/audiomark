@@ -1,0 +1,87 @@
+
+
+
+
+digraph structs {
+    bgcolor = "white"
+    node [shape=plaintext,color="black",fontcolor="black",fontname="Times-Roman"]
+    rankdir=LR
+    edge [arrowsize="0.5",color="black",fontcolor="black",fontname="Times-Roman"]
+
+
+audioWin [label=<
+<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <TR>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">audioWin<BR/>(SlidingBuffer)</FONT></TD>
+  </TR>
+</TABLE>>];
+
+dsnn [label=<
+<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <TR>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">dsnn<BR/>(DSNN)</FONT></TD>
+  </TR>
+</TABLE>>];
+
+mfcc [label=<
+<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <TR>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">mfcc<BR/>(MFCC)</FONT></TD>
+  </TR>
+</TABLE>>];
+
+mfccWin [label=<
+<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <TR>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">mfccWin<BR/>(SlidingBuffer)</FONT></TD>
+  </TR>
+</TABLE>>];
+
+src [label=<
+<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <TR>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">src<BR/>(Source)</FONT></TD>
+  </TR>
+</TABLE>>];
+
+test [label=<
+<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <TR>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">test<BR/>(TestResult)</FONT></TD>
+  </TR>
+</TABLE>>];
+
+
+
+src:i -> audioWin:i [style="solid",color="black",fontsize="12.0",fontcolor="black",label=<s16(512)>
+,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >320</FONT>
+</TD></TR></TABLE>>
+,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
+</TD></TR></TABLE>>]
+
+audioWin:i -> mfcc:i [style="solid",color="black",fontsize="12.0",fontcolor="black",label=<s16(640)>
+,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >640</FONT>
+</TD></TR></TABLE>>
+,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >640</FONT>
+</TD></TR></TABLE>>]
+
+mfcc:i -> mfccWin:i [style="solid",color="black",fontsize="12.0",fontcolor="black",label=<s8(10)>
+,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >10</FONT>
+</TD></TR></TABLE>>
+,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >10</FONT>
+</TD></TR></TABLE>>]
+
+mfccWin:i -> dsnn:i [style="solid",color="black",fontsize="12.0",fontcolor="black",label=<s8(490)>
+,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >490</FONT>
+</TD></TR></TABLE>>
+,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >490</FONT>
+</TD></TR></TABLE>>]
+
+dsnn:i -> test:i [style="solid",color="black",fontsize="12.0",fontcolor="black",label=<s8(12)>
+,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >12</FONT>
+</TD></TR></TABLE>>
+,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >12</FONT>
+</TD></TR></TABLE>>]
+
+
+}

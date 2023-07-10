@@ -88,7 +88,7 @@ int32_t ee_anr_f32(int32_t, void **, void *, void *);
 int32_t ee_kws_f32(int32_t, void **, void *, void *);
 
 int  ee_audiomark_initialize(void);
-int  ee_audiomark_run(void);
+int  ee_audiomark_run(int);
 void ee_audiomark_release(void);
 
 #endif

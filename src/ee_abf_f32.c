@@ -356,72 +356,13 @@ beamformer_f32_reset(abf_f32_instance_t *p_inst)
     p_inst->st->bf_mem.adptBF_coefs_update_enable = 1;
 }
 
-
-int32_t
-ee_abf_f32(int32_t command, void **pp_inst, void *p_data, void *p_params)
+abf_f32_instance_t *ee_abf_f32_init()
 {
-    int32_t ret = 0;
-
-    switch (command)
-    {
-        case NODE_MEMREQ: {
-            /**
-             * N.B. https://arm-software.github.io/CMSIS-DSP/latest/ :
-             *
-             * When using a vectorized version, provide a little bit of padding
-             * after the end of a buffer (3 words) because the vectorized code
-             * may read a little bit after the end of a buffer. You don't have
-             * to modify your buffers but just ensure that the end of buffer +
-             * padding is not outside of a memory region.
-             */
-            uint32_t size = (3 * 4) // See note above
+    uint32_t size = (3 * 4) // See note above
                             + sizeof(abf_f32_fastdata_static_t)
                             + sizeof(abf_f32_fastdata_working_t)
                             + sizeof(ee_f32_t *) + sizeof(ee_f32_t *)
                             + 4; /* TODO : justify this */
-            *(uint32_t *)(*pp_inst) = size;
-            break;
-        }
-        case NODE_RESET: {
-            beamformer_f32_reset((abf_f32_instance_t *)(*pp_inst));
-            break;
-        }
-        case NODE_RUN: {
-            /* XDAIS Translation */
-            PTR_INT *p_pt = NULL;
-            uint32_t buffer1_size;
-            uint32_t buffer2_size;
-            int32_t  nb_input_samples;
-            int32_t  input_samples_consumed;
-            int32_t  output_samples_produced;
-            int16_t *inBufs1stChannel = NULL;
-            int16_t *inBufs2ndChannel = NULL;
-            int16_t *outBufs          = NULL;
-
-            p_pt             = (PTR_INT *)p_data;
-            inBufs1stChannel = (int16_t *)(*p_pt++);
-            buffer1_size     = (uint32_t)(*p_pt++);
-            inBufs2ndChannel = (int16_t *)(*p_pt++);
-            buffer2_size     = (uint32_t)(*p_pt++);
-            outBufs          = (int16_t *)(*p_pt++);
-
-            nb_input_samples = buffer1_size / sizeof(int16_t);
-
-            if (buffer2_size != buffer1_size)
-            {
-                return 1;
-            }
-
-            beamformer_f32_run((abf_f32_instance_t *)(*pp_inst),
-                               (int16_t *)inBufs1stChannel,
-                               (int16_t *)inBufs2ndChannel,
-                               nb_input_samples,
-                               (int16_t *)outBufs,
-                               &input_samples_consumed,
-                               &output_samples_produced,
-                               &ret);
-            break;
-        }
-    }
-    return ret;
+    abf_f32_instance_t *p_abf_f32_instance = (abf_f32_instance_t*)th_malloc(size,COMPONENT_BMF);
+    return(p_abf_f32_instance);
 }

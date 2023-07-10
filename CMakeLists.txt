@@ -80,7 +80,7 @@ set(TEST_AEC_F32_SOURCE
 	tests/data/aec_f32_input_source.c
 	tests/data/aec_f32_input_echo.c
 	tests/data/aec_f32_expected.c
-	tests/test_aec_f32.c
+	tests/test_aec_f32.cpp
 )
 add_executable(test_aec_f32 ${TEST_AEC_F32_SOURCE})
 
@@ -100,7 +100,7 @@ set(TEST_ANR_F32_SOURCE
 	${TH_SOURCE}
 	tests/data/anr_f32_input.c
 	tests/data/anr_f32_expected.c
-	tests/test_anr_f32.c
+	tests/test_anr_f32.cpp
 )
 add_executable(test_anr_f32 ${TEST_ANR_F32_SOURCE})
 
@@ -111,7 +111,7 @@ set(TEST_ABF_F32_SOURCE
 	tests/data/abf_f32_input_ch1.c
 	tests/data/abf_f32_input_ch2.c
 	tests/data/abf_f32_expected.c
-	tests/test_abf_f32.c
+	tests/test_abf_f32.cpp
 )
 add_executable(test_abf_f32 ${TEST_ABF_F32_SOURCE})
 
@@ -120,7 +120,7 @@ set(TEST_MFCC_F32_SOURCE
 	src/ee_mfcc_f32_tables.c
 	${TH_SOURCE}
 	tests/data/mfcc_f32_all.c
-	tests/test_mfcc_f32.c
+	tests/test_mfcc_f32.cpp
 )
 add_executable(test_mfcc_f32 ${TEST_MFCC_F32_SOURCE})
 
@@ -129,11 +129,13 @@ set(TEST_KWS_SOURCE
 	src/ee_mfcc_f32.c
 	src/ee_mfcc_f32_tables.c
 	${TH_SOURCE}
-	tests/test_kws.c
+	tests/test_kws.cpp
+	tests/test_scheduler.cpp
 	tests/data/kws_input.c
 	tests/data/kws_expected.c
 )
 add_executable(test_kws ${TEST_KWS_SOURCE})
+target_include_directories(test_kws PUBLIC tests)
 
 add_executable(audiomark ${EE_SOURCE} ${TH_SOURCE})
 

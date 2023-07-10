@@ -14,7 +14,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+extern "C" {
 #include "ee_audiomark.h"
+}
+#include "custom.h"
+#include "GenericNodes.h"
+#include "cg_status.h"
+#include "AppNodes.h"
 
 #define TEST_NBUFFERS 104U
 #define NSAMPLES      256U
@@ -23,9 +29,11 @@
 /* Noise to signal ratio */
 #define NSRM50DB 0.003162f
 
+extern "C" {
 extern const int16_t p_input[TEST_NBUFFERS][NSAMPLES];
 extern const int16_t p_echo[TEST_NBUFFERS][NSAMPLES];
 extern const int16_t p_expected[TEST_NBUFFERS][NSAMPLES];
+}
 
 static int16_t p_input_sub[NSAMPLES];
 static int16_t p_echo_sub[NSAMPLES];
@@ -33,68 +41,39 @@ static int16_t p_output_sub[NSAMPLES];
 
 static xdais_buffer_t xdais[3];
 
+extern "C" {
 // Used deep inside speex_alloc; assigned by component NODE_RESET
 char *spxGlobalHeapPtr;
 char *spxGlobalHeapEnd;
 long  cumulatedMalloc;
 
+extern SpeexEchoState *ee_aec_init_f32(uint32_t *size);
+
+}
+
 int
 main(int argc, char *argv[])
 {
     bool      err           = false;
-    uint32_t  memreq        = 0;
-    uint32_t *p_req         = &memreq;
-    void     *inst          = NULL;
-    uint32_t  parameters[1] = { 0 };
+    
     uint32_t  A             = 0;
     uint32_t  B             = 0;
     float     ratio         = 0.0f;
 
-    if (ee_aec_f32(NODE_MEMREQ, (void **)&p_req, NULL, NULL))
-    {
-        printf("AEC NODE_MEMREQ failed\n");
-        return -1;
-    }
-    printf("AEC MEMREQ = %d bytes\n", memreq);
+    FIFO<int16_t,NSAMPLES,1,0> fifo4(p_input_sub);
+    FIFO<int16_t,NSAMPLES,1,0> fifo13(p_echo_sub);
+    FIFO<int16_t,NSAMPLES,1,0> fifo5(p_output_sub);
+    AEC<int16_t,NSAMPLES,
+        int16_t,NSAMPLES,
+        int16_t,NSAMPLES> aec(fifo4,fifo13,fifo5);
 
-    inst = malloc(memreq);
-    if (!inst)
-    {
-        printf("AEC malloc() fail\n");
-        return -1;
-    }
-
-    SETUP_XDAIS(xdais[0], p_input_sub, NFRAMEBYTES);
-    SETUP_XDAIS(xdais[1], p_echo_sub, NFRAMEBYTES);
-    SETUP_XDAIS(xdais[2], p_output_sub, NFRAMEBYTES);
-
-    // SpeeX will call speex_malloc() on NODE_RESET giving us the real mem used
-    cumulatedMalloc = 0;
-    if (ee_aec_f32(NODE_RESET, (void **)&inst, xdais, &parameters))
-    {
-        printf("AEC NODE_RESET failed\n");
-        return -1;
-    }
-
-    // Sanity check the actual allocation from Speex
-    printf("AEC SpeeX cumulatedMalloc = %ld bytes\n", cumulatedMalloc);
-    if (cumulatedMalloc > memreq)
-    {
-        printf("AEC ran out of memory but didn't complain!\n");
-        return -1;
-    }
 
     for (unsigned i = 0; i < TEST_NBUFFERS; ++i)
     {
         memcpy(p_input_sub, &p_input[i], NFRAMEBYTES);
         memcpy(p_echo_sub, &p_echo[i], NFRAMEBYTES);
 
-        if (ee_aec_f32(NODE_RUN, (void **)&inst, xdais, 0))
-        {
-            err = true;
-            printf("AEC NODE_RUN failed\n");
-            break;
-        }
+        aec.run();
 
         A = 0;
         B = 0;

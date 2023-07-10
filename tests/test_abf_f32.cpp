@@ -14,7 +14,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+extern "C" {
 #include "ee_abf_f32.h"
+}
+#include "custom.h"
+#include "GenericNodes.h"
+#include "cg_status.h"
+#include "AppNodes.h"
 
 #define TEST_NBUFFERS 104U
 #define NSAMPLES      256U
@@ -23,9 +29,11 @@
 /* Noise to signal ratio */
 #define NSRM50DB 0.003162f
 
+extern "C" {
 extern const int16_t p_channel1[TEST_NBUFFERS][NSAMPLES];
 extern const int16_t p_channel2[TEST_NBUFFERS][NSAMPLES];
 extern const int16_t p_expected[TEST_NBUFFERS][NSAMPLES];
+}
 
 static int16_t p_left[NSAMPLES];
 static int16_t p_right[NSAMPLES];
@@ -34,52 +42,34 @@ static int16_t p_output[NSAMPLES];
 static xdais_buffer_t xdais[3];
 
 // Used deep inside audiomark core
+extern "C" {
 char *spxGlobalHeapPtr;
 char *spxGlobalHeapEnd;
-
+}
 
 int
 main(int argc, char *argv[])
 {
     bool      err           = false;
-    uint32_t  memreq        = 0;
-    uint32_t *p_req         = &memreq;
-    void     *inst          = NULL;
-    uint32_t  parameters[1] = { 0 };
     uint32_t  A             = 0;
     uint32_t  B             = 0;
     float     ratio         = 0.0f;
 
-    if (ee_abf_f32(NODE_MEMREQ, (void **)&p_req, NULL, NULL))
-    {
-        printf("ABF NODE_MEMREQ failed\n");
-        return -1;
-    }
-    printf("ABF MEMREQ = %d bytes\n", memreq);
-
-    inst = malloc(memreq);
-    if (!inst)
-    {
-        printf("ABF malloc() fail\n");
-        return -1;
-    }
-
-    SETUP_XDAIS(xdais[0], p_left, NFRAMEBYTES);
-    SETUP_XDAIS(xdais[1], p_right, NFRAMEBYTES);
-    SETUP_XDAIS(xdais[2], p_output, NFRAMEBYTES);
-
-    if (ee_abf_f32(NODE_RESET, (void **)&inst, xdais, NULL))
-    {
-        printf("ABF NODE_RESET failed\n");
-        return -1;
-    }
+    FIFO<int16_t,NSAMPLES,1,0> fifo2(p_left);
+    FIFO<int16_t,NSAMPLES,1,0> fifo3(p_right);
+    FIFO<int16_t,NSAMPLES,1,0> fifo4(p_output);
+    ABF<int16_t,NSAMPLES,
+        int16_t,NSAMPLES,
+        int16_t,NSAMPLES> abf(fifo2,fifo3,fifo4);
 
     for (unsigned i = 0; i < TEST_NBUFFERS; ++i)
     {
         memcpy(p_left, &p_channel1[i], NFRAMEBYTES);
         memcpy(p_right, &p_channel2[i], NFRAMEBYTES);
 
-        if (ee_abf_f32(NODE_RUN, (void **)&inst, xdais, parameters))
+        int errID = abf.run();
+
+        if (errID!=0)
         {
             err = true;
             printf("ABF NODE_RUN failed\n");

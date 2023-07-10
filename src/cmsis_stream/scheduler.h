@@ -16,9 +16,18 @@ extern "C"
 #endif
 
 
-extern int init_scheduler();
-extern void free_scheduler();
-extern uint32_t scheduler(int *error);
+extern int init_scheduler(int iterations,
+                              const int16_t *left_microphone_capture,
+                              const int16_t *right_microphone_capture,
+                              const int16_t *downlink_audio);
+extern void free_scheduler(int iterations,
+                              const int16_t *left_microphone_capture,
+                              const int16_t *right_microphone_capture,
+                              const int16_t *downlink_audio);
+extern uint32_t scheduler(int *error,int iterations,
+                              const int16_t *left_microphone_capture,
+                              const int16_t *right_microphone_capture,
+                              const int16_t *downlink_audio);
 
 #ifdef   __cplusplus
 }

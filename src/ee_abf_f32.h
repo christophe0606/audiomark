@@ -81,6 +81,8 @@ typedef struct abf_f32_instance_t
     abf_f32_fastdata_working_t *w;
 } abf_f32_instance_t;
 
+abf_f32_instance_t * ee_abf_f32_init();
+
 int32_t ee_abf_f32(int32_t command,
                    void  **pp_instance,
                    void   *p_data,

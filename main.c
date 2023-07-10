@@ -64,14 +64,16 @@ time_audiomark_run(uint32_t iterations, uint64_t *dt)
     uint64_t t1  = 0;
     bool     err = false;
 
+    ee_audiomark_release();
+    ee_audiomark_initialize();
+
     t0 = th_microseconds();
-    for (uint32_t i = 0; i < iterations; ++i)
+
+    /* Scheduling is doing 4 iterations per run */
+    int errCode = ee_audiomark_run(iterations>>2);
+    if (errCode !=0)
     {
-        if (ee_audiomark_run())
-        {
-            err = true;
-            break;
-        }
+        err = true;
     }
     t1  = th_microseconds();
     *dt = t1 - t0;
@@ -82,7 +84,7 @@ int
 main(void)
 {
     bool     err        = false;
-    uint32_t iterations = 1;
+    uint32_t iterations = 2;
     uint64_t dt         = 0;
 
     printf("Initializing\n");
@@ -99,6 +101,7 @@ main(void)
     {
         iterations *= 2;
         err = time_audiomark_run(iterations, &dt);
+        //printf("%d %lld\n",iterations,dt);
         if (err)
         {
             break;
@@ -115,6 +118,10 @@ main(void)
     float scale = 11e6f / dt;
     iterations  = (uint32_t)((float)iterations * scale);
     iterations  = iterations < 10 ? 10 : iterations;
+
+    iterations = (iterations>>2)<<2;
+
+    //printf("%d %lld %f\n",iterations,dt,scale);
 
     printf("Measuring\n");
 

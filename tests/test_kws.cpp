@@ -1,0 +1,97 @@
+/**
+ * Copyright (C) 2022 EEMBC
+ *
+ * All EEMBC Benchmark Software are products of EEMBC and are provided under the
+ * terms of the EEMBC Benchmark License Agreements. The EEMBC Benchmark Software
+ * are proprietary intellectual properties of EEMBC and its Members and is
+ * protected under all applicable laws, including all applicable copyright laws.
+ *
+ * If you received this EEMBC Benchmark Software without having a currently
+ * effective EEMBC Benchmark License Agreement, you must discontinue use.
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include "ee_types.h"
+extern "C" {
+#include "ee_audiomark.h"
+}
+
+#include "kws_test_custom.h"
+#include "test_scheduler.h"
+
+#define NBUFFERS 93
+#define NINFERS  73
+#define NSAMPLES 256
+#define NCLASSES 12
+
+extern "C" {
+extern const int16_t p_input[NBUFFERS][NSAMPLES];
+extern const int8_t  p_expected[NINFERS][NCLASSES];
+
+
+// Used deep inside audiomark core
+char *spxGlobalHeapPtr;
+char *spxGlobalHeapEnd;
+int testError=0;
+
+}
+
+
+static int16_t        aec_output[256];     // 5
+static int16_t        audio_fifo[13 * 64]; // 6
+static int8_t         mfcc_fifo[490];      // 7
+static int8_t         classes[12];         // 8
+
+int
+main(int argc, char *argv[])
+{
+    int           err           = 0;
+    int           new_inference = 0;
+    const int8_t *p_check       = NULL;
+    int           idx_check     = 0;
+    void         *memory        = NULL;
+    void         *inst          = NULL;
+
+    /* An iteration of the schedule loop is reading 5 buffers */
+    err = init_test_scheduler(NBUFFERS/5,
+                         (const int16_t*)p_input,
+                         (const int8_t*)p_expected);
+    if (err!=0)
+    {
+        printf("Init failed\n");
+        exit(-1);
+    }
+
+    printf("Start\n");
+    
+    uint32_t nbSched=test_scheduler(&err,
+                              NBUFFERS/5,
+                              (const int16_t*)p_input,
+                              (const int8_t*)p_expected);
+
+    free_test_scheduler(NBUFFERS/5,
+                   (const int16_t*)p_input,
+                   (const int8_t*)p_expected);
+
+    if (inferences == 0)
+    {
+        err = 1;
+        printf("KWS did not perform any inferences\n");
+    }
+
+    if (inferences != NINFERS)
+    {
+        err = 1;
+        printf("KWS expected %d inferences but got %d\n", inferences, NINFERS);
+    }
+
+    if (err)
+    {
+        printf("KWS test failed\n");
+        return -1;
+    }
+
+    printf("KWS test passed\n");
+    return 0;
+}

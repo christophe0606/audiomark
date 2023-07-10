@@ -12,8 +12,16 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+extern "C" {
 #include "ee_mfcc_f32.h"
+}
 
+#include "custom.h"
+#include "GenericNodes.h"
+#include "cg_status.h"
+#include "AppNodes.h"
+
+extern "C" {
 extern const int16_t p_input[FRAME_LEN];
 extern const int8_t  p_expected[NUM_MFCC_FEATURES];
 
@@ -21,18 +29,24 @@ extern const int8_t  p_expected[NUM_MFCC_FEATURES];
 char *spxGlobalHeapPtr;
 char *spxGlobalHeapEnd;
 
+int16_t p_input_sub[FRAME_LEN];
 int8_t p_output[NUM_MFCC_FEATURES];
 
-mfcc_instance_t *mfcc_instance;
+}
 
 int
 main(int argc, char *argv[])
 {
     int err = 0;
 
-    mfcc_instance = malloc(sizeof(mfcc_instance_t));
-    ee_mfcc_f32_init(mfcc_instance);
-    ee_mfcc_f32_compute(mfcc_instance, p_input, p_output);
+    FIFO<int16_t,FRAME_LEN,1,0> fifo7(p_input_sub);
+    FIFO<int8_t,NUM_MFCC_FEATURES,1,0> fifo8(p_output);
+
+    MFCC<int16_t,FRAME_LEN,
+         int8_t,NUM_MFCC_FEATURES> mfcc(fifo7,fifo8);
+
+    memcpy(p_input_sub,p_input,sizeof(int16_t)*FRAME_LEN);
+    mfcc.run();
 
     for (int i = 0; i < NUM_MFCC_FEATURES; ++i)
     {
