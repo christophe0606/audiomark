@@ -143,7 +143,7 @@ conf.cOptionalArgs=["int iterations",
                     "const int16_t *left_microphone_capture",
                     "const int16_t *right_microphone_capture",
                     "const int16_t *downlink_audio"]
-conf.memoryOptimization=True
+#conf.memoryOptimization=True
 conf.heapAllocation = True
 
 generateGenericNodes(".")

@@ -38,8 +38,14 @@ ee_audiomark_run(int iterations)
     uint32_t nbSched=scheduler(&error,iterations,left_microphone_capture,
                              right_microphone_capture,
                              downlink_audio);
-    
+
     //printf("nb=%d error=%d\n",nbSched,error);
+
+    if (error == CG_SUCCESS)
+    {
+        return(CG_SUCCESS);
+    }
+    
     if (error != CG_STOP_SCHEDULER)
     {
       return(error);

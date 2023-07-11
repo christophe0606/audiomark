@@ -17,12 +17,15 @@ extern "C"
 
 
 extern int init_test_scheduler(int iterations,
+                              int testMode,
                               const int16_t *p_input,
                               const int8_t *p_expected);
 extern void free_test_scheduler(int iterations,
+                              int testMode,
                               const int16_t *p_input,
                               const int8_t *p_expected);
 extern uint32_t test_scheduler(int *error,int iterations,
+                              int testMode,
                               const int16_t *p_input,
                               const int8_t *p_expected);
 

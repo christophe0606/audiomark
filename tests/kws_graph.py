@@ -2,20 +2,23 @@ from cmsis_stream.cg.scheduler import *
 
 
 class MFCC(GenericNode):
-    def __init__(self,name,inLength,outLength):
+    def __init__(self,name,inLength,outLength,testMode):
         GenericNode.__init__(self,name)
         self.addInput("i",CType(SINT16),inLength)
         self.addOutput("o",CType(SINT8),outLength)
+        self.addLiteralArg(testMode)
 
     @property
     def typeName(self):
         return "MFCC"
 
 class DSNN(GenericNode):
-    def __init__(self,name,inLength):
+    def __init__(self,name,inLength,testMode):
         GenericNode.__init__(self,name)
         self.addInput("i",CType(SINT8),inLength)
         self.addOutput("o",CType(SINT8),12)
+        self.addLiteralArg(testMode)
+
         
     @property
     def typeName(self):
@@ -60,12 +63,12 @@ NN_FEATURES = 49
 src=Source("src",NB,"p_input")
 
 
-mfcc=MFCC("mfcc",NB_WINDOW_SAMPLES,MFCC_FEATURES)
+mfcc=MFCC("mfcc",NB_WINDOW_SAMPLES,MFCC_FEATURES,1)
 
 audioWin=SlidingBuffer("audioWin",CType(SINT16),NB_WINDOW_SAMPLES,NB_OVERLAP_SAMPLES)
 mfccWin=SlidingBuffer("mfccWin",CType(SINT8),MFCC_FEATURES*NN_FEATURES,MFCC_FEATURES*(NN_FEATURES-1))
 
-dsnn=DSNN("dsnn",MFCC_FEATURES*NN_FEATURES)
+dsnn=DSNN("dsnn",MFCC_FEATURES*NN_FEATURES,1)
 test=TestResult("test","p_expected")
 
 
@@ -85,9 +88,10 @@ print("Generate graphviz and code")
 conf=Configuration()
 conf.debugLimit=1
 conf.cOptionalArgs=["int iterations",
+                    "int testMode",
                     "const int16_t *p_input",
                     "const int8_t *p_expected"]
-conf.memoryOptimization=True
+#conf.memoryOptimization=True
 conf.heapAllocation = True
 
 conf.customCName = "kws_test_custom.h"

@@ -21,7 +21,10 @@ extern "C" {
 #include "test_scheduler.h"
 
 #define NBUFFERS 93
-#define NINFERS  73
+// Number of possible inference
+// It must be a full number of iterations of
+// the schedule and not reading more data than available
+#define NINFERS  71
 #define NSAMPLES 256
 #define NCLASSES 12
 
@@ -54,7 +57,7 @@ main(int argc, char *argv[])
     void         *inst          = NULL;
 
     /* An iteration of the schedule loop is reading 5 buffers */
-    err = init_test_scheduler(NBUFFERS/5,
+    err = init_test_scheduler(NBUFFERS/5,1,
                          (const int16_t*)p_input,
                          (const int8_t*)p_expected);
     if (err!=0)
@@ -63,14 +66,13 @@ main(int argc, char *argv[])
         exit(-1);
     }
 
-    printf("Start\n");
-    
     uint32_t nbSched=test_scheduler(&err,
                               NBUFFERS/5,
+                              1,
                               (const int16_t*)p_input,
                               (const int8_t*)p_expected);
 
-    free_test_scheduler(NBUFFERS/5,
+    free_test_scheduler(NBUFFERS/5,1,
                    (const int16_t*)p_input,
                    (const int8_t*)p_expected);
 
@@ -83,7 +85,7 @@ main(int argc, char *argv[])
     if (inferences != NINFERS)
     {
         err = 1;
-        printf("KWS expected %d inferences but got %d\n", inferences, NINFERS);
+        printf("KWS expected %d inferences but got %d\n", NINFERS,inferences);
     }
 
     if (err)

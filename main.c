@@ -64,13 +64,25 @@ time_audiomark_run(uint32_t iterations, uint64_t *dt)
     uint64_t t1  = 0;
     bool     err = false;
 
+    /* Iterations is an iteration of the full test reading the full
+    input pattern.
+    Each sched iteraton is reading 5 blocks of SAMPLES_PER_AUDIO_FRAME.
+    NINPUT_SAMPLES must be read. So NINPUT_SAMPLES / (5 * SAMPLES_PER_AUDIO_FRAME) are
+    required to read the full input data.
+
+    And we replicate this iterations numbers
+    */
+
+    uint32_t sched_iterations = iterations * (NINPUT_SAMPLES / (5 * SAMPLES_PER_AUDIO_FRAME));
+
     ee_audiomark_release();
     ee_audiomark_initialize();
+    //printf("Iter=%d\n",iterations);
 
     t0 = th_microseconds();
 
     /* Scheduling is doing 4 iterations per run */
-    int errCode = ee_audiomark_run(iterations>>2);
+    int errCode = ee_audiomark_run(sched_iterations);
     if (errCode !=0)
     {
         err = true;
@@ -84,7 +96,7 @@ int
 main(void)
 {
     bool     err        = false;
-    uint32_t iterations = 2;
+    uint32_t iterations = 1;
     uint64_t dt         = 0;
 
     printf("Initializing\n");
@@ -114,12 +126,12 @@ main(void)
         goto exit;
     }
 
+    //printf("dt = %lld\n",dt);
     // Must run for 10 sec. or at least 10 iterations
     float scale = 11e6f / dt;
     iterations  = (uint32_t)((float)iterations * scale);
     iterations  = iterations < 10 ? 10 : iterations;
 
-    iterations = (iterations>>2)<<2;
 
     //printf("%d %lld %f\n",iterations,dt,scale);
 

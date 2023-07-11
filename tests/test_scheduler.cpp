@@ -143,6 +143,7 @@ CG_BEFORE_BUFFER
 static nodes_t nodes={0};
 
 int init_test_scheduler(int iterations,
+                              int testMode,
                               const int16_t *p_input,
                               const int8_t *p_expected)
 {
@@ -179,12 +180,12 @@ int init_test_scheduler(int iterations,
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.dsnn = new DSNN<int8_t,490,int8_t,12>(*(fifos.fifo3),*(fifos.fifo4));
+    nodes.dsnn = new DSNN<int8_t,490,int8_t,12>(*(fifos.fifo3),*(fifos.fifo4),1);
     if (nodes.dsnn==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.mfcc = new MFCC<int16_t,640,int8_t,10>(*(fifos.fifo1),*(fifos.fifo2));
+    nodes.mfcc = new MFCC<int16_t,640,int8_t,10>(*(fifos.fifo1),*(fifos.fifo2),1);
     if (nodes.mfcc==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -210,6 +211,7 @@ int init_test_scheduler(int iterations,
 }
 
 void free_test_scheduler(int iterations,
+                              int testMode,
                               const int16_t *p_input,
                               const int8_t *p_expected)
 {
@@ -263,6 +265,7 @@ void free_test_scheduler(int iterations,
 
 CG_BEFORE_SCHEDULER_FUNCTION
 uint32_t test_scheduler(int *error,int iterations,
+                              int testMode,
                               const int16_t *p_input,
                               const int8_t *p_expected)
 {

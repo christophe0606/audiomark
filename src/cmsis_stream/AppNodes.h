@@ -34,6 +34,7 @@ extern "C" {
 
 #include "SlidingBuffer.h"
 
+/* Used in tests */
 int inferences = 0;
 
 
@@ -174,9 +175,7 @@ extern "C" {
     extern SpeexEchoState *ee_aec_init_f32(uint32_t *size);
 }
 
-#ifndef OS_SUPPORT_CUSTOM
-#error("Must be built with OS_SUPPORT_CUSTOM enabled")
-#endif
+
 
 template<typename IN1, int inputSize1,
          typename IN2, int inputSize2,
@@ -315,12 +314,13 @@ class MFCC<int16_t,inputSize,
 {
 public:
     MFCC(FIFOBase<int16_t> &src,
-        FIFOBase<int8_t> &dst):
+        FIFOBase<int8_t> &dst,int testMode=0):
     GenericNode<int16_t,inputSize,
-                int8_t,outputSize>(src,dst){
+                int8_t,outputSize>(src,dst),mTestMode(testMode){
     
      
     ee_status_t status = ee_mfcc_f32_init(&p_mfcc);
+    nbMfccRun=0;
     };
 
    
@@ -342,13 +342,23 @@ public:
         int16_t *in=this->getReadBuffer();
         int8_t *out=this->getWriteBuffer();
 
-        ee_mfcc_f32_compute(&p_mfcc,in,out);
-                   
+        // In test mode, first iteration is doing nothing.
+        // We are just filling the sliding audio buffer
+        if ((!mTestMode) || (nbMfccRun>=1))
+        {
+           ee_mfcc_f32_compute(&p_mfcc,in,out);
+        }
+
+        
+        nbMfccRun++;
+
         return(0);
     };
 
 protected:
 mfcc_instance_t p_mfcc;
+int mTestMode;
+int nbMfccRun;
 };
 
 template<typename IN, int inputSize,
@@ -362,11 +372,12 @@ public GenericNode<int8_t, inputSize,
                    int8_t,OUT_DIM>
 {
 public:
-    DSNN(FIFOBase<int8_t> &src,FIFOBase<int8_t> &dst):
+    DSNN(FIFOBase<int8_t> &src,FIFOBase<int8_t> &dst,int testMode=0):
     GenericNode<int8_t,inputSize,
-                int8_t,OUT_DIM>(src,dst){
+                int8_t,OUT_DIM>(src,dst),mTestMode(testMode){
         th_nn_init();
         //printf(" kws = %d\n", 0);
+        nbNNRun = 0;
 
     };
 
@@ -387,12 +398,21 @@ public:
         int8_t *p_mfcc_fifo=this->getReadBuffer();
         int8_t *prediction=this->getWriteBuffer();
 
-        
-        ee_status_t status = th_nn_classify(p_mfcc_fifo, prediction);
-        inferences ++;
+        if ((!mTestMode) || (nbNNRun>=1))
+        {
+          ee_status_t status = th_nn_classify(p_mfcc_fifo, prediction);
+          inferences ++;
+
+        }
+
+    
+        nbNNRun++;
+
         return(0);
     };
-
+protected:
+    int mTestMode;
+    int nbNNRun;
 };
 
 

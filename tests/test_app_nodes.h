@@ -15,6 +15,7 @@ public:
     GenericSink<int8_t,OUT_DIM>(src),p_expected(expected){
     
      idx_check = 0;
+     nbTestRun = 0;
     };
 
    
@@ -35,22 +36,26 @@ public:
         int8_t *classes=this->getReadBuffer();
 
         const int8_t *p_check       = NULL;
-        p_check = &p_expected[idx_check*OUT_DIM];
-
-        for (int j = 0; j < OUT_DIM; ++j)
+        if (nbTestRun>0)
         {
-            if (classes[j] != p_check[j])
+            p_check = &p_expected[idx_check*OUT_DIM];
+    
+            for (int j = 0; j < OUT_DIM; ++j)
             {
-                testError = 1;
-                printf("buffer[%d]class[%d]: Got %d, expected %d - FAIL\n",
-                       inferences-1,
-                       j,
-                       classes[j],
-                       p_check[j]);
+                if (classes[j] != p_check[j])
+                {
+                    testError = 1;
+                    printf("buffer[%d]class[%d]: Got %d, expected %d - FAIL\n",
+                           inferences-1,
+                           j,
+                           classes[j],
+                           p_check[j]);
+                }
             }
+    
+            ++idx_check;
         }
-
-        ++idx_check;
+        nbTestRun ++;
 
         return(0);
     };
@@ -58,6 +63,7 @@ public:
 protected:
   int           idx_check;
   const int8_t* p_expected;
+  int nbTestRun;
 };
 
 

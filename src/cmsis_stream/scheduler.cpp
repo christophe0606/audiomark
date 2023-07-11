@@ -109,65 +109,65 @@ FIFO buffers
 #define FIFOSIZE13 256
 #define FIFOSIZE14 256
 
-#define BUFFERSIZE0 512
+#define BUFFERSIZE1 256
 CG_BEFORE_BUFFER
-uint8_t buf0[BUFFERSIZE0]={0};
+int16_t buf1[BUFFERSIZE1]={0};
 
-#define BUFFERSIZE1 512
+#define BUFFERSIZE2 256
 CG_BEFORE_BUFFER
-uint8_t buf1[BUFFERSIZE1]={0};
+int16_t buf2[BUFFERSIZE2]={0};
 
-#define BUFFERSIZE2 512
+#define BUFFERSIZE3 256
 CG_BEFORE_BUFFER
-uint8_t buf2[BUFFERSIZE2]={0};
+int16_t buf3[BUFFERSIZE3]={0};
 
-#define BUFFERSIZE3 512
+#define BUFFERSIZE4 256
 CG_BEFORE_BUFFER
-uint8_t buf3[BUFFERSIZE3]={0};
+int16_t buf4[BUFFERSIZE4]={0};
 
-#define BUFFERSIZE4 512
+#define BUFFERSIZE5 256
 CG_BEFORE_BUFFER
-uint8_t buf4[BUFFERSIZE4]={0};
+int16_t buf5[BUFFERSIZE5]={0};
 
-#define BUFFERSIZE5 512
+#define BUFFERSIZE6 256
 CG_BEFORE_BUFFER
-uint8_t buf5[BUFFERSIZE5]={0};
+int16_t buf6[BUFFERSIZE6]={0};
 
-#define BUFFERSIZE6 1280
+#define BUFFERSIZE7 512
 CG_BEFORE_BUFFER
-uint8_t buf6[BUFFERSIZE6]={0};
+int16_t buf7[BUFFERSIZE7]={0};
 
-#define BUFFERSIZE7 10
+#define BUFFERSIZE8 640
 CG_BEFORE_BUFFER
-uint8_t buf7[BUFFERSIZE7]={0};
+int16_t buf8[BUFFERSIZE8]={0};
 
-#define BUFFERSIZE8 490
+#define BUFFERSIZE9 10
 CG_BEFORE_BUFFER
-uint8_t buf8[BUFFERSIZE8]={0};
+int8_t buf9[BUFFERSIZE9]={0};
 
-#define BUFFERSIZE9 12
+#define BUFFERSIZE10 490
 CG_BEFORE_BUFFER
-uint8_t buf9[BUFFERSIZE9]={0};
+int8_t buf10[BUFFERSIZE10]={0};
 
-#define BUFFERSIZE10 512
+#define BUFFERSIZE11 12
 CG_BEFORE_BUFFER
-uint8_t buf10[BUFFERSIZE10]={0};
+int8_t buf11[BUFFERSIZE11]={0};
 
-#define BUFFERSIZE11 512
+#define BUFFERSIZE12 256
 CG_BEFORE_BUFFER
-uint8_t buf11[BUFFERSIZE11]={0};
+int16_t buf12[BUFFERSIZE12]={0};
 
-#define BUFFERSIZE12 512
+#define BUFFERSIZE13 256
 CG_BEFORE_BUFFER
-uint8_t buf12[BUFFERSIZE12]={0};
+int16_t buf13[BUFFERSIZE13]={0};
 
-#define BUFFERSIZE13 512
-CG_BEFORE_BUFFER
-uint8_t buf13[BUFFERSIZE13]={0};
-
-#define BUFFERSIZE14 512
+#define BUFFERSIZE14 256
 CG_BEFORE_BUFFER
 int16_t buf14[BUFFERSIZE14]={0};
+
+#define BUFFERSIZE15 256
+CG_BEFORE_BUFFER
+int16_t buf15[BUFFERSIZE15]={0};
 
 
 typedef struct {
@@ -215,77 +215,77 @@ int init_scheduler(int iterations,
                               const int16_t *downlink_audio)
 {
     CG_BEFORE_FIFO_INIT;
-    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,1,0>(buf0);
+    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,1,0>(buf1);
     if (fifos.fifo0==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(buf1);
+    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(buf2);
     if (fifos.fifo1==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo2 = new FIFO<int16_t,FIFOSIZE2,1,0>(buf2);
+    fifos.fifo2 = new FIFO<int16_t,FIFOSIZE2,1,0>(buf3);
     if (fifos.fifo2==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo3 = new FIFO<int16_t,FIFOSIZE3,1,0>(buf3);
+    fifos.fifo3 = new FIFO<int16_t,FIFOSIZE3,1,0>(buf4);
     if (fifos.fifo3==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo4 = new FIFO<int16_t,FIFOSIZE4,1,0>(buf4);
+    fifos.fifo4 = new FIFO<int16_t,FIFOSIZE4,1,0>(buf5);
     if (fifos.fifo4==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo5 = new FIFO<int16_t,FIFOSIZE5,1,0>(buf5);
+    fifos.fifo5 = new FIFO<int16_t,FIFOSIZE5,1,0>(buf6);
     if (fifos.fifo5==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo6 = new FIFO<int16_t,FIFOSIZE6,0,0>(buf14);
+    fifos.fifo6 = new FIFO<int16_t,FIFOSIZE6,0,0>(buf7);
     if (fifos.fifo6==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo7 = new FIFO<int16_t,FIFOSIZE7,1,0>(buf6);
+    fifos.fifo7 = new FIFO<int16_t,FIFOSIZE7,1,0>(buf8);
     if (fifos.fifo7==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo8 = new FIFO<int8_t,FIFOSIZE8,1,0>(buf7);
+    fifos.fifo8 = new FIFO<int8_t,FIFOSIZE8,1,0>(buf9);
     if (fifos.fifo8==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo9 = new FIFO<int8_t,FIFOSIZE9,1,0>(buf8);
+    fifos.fifo9 = new FIFO<int8_t,FIFOSIZE9,1,0>(buf10);
     if (fifos.fifo9==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo10 = new FIFO<int8_t,FIFOSIZE10,1,0>(buf9);
+    fifos.fifo10 = new FIFO<int8_t,FIFOSIZE10,1,0>(buf11);
     if (fifos.fifo10==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo11 = new FIFO<int16_t,FIFOSIZE11,1,0>(buf10);
+    fifos.fifo11 = new FIFO<int16_t,FIFOSIZE11,1,0>(buf12);
     if (fifos.fifo11==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo12 = new FIFO<int16_t,FIFOSIZE12,1,0>(buf11);
+    fifos.fifo12 = new FIFO<int16_t,FIFOSIZE12,1,0>(buf13);
     if (fifos.fifo12==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo13 = new FIFO<int16_t,FIFOSIZE13,1,0>(buf12);
+    fifos.fifo13 = new FIFO<int16_t,FIFOSIZE13,1,0>(buf14);
     if (fifos.fifo13==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo14 = new FIFO<int16_t,FIFOSIZE14,1,0>(buf13);
+    fifos.fifo14 = new FIFO<int16_t,FIFOSIZE14,1,0>(buf15);
     if (fifos.fifo14==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
