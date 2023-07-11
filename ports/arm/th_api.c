@@ -221,6 +221,12 @@ th_add_f32(ee_f32_t *p_a, ee_f32_t *p_b, ee_f32_t *p_c, uint32_t len)
 }
 
 void
+th_add_q15(ee_q15_t *p_a, ee_q15_t *p_b, ee_q15_t *p_c, uint32_t len)
+{
+    arm_add_q15(p_a, p_b, p_c, len);
+}
+
+void
 th_subtract_f32(ee_f32_t *p_a, ee_f32_t *p_b, ee_f32_t *p_c, uint32_t len)
 {
     arm_sub_f32(p_a, p_b, p_c, len);
@@ -329,7 +335,7 @@ static int32_t in_out_buf_main[MAX_NUM_WORDS_IN_OUT];
 // TODO
 
 /* Get size of additional buffers required by library/framework */
-static int
+int
 ds_cnn_s_s8_get_buffer_size(void)
 {
     /* Custom function based on knowledge that only select layers of DS_CNN_S
@@ -434,6 +440,16 @@ th_nn_init(void) {
 
     // we don't free in audiomark
 #endif
+}
+
+
+void
+th_nn_free(void)
+{
+   
+    free(ctx.buf );
+
+>>>>>>> 17ad461 (Added memory statistics)
 }
 
 ee_status_t

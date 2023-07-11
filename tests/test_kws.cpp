@@ -18,7 +18,11 @@ extern "C" {
 }
 
 #include "kws_test_custom.h"
+#include "GenericNodes.h"
+#include "cg_status.h"
+#include "test_app_nodes.h"
 #include "test_scheduler.h"
+
 
 #define NBUFFERS 93
 // Number of possible inference
@@ -51,9 +55,19 @@ main(int argc, char *argv[])
     err = init_test_scheduler(NBUFFERS/5,1,
                          (const int16_t*)p_input,
                          (const int8_t*)p_expected);
+
     if (err!=0)
     {
         printf("Init failed\n");
+        exit(-1);
+    }
+
+    DSNN<int8_t,490,int8_t,12> *dsnn=dynamic_cast<DSNN<int8_t,490,int8_t,12>*>((NodeBase*)get_test_scheduler_node(DSNN_ID));
+
+    
+    if (dsnn==NULL)
+    {
+        printf("Can't access dsnn node\n");
         exit(-1);
     }
 
@@ -63,21 +77,23 @@ main(int argc, char *argv[])
                               (const int16_t*)p_input,
                               (const int8_t*)p_expected);
 
-    free_test_scheduler(NBUFFERS/5,1,
-                   (const int16_t*)p_input,
-                   (const int8_t*)p_expected);
-
-    if (inferences == 0)
+   
+    if (dsnn->getNbInferences() == 0)
     {
         err = 1;
         printf("KWS did not perform any inferences\n");
     }
 
-    if (inferences != NINFERS)
+    if (dsnn->getNbInferences() != NINFERS)
     {
         err = 1;
-        printf("KWS expected %d inferences but got %d\n", NINFERS,inferences);
+        printf("KWS expected %d inferences but got %d\n", NINFERS,dsnn->getNbInferences());
     }
+
+    free_test_scheduler(NBUFFERS/5,1,
+                   (const int16_t*)p_input,
+                   (const int8_t*)p_expected);
+
 
     if (err)
     {

@@ -19,6 +19,7 @@
 #include "dsp/statistics_functions.h"
 #include "dsp/support_functions.h"
 
+#define TH_Q15_TYPE                 q15_t
 #define TH_FLOAT32_TYPE                 float
 #define TH_MATRIX_INSTANCE_FLOAT32_TYPE arm_matrix_instance_f32
 #define TH_RFFT_INSTANCE_FLOAT32_TYPE   arm_rfft_fast_instance_f32

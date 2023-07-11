@@ -76,7 +76,7 @@ time_audiomark_run(uint32_t iterations, uint64_t *dt)
     uint32_t sched_iterations = iterations * (NINPUT_SAMPLES / (5 * SAMPLES_PER_AUDIO_FRAME));
 
     ee_audiomark_release();
-    ee_audiomark_initialize();
+    ee_audiomark_initialize(false);
     //printf("Iter=%d\n",iterations);
 
     t0 = th_microseconds();
@@ -101,7 +101,7 @@ main(void)
 
     printf("Initializing\n");
 
-    if (ee_audiomark_initialize())
+    if (ee_audiomark_initialize(true))
     {
         printf("Failed to initialize\n");
         return -1;

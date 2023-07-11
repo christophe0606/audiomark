@@ -98,6 +98,7 @@ conf.customCName = "kws_test_custom.h"
 conf.appNodesCName = "test_app_nodes.h"
 conf.schedulerCFileName = "test_scheduler"
 conf.schedName = "test_scheduler"
+conf.nodeIdentification = True
 
 generateGenericNodes(".")
 generateCGStatus(".")

@@ -95,8 +95,8 @@ right=Source("right",NB,"right_microphone_capture")
 speaker=Source("speaker",NB,"downlink_audio")
 
 
-addl = Binary("arm_add_q15",CType(SINT16),NB,input_names=["l","s"])
-addr = Binary("arm_add_q15",CType(SINT16),NB,input_names=["r","s"])
+addl = Binary("th_add_q15",CType(SINT16),NB,input_names=["l","s"])
+addr = Binary("th_add_q15",CType(SINT16),NB,input_names=["r","s"])
 
 abf=ABF("abf",NB)
 aec=AEC("aec",NB)
@@ -106,6 +106,9 @@ mfcc=MFCC("mfcc",NB_WINDOW_SAMPLES,MFCC_FEATURES)
 
 audioWin=SlidingBuffer("audioWin",CType(SINT16),NB_WINDOW_SAMPLES,NB_OVERLAP_SAMPLES)
 mfccWin=SlidingBuffer("mfccWin",CType(SINT8),MFCC_FEATURES*NN_FEATURES,MFCC_FEATURES*(NN_FEATURES-1))
+
+audioWin.identified=False 
+mfccWin.identified=False 
 
 dsnn=DSNN("dsnn",MFCC_FEATURES*NN_FEATURES)
 result=Result("result")
@@ -145,6 +148,8 @@ conf.cOptionalArgs=["int iterations",
                     "const int16_t *downlink_audio"]
 #conf.memoryOptimization=True
 conf.heapAllocation = True
+conf.nodeIdentification = True
+conf.prefix="audiomark_"
 
 generateGenericNodes(".")
 generateCGStatus(".")

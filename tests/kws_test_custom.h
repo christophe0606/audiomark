@@ -1,7 +1,6 @@
 #ifndef _CUSTOM_H_
 
 extern "C" {
-extern int inferences ;
 extern int testError;
 }
 

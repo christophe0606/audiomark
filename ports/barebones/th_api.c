@@ -170,6 +170,12 @@ th_add_f32(ee_f32_t *p_a, ee_f32_t *p_b, ee_f32_t *p_c, uint32_t len)
 }
 
 void
+th_add_q15(ee_q15_t *p_a, ee_q15_t *p_b, ee_q15_t *p_c, uint32_t len)
+{
+    #warning "th_add_q15() not implemented"
+}
+
+void
 th_subtract_f32(ee_f32_t *p_a, ee_f32_t *p_b, ee_f32_t *p_c, uint32_t len)
 {
     #warning "th_subtract_f32() not implemented"
@@ -215,6 +221,12 @@ void
 th_nn_init(void)
 {
     #warning "th_nn_init() not implemented"
+}
+
+void
+th_nn_free(void)
+{
+    #warning "th_nn_free() not implemented"
 }
 
 ee_status_t

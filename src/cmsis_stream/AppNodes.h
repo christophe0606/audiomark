@@ -34,18 +34,28 @@ extern "C" {
 
 #include "SlidingBuffer.h"
 
-/* Used in tests */
-int inferences = 0;
+
+
+class AudioMarkNode
+{
+public:
+    virtual int getMemoryUsage()=0;    
+};
 
 
 template<typename OUT,int outputSize>
-class Source: GenericSource<OUT,outputSize>
+class Source: public GenericSource<OUT,outputSize>, public AudioMarkNode
 {
 public:
     Source(FIFOBase<OUT> &dst,const OUT *source):
-    GenericSource<OUT,outputSize>(dst),mSource(source){
+    GenericSource<OUT,outputSize>(dst),AudioMarkNode(),mSource(source){
         mIndex=0;
     };
+
+    int getMemoryUsage() final 
+    {
+        return(0);
+    }
 
     int prepareForRunning() final
     {
@@ -88,6 +98,7 @@ extern "C" {
                             int32_t            *input_samples_consumed,
                             int32_t            *output_samples_produced,
                             int32_t            *returned_state);
+    extern int ee_abf_f32_memory_usage();
 }
 
 template<typename IN1, int inputSize1,
@@ -100,7 +111,7 @@ class ABF<int16_t,nbSamples,
           int16_t,nbSamples,
           int16_t,nbSamples>: public GenericNode21<int16_t,nbSamples,
                                                    int16_t,nbSamples,
-                                                   int16_t,nbSamples>
+                                                   int16_t,nbSamples>, public AudioMarkNode
 {
 public:
     ABF(FIFOBase<int16_t> &src1,
@@ -108,7 +119,7 @@ public:
         FIFOBase<int16_t> &dst):
     GenericNode21<int16_t,nbSamples,
                 int16_t,nbSamples,
-                int16_t,nbSamples>(src1,src2,dst){
+                int16_t,nbSamples>(src1,src2,dst),AudioMarkNode(){
     
 
        p_abf_f32_instance = ee_abf_f32_init();
@@ -123,7 +134,11 @@ public:
         ee_abf_f32_free(p_abf_f32_instance);
     }
 
-   
+    int getMemoryUsage() final 
+    {
+        return(sizeof(*this)+ee_abf_f32_memory_usage());
+    }
+
     int prepareForRunning() final
     {
         if (this->willOverflow() ||
@@ -172,8 +187,11 @@ extern "C" {
 #include "arch.h"
 #include "speex_echo.h"
 
+#include "os_support_custom.h"
+
     extern SpeexEchoState *ee_aec_init_f32();
     extern void ee_aec_free_f32(SpeexEchoState *);
+
 }
 
 
@@ -188,7 +206,7 @@ class AEC<int16_t,nbSamples,
           int16_t,nbSamples,
           int16_t,nbSamples>: public GenericNode21<int16_t,nbSamples,
                                                    int16_t,nbSamples,
-                                                   int16_t,nbSamples>
+                                                   int16_t,nbSamples>, public AudioMarkNode
 {
 public:
     AEC(FIFOBase<int16_t> &src1,
@@ -196,10 +214,12 @@ public:
         FIFOBase<int16_t> &dst):
     GenericNode21<int16_t,nbSamples,
                 int16_t,nbSamples,
-                int16_t,nbSamples>(src1,src2,dst){
+                int16_t,nbSamples>(src1,src2,dst),AudioMarkNode(){
     
      
+      reset_speex_memory_stats();
       p_state = ee_aec_init_f32();
+      mSize = get_speex_allocated_memory();
 
       //printf(" aec = %d\n", size);
     };
@@ -209,7 +229,11 @@ public:
         ee_aec_free_f32(p_state);
     }
 
-   
+    int getMemoryUsage() final 
+    {
+        return(sizeof(*this)+mSize);
+    }
+
     int prepareForRunning() final
     {
         if (this->willOverflow() ||
@@ -237,13 +261,12 @@ public:
 
 protected:
     SpeexEchoState *p_state;
-
+    int mSize;
 };
 
 extern "C" {
     extern SpeexPreprocessState *ee_anr_init_f32();
     extern void ee_anr_free_f32(SpeexPreprocessState *p);
-
 
 }
 
@@ -254,16 +277,17 @@ class ANR;
 template<int nbSamples>
 class ANR<int16_t,nbSamples,
           int16_t,nbSamples>: public GenericNode<int16_t,nbSamples,
-                                                 int16_t,nbSamples>
+                                                 int16_t,nbSamples>, public AudioMarkNode
 {
 public:
     ANR(FIFOBase<int16_t> &src,
         FIFOBase<int16_t> &dst):
     GenericNode<int16_t,nbSamples,
-                int16_t,nbSamples>(src,dst){
+                int16_t,nbSamples>(src,dst),AudioMarkNode(){
     
-     
+      reset_speex_memory_stats();
       p_state = ee_anr_init_f32();
+      mSize = get_speex_allocated_memory();
 
       //printf(" anr = %d\n", size);
     };
@@ -273,7 +297,11 @@ public:
         ee_anr_free_f32(p_state);
     }
 
-   
+    int getMemoryUsage() final 
+    {
+        return(sizeof(*this)+mSize);
+    }
+
     int prepareForRunning() final
     {
         if (this->willOverflow() ||
@@ -301,8 +329,12 @@ public:
 
 protected:
     SpeexPreprocessState *p_state;
-
+    int mSize;
 };
+
+extern "C" {
+    extern int ee_mfcc_f32_memory_usage();
+}
 
 template<typename IN, int inputSize,
          typename OUT,int outputSize>
@@ -311,13 +343,13 @@ class MFCC;
 template<int inputSize, int outputSize>
 class MFCC<int16_t,inputSize,
           int8_t,outputSize>: public GenericNode<int16_t,inputSize,
-                                                 int8_t,outputSize>
+                                                 int8_t,outputSize>, public AudioMarkNode
 {
 public:
     MFCC(FIFOBase<int16_t> &src,
         FIFOBase<int8_t> &dst,int testMode=0):
     GenericNode<int16_t,inputSize,
-                int8_t,outputSize>(src,dst),mTestMode(testMode){
+                int8_t,outputSize>(src,dst),AudioMarkNode(),mTestMode(testMode){
     
      
     ee_status_t status = ee_mfcc_f32_init(&p_mfcc);
@@ -325,7 +357,11 @@ public:
     };
 
    
-   
+    int getMemoryUsage() final 
+    {
+        return(sizeof(*this));
+    }
+
     int prepareForRunning() final
     {
         if (this->willOverflow() ||
@@ -362,6 +398,11 @@ int mTestMode;
 int nbMfccRun;
 };
 
+
+extern "C" {
+    extern int ds_cnn_s_s8_get_buffer_size(void);
+}
+
 template<typename IN, int inputSize,
          typename OUT, int outputSize>
 class DSNN;
@@ -370,17 +411,32 @@ template<int inputSize>
 class DSNN<int8_t,inputSize,
            int8_t,OUT_DIM>: 
 public GenericNode<int8_t, inputSize,
-                   int8_t,OUT_DIM>
+                   int8_t,OUT_DIM>, public AudioMarkNode
 {
 public:
     DSNN(FIFOBase<int8_t> &src,FIFOBase<int8_t> &dst,int testMode=0):
     GenericNode<int8_t,inputSize,
-                int8_t,OUT_DIM>(src,dst),mTestMode(testMode){
+                int8_t,OUT_DIM>(src,dst),AudioMarkNode(),mTestMode(testMode){
         th_nn_init();
         //printf(" kws = %d\n", 0);
         nbNNRun = 0;
-
+        inferences = 0;
     };
+
+    ~DSNN()
+    {
+        th_nn_free();
+    }
+
+    int getNbInferences() const
+    {
+       return(inferences);
+    }
+
+    int getMemoryUsage() final 
+    {
+        return(sizeof(*this)+ds_cnn_s_s8_get_buffer_size());
+    }
 
     int prepareForRunning() final
     {
@@ -414,6 +470,7 @@ public:
 protected:
     int mTestMode;
     int nbNNRun;
+    int inferences;
 };
 
 
@@ -422,17 +479,21 @@ class Result;
 
 template<>
 class Result<int8_t,OUT_DIM>: 
-public GenericSink<int8_t,OUT_DIM>
+public GenericSink<int8_t,OUT_DIM>, public AudioMarkNode
 {
 public:
     Result(FIFOBase<int8_t> &src):
-    GenericSink<int8_t,OUT_DIM>(src){
+    GenericSink<int8_t,OUT_DIM>(src),AudioMarkNode(){
     
      
     };
 
    
-   
+    int getMemoryUsage() final 
+    {
+        return(0);
+    }
+
     int prepareForRunning() final
     {
         if (this->willUnderflow())

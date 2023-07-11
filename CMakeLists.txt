@@ -26,20 +26,22 @@ add_definitions(-DEXPORT=)
 # Benchmark system integrator provides heap
 add_definitions(-DOS_SUPPORT_CUSTOM)
 add_definitions(-D__RESTRICT=)
+add_definitions(-DOVERRIDE_SPEEX_ALLOC)
 
 set(EE_SOURCE
 	# Note: main.c is just for self-hosted testing
 	main.c
 	src/cmsis_stream/scheduler.cpp
-	src/ee_audiomark.c
+	src/ee_audiomark.cpp
 
 	src/ee_aec_f32.c
 	src/ee_anr_f32.c
 	src/ee_abf_f32.c
 	src/ee_abf_f32_tables.c
-	src/ee_kws.c
 	src/ee_mfcc_f32.c
 	src/ee_mfcc_f32_tables.c
+
+	lib/speexdsp/libspeexdsp/speex_memory_stats.c
 
 	lib/speexdsp/libspeexdsp/buffer.c
 	lib/speexdsp/libspeexdsp/fftwrap.c
@@ -64,6 +66,7 @@ set(TH_SOURCE
 
 set(TEST_AEC_F32_SOURCE
 	src/ee_aec_f32.c
+	lib/speexdsp/libspeexdsp/speex_memory_stats.c
 	lib/speexdsp/libspeexdsp/buffer.c
 	lib/speexdsp/libspeexdsp/fftwrap.c
 	lib/speexdsp/libspeexdsp/filterbank.c
@@ -85,6 +88,7 @@ add_executable(test_aec_f32 ${TEST_AEC_F32_SOURCE})
 
 set(TEST_ANR_F32_SOURCE
 	src/ee_anr_f32.c
+	lib/speexdsp/libspeexdsp/speex_memory_stats.c
 	lib/speexdsp/libspeexdsp/buffer.c
 	lib/speexdsp/libspeexdsp/fftwrap.c
 	lib/speexdsp/libspeexdsp/filterbank.c
@@ -124,7 +128,6 @@ set(TEST_MFCC_F32_SOURCE
 add_executable(test_mfcc_f32 ${TEST_MFCC_F32_SOURCE})
 
 set(TEST_KWS_SOURCE
-	src/ee_kws.c
 	src/ee_mfcc_f32.c
 	src/ee_mfcc_f32_tables.c
 	${TH_SOURCE}

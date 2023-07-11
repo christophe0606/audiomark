@@ -86,6 +86,13 @@ static unsigned int schedule[25]=
 4,4,0,2,3,1,5,4,0,2,3,1,5,4,0,2,3,1,5,4,0,2,3,1,5,
 };
 
+/***********
+
+Node identification
+
+************/
+static void * identifiedNodes[NB_IDENTIFIED_NODES]={0};
+
 CG_BEFORE_FIFO_BUFFERS
 /***********
 
@@ -142,6 +149,19 @@ static fifos_t fifos={0};
 CG_BEFORE_BUFFER
 static nodes_t nodes={0};
 
+void *get_test_scheduler_node(int32_t nodeID)
+{
+    if (nodeID >= NB_IDENTIFIED_NODES)
+    {
+        return(NULL);
+    }
+    if (nodeID < 0)
+    {
+        return(NULL);
+    }
+    return(identifiedNodes[nodeID]);
+}
+
 int init_test_scheduler(int iterations,
                               int testMode,
                               const int16_t *p_input,
@@ -180,31 +200,43 @@ int init_test_scheduler(int iterations,
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
+    identifiedNodes[AUDIOWIN_ID]=(void*)nodes.audioWin;
+    nodes.audioWin->setID(AUDIOWIN_ID);
     nodes.dsnn = new DSNN<int8_t,490,int8_t,12>(*(fifos.fifo3),*(fifos.fifo4),1);
     if (nodes.dsnn==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
+    identifiedNodes[DSNN_ID]=(void*)nodes.dsnn;
+    nodes.dsnn->setID(DSNN_ID);
     nodes.mfcc = new MFCC<int16_t,640,int8_t,10>(*(fifos.fifo1),*(fifos.fifo2),1);
     if (nodes.mfcc==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
+    identifiedNodes[MFCC_ID]=(void*)nodes.mfcc;
+    nodes.mfcc->setID(MFCC_ID);
     nodes.mfccWin = new SlidingBuffer<int8_t,490,480>(*(fifos.fifo2),*(fifos.fifo3));
     if (nodes.mfccWin==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
+    identifiedNodes[MFCCWIN_ID]=(void*)nodes.mfccWin;
+    nodes.mfccWin->setID(MFCCWIN_ID);
     nodes.src = new Source<int16_t,256>(*(fifos.fifo0),p_input);
     if (nodes.src==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
+    identifiedNodes[SRC_ID]=(void*)nodes.src;
+    nodes.src->setID(SRC_ID);
     nodes.test = new TestResult<int8_t,12>(*(fifos.fifo4),p_expected);
     if (nodes.test==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
+    identifiedNodes[TEST_ID]=(void*)nodes.test;
+    nodes.test->setID(TEST_ID);
 
     return(CG_SUCCESS);
 

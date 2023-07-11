@@ -83,6 +83,7 @@ typedef struct abf_f32_instance_t
 
 abf_f32_instance_t * ee_abf_f32_init();
 void ee_abf_f32_free(abf_f32_instance_t *);
+int ee_abf_f32_memory_usage();
 
 int32_t ee_abf_f32(int32_t command,
                    void  **pp_instance,

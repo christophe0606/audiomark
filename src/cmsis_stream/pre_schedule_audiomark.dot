@@ -18,11 +18,11 @@ left [label=<
 </TABLE>>];
 
 
-arm_add_q151 [label=<
+th_add_q151 [label=<
 <TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
-    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">arm_add_q15<BR/>(Function)</FONT></TD>
+    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
     <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
   </TR>
 <TR>
@@ -48,11 +48,11 @@ right [label=<
 </TABLE>>];
 
 
-arm_add_q152 [label=<
+th_add_q152 [label=<
 <TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
-    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">arm_add_q15<BR/>(Function)</FONT></TD>
+    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
     <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
   </TR>
 <TR>
@@ -139,37 +139,37 @@ result [label=<
 
 
 
-left:i -> arm_add_q151:l [style="solid",color="black",label=""
+left:i -> th_add_q151:l [style="solid",color="black",label=""
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>]
 
-speaker:i -> arm_add_q151:s [style="solid",color="black",label=""
+speaker:i -> th_add_q151:s [style="solid",color="black",label=""
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>]
 
-right:i -> arm_add_q152:r [style="solid",color="black",label=""
+right:i -> th_add_q152:r [style="solid",color="black",label=""
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>]
 
-speaker:i -> arm_add_q152:s [style="solid",color="black",label=""
+speaker:i -> th_add_q152:s [style="solid",color="black",label=""
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>]
 
-arm_add_q151:o -> abf:l [style="solid",color="black",label=""
+th_add_q151:o -> abf:l [style="solid",color="black",label=""
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>]
 
-arm_add_q152:o -> abf:r [style="solid",color="black",label=""
+th_add_q152:o -> abf:r [style="solid",color="black",label=""
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="2"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >256</FONT>

@@ -31,6 +31,7 @@ static const uint32_t param_aec_f32[1][3] = {
     },
 };
 
+
 void ee_aec_free_f32(SpeexEchoState *p)
 {
    speex_echo_state_destroy(p);

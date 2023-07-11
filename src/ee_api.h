@@ -29,6 +29,7 @@ void *th_memset(void *b, int c, size_t len);
 void *th_memmove(void *__RESTRICT dst, const void *__RESTRICT src, size_t n);
 
 void th_nn_init(void);
+void th_nn_free(void);
 
 ee_status_t th_nn_classify(const int8_t p_input[490], int8_t p_output[12]);
 
@@ -53,6 +54,7 @@ void th_cmplx_mult_cmplx_f32(const ee_f32_t *p_a,
 
 /* C = A + B */
 void th_add_f32(ee_f32_t *p_a, ee_f32_t *p_b, ee_f32_t *p_c, uint32_t len);
+void th_add_q15(ee_q15_t *p_a, ee_q15_t *p_b, ee_q15_t *p_c, uint32_t len);
 
 /* C = A - B */
 void th_subtract_f32(ee_f32_t *p_a, ee_f32_t *p_b, ee_f32_t *p_c, uint32_t len);

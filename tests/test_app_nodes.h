@@ -16,6 +16,7 @@ public:
     
      idx_check = 0;
      nbTestRun = 0;
+     inferences = 1;
     };
 
    
@@ -53,6 +54,7 @@ public:
                 }
             }
     
+            inferences++;
             ++idx_check;
         }
         nbTestRun ++;
@@ -64,6 +66,7 @@ protected:
   int           idx_check;
   const int8_t* p_expected;
   int nbTestRun;
+  int inferences;
 };
 
 

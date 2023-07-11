@@ -385,3 +385,9 @@ void ee_abf_f32_free(abf_f32_instance_t *p)
    th_free(p,COMPONENT_BMF);
 
 }
+
+int ee_abf_f32_memory_usage()
+{
+    return(sizeof(abf_f32_instance_t) + sizeof(abf_f32_fastdata_static_t)
+    + sizeof(abf_f32_fastdata_working_t));
+}

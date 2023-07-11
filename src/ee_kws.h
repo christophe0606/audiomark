@@ -17,13 +17,6 @@
 #include "ee_audiomark.h"
 #include "ee_mfcc_f32.h"
 
-typedef struct kws_instance_t
-{
-    mfcc_instance_t mfcc_inst;
-    int16_t        *p_audio_fifo; // [TOTAL_CHUNKS * SAMPLES_PER_CHUNK];
-    int8_t         *p_mfcc_fifo;  // [NUM_MFCC_FRAMES * FEATURES_PER_FRAME];
-    int32_t         chunk_idx;
-} kws_instance_t;
 
 /* TODO: Coalesce the massive amount of #defines! */
 
@@ -44,6 +37,5 @@ typedef struct kws_instance_t
 /* TOTAL_CHUNKS = (CHUNK_WATERMARK + CHUNKS_PER_INPUT_BUFFER - 1) */
 #define AUDIO_FIFO_SAMPLES (TOTAL_CHUNKS * SAMPLES_PER_CHUNK)
 
-int32_t ee_kws_f32(int32_t, void **, void *, void *);
 
 #endif // __EE_KWS_H
