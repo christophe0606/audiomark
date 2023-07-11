@@ -164,6 +164,45 @@ print("Memory usage %d bytes" % sched.memory)
 
 sched.ccode(".",conf)
 
+
+# Style for KWS nodes in original demo
+class MyStyle(Style):
+    ############################
+    #
+    # NORMAL NODE CUSTOMIZATION
+    #
+
+    def node_color(self,node):
+       
+        kwsColor = "aquamarine"
+        missingColor = "gray83"
+        normal = "lightskyblue"
+
+        if node.nodeName=="audioWin":
+           return(kwsColor)
+        if node.nodeName=="mfccWin":
+           return(kwsColor)
+        if node.nodeName=="mfcc":
+           return(kwsColor)
+        if node.nodeName=="dsnn":
+           return(kwsColor)
+        if node.nodeName=="result":
+           return(kwsColor)
+
+        if node.nodeName=="left":
+           return(missingColor)
+        if node.nodeName=="right":
+           return(missingColor)
+        if node.nodeName=="speaker":
+           return(missingColor)
+
+        if node.nodeName=="th_add_q15":
+           return(missingColor)
+        
+        return(normal)
+
+myStyle = MyStyle()
+
 with open("audiomark.dot","w") as f:
-    sched.graphviz(f)
+    sched.graphviz(f,style=myStyle)
 

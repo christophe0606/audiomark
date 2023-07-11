@@ -11,7 +11,7 @@ digraph structs {
 
 
 abf [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
     <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">abf<BR/>(ABF)</FONT></TD>
@@ -27,7 +27,7 @@ abf [label=<
 
 
 aec [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD PORT="i"><FONT POINT-SIZE="12.0" COLOR="black">i</FONT></TD>
     <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">aec<BR/>(AEC)</FONT></TD>
@@ -42,21 +42,21 @@ aec [label=<
 </TABLE>>];
 
 anr [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">anr<BR/>(ANR)</FONT></TD>
   </TR>
 </TABLE>>];
 
 audioWin [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="aquamarine" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">audioWin<BR/>(SlidingBuffer)</FONT></TD>
   </TR>
 </TABLE>>];
 
 dsnn [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="aquamarine" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">dsnn<BR/>(DSNN)</FONT></TD>
   </TR>
@@ -65,42 +65,42 @@ dsnn [label=<
 dup0 [shape=point,label="dup0"]
 
 left [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">left<BR/>(Source)</FONT></TD>
   </TR>
 </TABLE>>];
 
 mfcc [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="aquamarine" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">mfcc<BR/>(MFCC)</FONT></TD>
   </TR>
 </TABLE>>];
 
 mfccWin [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="aquamarine" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">mfccWin<BR/>(SlidingBuffer)</FONT></TD>
   </TR>
 </TABLE>>];
 
 result [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="aquamarine" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">result<BR/>(Result)</FONT></TD>
   </TR>
 </TABLE>>];
 
 right [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">right<BR/>(Source)</FONT></TD>
   </TR>
 </TABLE>>];
 
 speaker [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">speaker<BR/>(Source)</FONT></TD>
   </TR>
@@ -108,7 +108,7 @@ speaker [label=<
 
 
 th_add_q151 [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
     <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
@@ -124,7 +124,7 @@ th_add_q151 [label=<
 
 
 th_add_q152 [label=<
-<TABLE color="black" bgcolor="none" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+<TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
     <TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
     <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
