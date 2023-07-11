@@ -39,17 +39,7 @@ static int16_t p_input_sub[NSAMPLES];
 static int16_t p_echo_sub[NSAMPLES];
 static int16_t p_output_sub[NSAMPLES];
 
-static xdais_buffer_t xdais[3];
 
-extern "C" {
-// Used deep inside speex_alloc; assigned by component NODE_RESET
-char *spxGlobalHeapPtr;
-char *spxGlobalHeapEnd;
-long  cumulatedMalloc;
-
-extern SpeexEchoState *ee_aec_init_f32(uint32_t *size);
-
-}
 
 int
 main(int argc, char *argv[])

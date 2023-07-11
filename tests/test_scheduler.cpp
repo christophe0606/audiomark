@@ -98,25 +98,25 @@ FIFO buffers
 #define FIFOSIZE3 490
 #define FIFOSIZE4 12
 
-#define BUFFERSIZE0 1280
+#define BUFFERSIZE1 512
 CG_BEFORE_BUFFER
-uint8_t buf0[BUFFERSIZE0]={0};
+int16_t buf1[BUFFERSIZE1]={0};
 
-#define BUFFERSIZE1 10
+#define BUFFERSIZE2 640
 CG_BEFORE_BUFFER
-uint8_t buf1[BUFFERSIZE1]={0};
+int16_t buf2[BUFFERSIZE2]={0};
 
-#define BUFFERSIZE2 490
+#define BUFFERSIZE3 10
 CG_BEFORE_BUFFER
-uint8_t buf2[BUFFERSIZE2]={0};
+int8_t buf3[BUFFERSIZE3]={0};
 
-#define BUFFERSIZE3 12
+#define BUFFERSIZE4 490
 CG_BEFORE_BUFFER
-uint8_t buf3[BUFFERSIZE3]={0};
+int8_t buf4[BUFFERSIZE4]={0};
 
-#define BUFFERSIZE4 512
+#define BUFFERSIZE5 12
 CG_BEFORE_BUFFER
-int16_t buf4[BUFFERSIZE4]={0};
+int8_t buf5[BUFFERSIZE5]={0};
 
 
 typedef struct {
@@ -148,27 +148,27 @@ int init_test_scheduler(int iterations,
                               const int8_t *p_expected)
 {
     CG_BEFORE_FIFO_INIT;
-    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,0,0>(buf4);
+    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,0,0>(buf1);
     if (fifos.fifo0==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(buf0);
+    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(buf2);
     if (fifos.fifo1==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo2 = new FIFO<int8_t,FIFOSIZE2,1,0>(buf1);
+    fifos.fifo2 = new FIFO<int8_t,FIFOSIZE2,1,0>(buf3);
     if (fifos.fifo2==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo3 = new FIFO<int8_t,FIFOSIZE3,1,0>(buf2);
+    fifos.fifo3 = new FIFO<int8_t,FIFOSIZE3,1,0>(buf4);
     if (fifos.fifo3==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo4 = new FIFO<int8_t,FIFOSIZE4,1,0>(buf3);
+    fifos.fifo4 = new FIFO<int8_t,FIFOSIZE4,1,0>(buf5);
     if (fifos.fifo4==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);

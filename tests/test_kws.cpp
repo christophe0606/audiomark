@@ -32,10 +32,6 @@ extern "C" {
 extern const int16_t p_input[NBUFFERS][NSAMPLES];
 extern const int8_t  p_expected[NINFERS][NCLASSES];
 
-
-// Used deep inside audiomark core
-char *spxGlobalHeapPtr;
-char *spxGlobalHeapEnd;
 int testError=0;
 
 }
@@ -50,11 +46,6 @@ int
 main(int argc, char *argv[])
 {
     int           err           = 0;
-    int           new_inference = 0;
-    const int8_t *p_check       = NULL;
-    int           idx_check     = 0;
-    void         *memory        = NULL;
-    void         *inst          = NULL;
 
     /* An iteration of the schedule loop is reading 5 buffers */
     err = init_test_scheduler(NBUFFERS/5,1,

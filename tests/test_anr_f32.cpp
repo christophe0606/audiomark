@@ -38,15 +38,6 @@ extern const int16_t p_expected[TEST_NBUFFERS][NSAMPLES];
 static int16_t p_input_sub[NSAMPLES];
 static int16_t p_output_sub[NSAMPLES];
 
-static xdais_buffer_t xdais[1];
-
-extern "C" {
-// Used deep inside speex_alloc; assigned by component NODE_RESET
-char *spxGlobalHeapPtr;
-char *spxGlobalHeapEnd;
-long  cumulatedMalloc;
-}
-
 int
 main(int argc, char *argv[])
 {

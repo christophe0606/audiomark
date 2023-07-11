@@ -39,13 +39,7 @@ static int16_t p_left[NSAMPLES];
 static int16_t p_right[NSAMPLES];
 static int16_t p_output[NSAMPLES];
 
-static xdais_buffer_t xdais[3];
 
-// Used deep inside audiomark core
-extern "C" {
-char *spxGlobalHeapPtr;
-char *spxGlobalHeapEnd;
-}
 
 int
 main(int argc, char *argv[])

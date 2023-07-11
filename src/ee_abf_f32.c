@@ -330,12 +330,7 @@ beamformer_f32_reset(abf_f32_instance_t *p_inst)
     p_inst->window = (ee_f32_t *)w_hanning_div2;
     p_inst->wrot   = (ee_f32_t *)rotation;
 
-    pt         = (uint8_t *)p_inst;
-    pt         = pt + 4 * sizeof(ee_f32_t *);
-    p_inst->st = (abf_f32_fastdata_static_t *)pt;
-    pt         = pt + sizeof(abf_f32_fastdata_static_t);
-    p_inst->w  = (abf_f32_fastdata_working_t *)pt;
-
+    
     /* reset static buffers */
     for (i = 0; i < NFFT; i++)
     {
@@ -358,11 +353,35 @@ beamformer_f32_reset(abf_f32_instance_t *p_inst)
 
 abf_f32_instance_t *ee_abf_f32_init()
 {
-    uint32_t size = (3 * 4) // See note above
-                            + sizeof(abf_f32_fastdata_static_t)
-                            + sizeof(abf_f32_fastdata_working_t)
-                            + sizeof(ee_f32_t *) + sizeof(ee_f32_t *)
-                            + 4; /* TODO : justify this */
-    abf_f32_instance_t *p_abf_f32_instance = (abf_f32_instance_t*)th_malloc(size,COMPONENT_BMF);
+   
+    abf_f32_instance_t *p_abf_f32_instance = (abf_f32_instance_t*)th_malloc(sizeof(abf_f32_instance_t),COMPONENT_BMF);
+    
+    if (!p_abf_f32_instance)
+    {
+       return(NULL);
+    }
+
+    p_abf_f32_instance->st=(abf_f32_fastdata_static_t*)th_malloc(sizeof(abf_f32_fastdata_static_t),COMPONENT_BMF);
+    if (!p_abf_f32_instance->st)
+    {
+        th_free(p_abf_f32_instance,COMPONENT_BMF);
+        return(NULL);
+    }
+
+    p_abf_f32_instance->w=(abf_f32_fastdata_working_t*)th_malloc(sizeof(abf_f32_fastdata_working_t),COMPONENT_BMF);
+    if (!p_abf_f32_instance->w)
+    {
+        th_free(p_abf_f32_instance->st,COMPONENT_BMF);
+        th_free(p_abf_f32_instance,COMPONENT_BMF);
+        return(NULL);
+    }
     return(p_abf_f32_instance);
+}
+
+void ee_abf_f32_free(abf_f32_instance_t *p)
+{
+   th_free(p->st,COMPONENT_BMF);
+   th_free(p->w,COMPONENT_BMF);
+   th_free(p,COMPONENT_BMF);
+
 }

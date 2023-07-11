@@ -20,17 +20,6 @@
 #include "speex_preprocess.h"
 #include "arch.h"
 
-#ifdef OS_SUPPORT_CUSTOM
-#ifdef FIXED_POINT
-#define XPH_ANR_INSTANCE_SIZE 29000
-#else
-#define XPH_ANR_INSTANCE_SIZE 45250
-#endif
-// We manipulate these for each speex alloc based off our memory heaps
-extern char *spxGlobalHeapPtr;
-extern char *spxGlobalHeapEnd;
-extern long  cumulatedMalloc;
-#endif
 
 static const uint32_t param_anr_f32[1][2] = {
     {
@@ -39,22 +28,18 @@ static const uint32_t param_anr_f32[1][2] = {
     },
 };
 
-SpeexPreprocessState *ee_anr_init_f32(uint32_t *size)
+void ee_anr_free_f32(SpeexPreprocessState *p)
+{
+  speex_preprocess_state_destroy(p);
+}
+
+SpeexPreprocessState *ee_anr_init_f32()
 {
             uint32_t              frame_size  = 0;
             uint32_t              sample_rate = 0;
             SpeexPreprocessState *p_state     = NULL;
 
-            *size = XPH_ANR_INSTANCE_SIZE;
 
-            p_state = (SpeexPreprocessState*)th_malloc(XPH_ANR_INSTANCE_SIZE, COMPONENT_AEC);
-
-       
-#ifdef OS_SUPPORT_CUSTOM
-            // speex aligns memory during speex_alloc
-            spxGlobalHeapPtr = (char *)(p_state);
-            spxGlobalHeapEnd = spxGlobalHeapPtr + XPH_ANR_INSTANCE_SIZE;
-#endif
             frame_size  = param_anr_f32[0][0];
             sample_rate = param_anr_f32[0][1];
 

@@ -21,17 +21,7 @@
 #include "arch.h"
 #include "speex_echo.h"
 
-#ifdef OS_SUPPORT_CUSTOM
-#ifdef FIXED_POINT
-#define XPH_AEC_INSTANCE_SIZE 45000
-#else
-#define XPH_AEC_INSTANCE_SIZE 68100
-#endif
-// We manipulate these for each speex alloc based off our memory heaps
-extern char *spxGlobalHeapPtr;
-extern char *spxGlobalHeapEnd;
-extern long  cumulatedMalloc;
-#endif
+
 
 static const uint32_t param_aec_f32[1][3] = {
     {
@@ -41,21 +31,18 @@ static const uint32_t param_aec_f32[1][3] = {
     },
 };
 
-SpeexEchoState *ee_aec_init_f32(uint32_t *size)
+void ee_aec_free_f32(SpeexEchoState *p)
+{
+   speex_echo_state_destroy(p);
+}
+
+SpeexEchoState *ee_aec_init_f32()
 {
         uint32_t        frame_size    = 0;
         uint32_t        filter_length = 0;
         uint32_t        sample_rate   = 0;
         SpeexEchoState *p_state       = NULL;
 
-        p_state = (SpeexEchoState*)th_malloc(XPH_AEC_INSTANCE_SIZE, COMPONENT_AEC);
-
-#ifdef OS_SUPPORT_CUSTOM
-        // speex aligns memory during speex_alloc
-        spxGlobalHeapPtr = (char *)(p_state);
-        spxGlobalHeapEnd = spxGlobalHeapPtr + XPH_AEC_INSTANCE_SIZE;
-#endif
-        *size = XPH_AEC_INSTANCE_SIZE;
         
         frame_size    = param_aec_f32[0][0];
         filter_length = param_aec_f32[0][1];

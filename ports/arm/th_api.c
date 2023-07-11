@@ -68,7 +68,10 @@ th_free(void *mem, int req)
         case COMPONENT_ANR:
         case COMPONENT_KWS:
         default:
-            free(mem);
+            if (mem)
+            {
+              free(mem);
+            }
     }
 }
 

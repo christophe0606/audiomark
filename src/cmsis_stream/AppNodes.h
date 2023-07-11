@@ -120,7 +120,7 @@ public:
 
     ~ABF()
     {
-        th_free(p_abf_f32_instance, COMPONENT_BMF);
+        ee_abf_f32_free(p_abf_f32_instance);
     }
 
    
@@ -172,7 +172,8 @@ extern "C" {
 #include "arch.h"
 #include "speex_echo.h"
 
-    extern SpeexEchoState *ee_aec_init_f32(uint32_t *size);
+    extern SpeexEchoState *ee_aec_init_f32();
+    extern void ee_aec_free_f32(SpeexEchoState *);
 }
 
 
@@ -198,15 +199,14 @@ public:
                 int16_t,nbSamples>(src1,src2,dst){
     
      
-      uint32_t size;
-      p_state = ee_aec_init_f32(&size);
+      p_state = ee_aec_init_f32();
 
       //printf(" aec = %d\n", size);
     };
 
     ~AEC()
     {
-        th_free(p_state, COMPONENT_BMF);
+        ee_aec_free_f32(p_state);
     }
 
    
@@ -241,7 +241,9 @@ protected:
 };
 
 extern "C" {
-    extern SpeexPreprocessState *ee_anr_init_f32(uint32_t *size);
+    extern SpeexPreprocessState *ee_anr_init_f32();
+    extern void ee_anr_free_f32(SpeexPreprocessState *p);
+
 
 }
 
@@ -261,15 +263,14 @@ public:
                 int16_t,nbSamples>(src,dst){
     
      
-      uint32_t size;
-      p_state = ee_anr_init_f32(&size);
+      p_state = ee_anr_init_f32();
 
       //printf(" anr = %d\n", size);
     };
 
     ~ANR()
     {
-        th_free(p_state, COMPONENT_ANR);
+        ee_anr_free_f32(p_state);
     }
 
    

@@ -55,30 +55,6 @@ static inline void *speex_alloc (int size)
       you will experience strange bugs */
    return calloc(size,1);
 }
-#else
-extern char *spxGlobalHeapPtr, *spxGlobalHeapEnd;
-extern char *spxGlobalScratchPtr, *spxGlobalScratchEnd;
-extern long cumulatedMalloc;
-/* Make sure that all structures are aligned to largest type */
-#define BLOCK_MASK      (sizeof(long double)-1)    
-static inline void *speex_alloc (int size)
-{
-    char *ptr, *clr;
-    long i;
-    cumulatedMalloc += size;
-    ptr = (char *) (((long long)spxGlobalHeapPtr + BLOCK_MASK) & ~BLOCK_MASK);  //Start on 8 boundary
-
-    spxGlobalHeapPtr = (char *)((long long)ptr + size);	    // Update pointer to next free location
-    if ((long long)spxGlobalHeapPtr > (long long)spxGlobalHeapEnd )
-    {   return 0;
-    }
-
-    clr = ptr;
-    for (i = 0; i < size; i++)
-        *clr++ = 0;
-    //memset(ptr, 0, size);
-    return (void *)ptr;
-}    
 #endif
 
 /** Same as speex_alloc, except that the area is only needed inside a Speex call (might cause problem with wideband though) */
@@ -103,10 +79,6 @@ static inline void *speex_realloc (void *ptr, int size)
 static inline void speex_free (void *ptr)
 {
    free(ptr);
-}
-#else
-static inline void speex_free (void *ptr)
-{
 }
 #endif
 

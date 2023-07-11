@@ -4,9 +4,6 @@
 #include "scheduler.h"
 #include "cg_status.h"
 
-char *spxGlobalHeapPtr;
-char *spxGlobalHeapEnd;
-long  cumulatedMalloc;
 
 extern const int16_t downlink_audio[NINPUT_SAMPLES];
 extern const int16_t left_microphone_capture[NINPUT_SAMPLES];

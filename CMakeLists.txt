@@ -24,7 +24,6 @@ add_definitions(-DFLOATING_POINT)
 # This macro is used extensively in LibSpeeX for function visibility.
 add_definitions(-DEXPORT=)
 # Benchmark system integrator provides heap
-add_definitions(-DOVERRIDE_SPEEX_ALLOC)
 add_definitions(-DOS_SUPPORT_CUSTOM)
 add_definitions(-D__RESTRICT=)
 
