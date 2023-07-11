@@ -18,7 +18,6 @@ extern const int16_t right_microphone_capture[NINPUT_SAMPLES];
 int
 ee_audiomark_initialize(bool printMem)
 {
-    //printf("Memory alloc summary:\n");
     int err = init_scheduler(1,left_microphone_capture,
                              right_microphone_capture,
                              downlink_audio);
@@ -59,8 +58,6 @@ ee_audiomark_run(int iterations)
                              right_microphone_capture,
                              downlink_audio);
 
-    //printf("nb=%d error=%d\n",nbSched,error);
-
     if (error == CG_SUCCESS)
     {
         return(CG_SUCCESS);
@@ -72,7 +69,7 @@ ee_audiomark_run(int iterations)
     }
     else
     {
-        return 0;
+        return CG_SUCCESS;
     }
 }
 

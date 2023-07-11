@@ -25,7 +25,6 @@ public:
       p_state = ee_anr_init_f32();
       mSize = get_speex_allocated_memory();
 
-      //printf(" anr = %d\n", size);
     };
 
     ~ANR()

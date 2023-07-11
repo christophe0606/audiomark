@@ -36,7 +36,6 @@ public:
 
        p_abf_f32_instance = ee_abf_f32_init();
 
-       //printf(" bmf = %d\n", size);
 
        beamformer_f32_reset(p_abf_f32_instance);
     };

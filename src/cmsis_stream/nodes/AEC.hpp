@@ -34,7 +34,6 @@ public:
       p_state = ee_aec_init_f32();
       mSize = get_speex_allocated_memory();
 
-      //printf(" aec = %d\n", size);
     };
 
     ~AEC()

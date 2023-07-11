@@ -18,7 +18,7 @@ public:
     GenericNode<int8_t,inputSize,
                 int8_t,OUT_DIM>(src,dst),AudioMarkNode(),mTestMode(testMode){
         th_nn_init();
-        //printf(" kws = %d\n", 0);
+
         nbNNRun = 0;
         inferences = 0;
     };

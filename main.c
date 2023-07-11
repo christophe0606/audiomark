@@ -66,22 +66,25 @@ time_audiomark_run(uint32_t iterations, uint64_t *dt)
 
     /* Iterations is an iteration of the full test reading the full
     input pattern.
-    Each sched iteraton is reading 5 blocks of SAMPLES_PER_AUDIO_FRAME.
-    NINPUT_SAMPLES must be read. So NINPUT_SAMPLES / (5 * SAMPLES_PER_AUDIO_FRAME) are
-    required to read the full input data.
+    Each scheduling iteration is reading 5 blocks of SAMPLES_PER_AUDIO_FRAME.
+    NINPUT_SAMPLES samples must be read. So NINPUT_SAMPLES / (5 * SAMPLES_PER_AUDIO_FRAME) 
+    scheduling iterations are required to read the full input data.
 
-    And we replicate this iterations numbers
+    And we replicate this "iterations" times.
+
+    The number 5 is coming from the scheduling computed by CMSIS-Stream.
+    You need to look at the generated schedule to know hoa many instances
+    of the read are generated in one schedule ieration.
     */
 
     uint32_t sched_iterations = iterations * (NINPUT_SAMPLES / (5 * SAMPLES_PER_AUDIO_FRAME));
 
     ee_audiomark_release();
+    // We initialize without printing the memory usage of each node
     ee_audiomark_initialize(false);
-    //printf("Iter=%d\n",iterations);
 
     t0 = th_microseconds();
 
-    /* Scheduling is doing 4 iterations per run */
     int errCode = ee_audiomark_run(sched_iterations);
     if (errCode !=0)
     {
@@ -113,7 +116,6 @@ main(void)
     {
         iterations *= 2;
         err = time_audiomark_run(iterations, &dt);
-        //printf("%d %lld\n",iterations,dt);
         if (err)
         {
             break;
@@ -126,14 +128,11 @@ main(void)
         goto exit;
     }
 
-    //printf("dt = %lld\n",dt);
     // Must run for 10 sec. or at least 10 iterations
     float scale = 11e6f / dt;
     iterations  = (uint32_t)((float)iterations * scale);
     iterations  = iterations < 10 ? 10 : iterations;
 
-
-    //printf("%d %lld %f\n",iterations,dt,scale);
 
     printf("Measuring\n");
 

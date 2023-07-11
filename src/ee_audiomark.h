@@ -37,13 +37,6 @@ enum _component_req
 #define SAMPLES_PER_AUDIO_FRAME 256
 #define BYTES_PER_AUDIO_FRAME   (SAMPLES_PER_AUDIO_FRAME * BYTES_PER_SAMPLE)
 
-
-// These are from the component files
-int32_t ee_abf_f32(int32_t, void **, void *, void *);
-int32_t ee_aec_f32(int32_t, void **, void *, void *);
-int32_t ee_anr_f32(int32_t, void **, void *, void *);
-int32_t ee_kws_f32(int32_t, void **, void *, void *);
-
 int  ee_audiomark_initialize(bool);
 int  ee_audiomark_run(int);
 void ee_audiomark_release(void);

@@ -55,13 +55,13 @@ extern "C" {
 #include "os_support_custom.h"
 }
 
-#include "Source.hpp"
-#include "ABF.hpp"
-#include "AEC.hpp"
-#include "ANR.hpp"
-#include "MFCC.hpp"
-#include "DSNN.hpp"
-#include "Result.hpp"
+#include "nodes/Source.hpp"
+#include "nodes/ABF.hpp"
+#include "nodes/AEC.hpp"
+#include "nodes/ANR.hpp"
+#include "nodes/MFCC.hpp"
+#include "nodes/DSNN.hpp"
+#include "nodes/Result.hpp"
 
 
 #endif

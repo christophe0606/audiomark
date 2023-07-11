@@ -19,6 +19,12 @@ else()
 	message(FATAL_ERROR "Please define PORT_DIR, e.g. -DPORT_DIR=<path>")
 endif()
 
+if(DEFINED CMSIS_STREAM_DIR)
+	include_directories(${CMSIS_STREAM_DIR}/Include/cg/nodes/cpp/)
+else()
+	message(FATAL_ERROR "Please define CMSIS_STREAM_DIR, e.g. -DCMSIS_STREAM_DIR=<path>")
+endif()
+
 # For Xiph we are using Float, never Fixed
 add_definitions(-DFLOATING_POINT)
 # This macro is used extensively in LibSpeeX for function visibility.
@@ -27,6 +33,8 @@ add_definitions(-DEXPORT=)
 add_definitions(-DOS_SUPPORT_CUSTOM)
 add_definitions(-D__RESTRICT=)
 add_definitions(-DOVERRIDE_SPEEX_ALLOC)
+
+#add_definitions(-DDEBUG_PRINTF_CLASSES)
 
 set(EE_SOURCE
 	# Note: main.c is just for self-hosted testing
