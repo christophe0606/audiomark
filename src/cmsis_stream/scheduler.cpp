@@ -81,7 +81,7 @@ CG_AFTER_INCLUDES
 Description of the scheduling. 
 
 */
-static unsigned int schedule[65]=
+static uint8_t schedule[65]=
 { 
 6,10,11,5,12,13,0,1,2,6,10,11,5,12,13,0,1,2,3,7,8,4,9,6,10,11,5,12,13,0,1,2,3,7,8,4,9,6,10,11,
 5,12,13,0,1,2,3,7,8,4,9,6,10,11,5,12,13,0,1,2,3,7,8,4,9,
