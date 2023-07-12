@@ -9,7 +9,7 @@ appliances like washers, dryers, and refrigerators, to home entertainment
 systems, and even cars that respond to voice commands.
 
 This version is a **modified** version using the CMSIS-Stream technology. 
-is not an EEMBC benchmark anymore and **the AudioMark™ trademark must 
+It is not an EEMBC benchmark anymore and **the AudioMark™ trademark must 
 not be used to identify this version**.
 
 It is a proof of concept demonstrating how the benchmark could have been 
