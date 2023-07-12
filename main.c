@@ -64,24 +64,34 @@ time_audiomark_run(uint32_t iterations, uint64_t *dt)
     uint64_t t1  = 0;
     bool     err = false;
 
-    /* Iterations is an iteration of the full test reading the full
-    input pattern.
-    Each scheduling iteration is reading 5 blocks of SAMPLES_PER_AUDIO_FRAME.
+    /* Each scheduling iteration is reading 5 blocks of SAMPLES_PER_AUDIO_FRAME.
     NINPUT_SAMPLES samples must be read. So NINPUT_SAMPLES / (5 * SAMPLES_PER_AUDIO_FRAME) 
     scheduling iterations are required to read the full input data.
 
     And we replicate this "iterations" times.
 
     The number 5 is coming from the scheduling computed by CMSIS-Stream.
-    You need to look at the generated schedule to know hoa many instances
+    You need to look at the generated schedule to know how many instances
     of the read are generated in one schedule ieration.
     */
 
-    uint32_t sched_iterations = iterations * (NINPUT_SAMPLES / (5 * SAMPLES_PER_AUDIO_FRAME));
+    uint32_t sched_iterations = (uint32_t)(iterations * (1.0*NINPUT_SAMPLES / (5 * SAMPLES_PER_AUDIO_FRAME)));
 
+    /*
+      If a new run must start in exactly the same conditions,
+      then we must release and initialize again the scheduler node.
+      Otherwise, the nodes will continue to execute from their 
+      current state.
+      An iteration of a schedule is periodic from the 
+      point of view of the FIFOs and buffers and we can continue the
+      execution of the graph if we don't mind about the state of the
+      nodes.
+    */
+    /*
     ee_audiomark_release();
     // We initialize without printing the memory usage of each node
     ee_audiomark_initialize(false);
+    */
 
     t0 = th_microseconds();
 

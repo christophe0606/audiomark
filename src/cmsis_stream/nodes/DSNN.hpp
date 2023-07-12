@@ -55,6 +55,15 @@ public:
         int8_t *p_mfcc_fifo=this->getReadBuffer();
         int8_t *prediction=this->getWriteBuffer();
 
+        /*
+         In test mode we skip the first inference because the audio buffer
+         is still half full and half of it contains zero.
+         The test is starting with a full buffer.
+         In practise, in a streaming application, the work start as
+         soon as audio is coming and there should not be a special case
+         for the start.
+         So, when not in test, the classification is occuring each time.
+        */
         if ((!mTestMode) || (nbNNRun>=1))
         {
           ee_status_t status = th_nn_classify(p_mfcc_fifo, prediction);

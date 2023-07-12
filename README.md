@@ -8,6 +8,19 @@ This includes everything from personal assistants like Alexa, to white-box
 appliances like washers, dryers, and refrigerators, to home entertainment 
 systems, and even cars that respond to voice commands.
 
+This version is a **modified** version using the CMSIS-Stream technology. 
+is not an EEMBC benchmark anymore and **the AudioMark™ trademark must 
+not be used to identify this version**.
+
+It is a proof of concept demonstrating how the benchmark could have been 
+implemented using the CMSIS-Stream technology.
+
+Since lots of changes have been applied, **the results of this version 
+should not be compared with the original one**. The scheduling is 
+slightly different and as consequence it may not execute exactly the 
+same number of inferences for a given number of audio input read. There 
+may be a +- 1 difference.
+
 # Theory of operation
 
 The benchmark works by processing two microphone inputs listening to both a 
@@ -21,20 +34,35 @@ The benchmark API facilitates hardware acceleration for key DSP and NN
 functionality. The file `ee_api.h` describes the functions that the system 
 integrator must implement. The components were derived from several sources:
 
-* The beamformer and direction of arrival algorithms (BF+DOA) were written and tested by Arm and Infineon.
-* The acoustic echo canceller (AEC) and audio noise reduction (ANR) elements are implemented by the SpeeX libspeexdsp library. These functions utilize the SpeeX API, which is a combination of macros and functions that perform floating-point/fixed math operations, and an FFT wrapper for transformation. In AudioMark, only the single precision floating-point version of the library is used.
+* The beaformer and direction of arrival algorithms (BF+DOA) were written and tested by Arm and Infineon.
+* The acoustic echo canceller (AEC) and audio noise  reduction (ANR) elements are implemented by the SpeeX libspeexdsp library. These functions utilize the SpeeX API, which is a combination of macros and functions that perform fixed math operations, and an FFT wrapper for transformation.
 * The neural net was derived from the [Arm Model Zoo DS CNN KWS](https://github.com/ARM-software/ML-zoo/tree/master/models/keyword_spotting/ds_cnn_small/model_package_tf/model_archive/TFLite/tflite_int8).
 
-This DS-CNN model was chosen for its flexibility of utilizing available hardware. It means the benchmark 
+This flexibility to utilize whatever hardware is available means the benchmark 
 scales across a wide variety of MCUs and SoCs.
 
-When possible, the components are implemented in 32-bit floating point, with the 
+All of the components are implemented in 32-bit floating point, with the 
 exception of the neural net, which is signed 8-bit integer. The data that flows 
 in between components is signed 16-bit integer.
 
 <img width="745" alt="image" src="https://user-images.githubusercontent.com/8249735/207705676-966fe230-8eac-4250-a468-437dc4ceebcd.png">
 
 
+
+The original graph above contains several kind of algorithms managed differently:
+
+* Audio source and additions at the entry are managed in an ad'hoc way (no graph or node concept)
+* AEC, ANR and KWS are manually scheduled
+* KWS node is containing its own graph with MFCC, DS, NN, and 2 sliding buffers implemented with FIFO. Also, scheduling internal to this node is done differently
+
+CMSIS-Stream is unifying all of those nodes in one global graph:
+
+![audiomark](src/cmsis_stream/audiomark.svg)
+
+The CMSIS-Stream graph above is the simplest one. Memory optimizations could be implemented on top of it:
+
+* Audio buffers (256 samples) could be shared to decrease memory usage (current version is copying into the output FIFO)
+* Last sliding buffer has a big overlap. Overlap memory could be removed if the node was modified to use the output FIFO only
 
 # Building
 
@@ -51,7 +79,7 @@ To build the self-hosted example, from the root directory type":
 
 ~~~
 % mkdir build && cd build
-% cmake .. -DPORT_DIR=ports/arm
+% cmake .. -DPORT_DIR=ports/arm -DCMSIS_STREAM_DIR=path_to_cmsis_stream
 % make test
 % make audiomark
 % ./audiomark
@@ -95,25 +123,10 @@ there are far fewer function calls to consider with the EEMBC layer.
 
 With all of these options, it is possible to accidentally (or intentionally)
 create a port that runs faster at the expense of quality, thus skewing
-comparisons. However, for a score to be considered valid, it must pass the 
-unit tests. There are five unit tests in total:
-
-- Digital Signal Processing (DSP) tests
-  - test_abf (tests/test_abf_f32.c)
-  - test_anr (tests/test_anr_f32.c)
-  - test_aec (tests/test_aec_f32.c)
-  - test_mfcc (tests/test_mfcc_f32.c)
-- Neural-network (NN) test
-  - test_kws (tests/test_kws.c)  
-
-The DSP unit tests permit at most 50 dB of SNR (Signal-to-Noise 
-ratio), a failure of a unit test means the optimizations have gone too far 
-to be considered a fair comparison. The KWS unit test use a 35dB ratio for
-the comparison but only when a valid data is present.
-
-Note: The actual test codes use Noise-to-Signal ratio instead of 
-Signal-to-Noise. SNR has the disadvantage that its value becoming infinity when the results 
-are bit-exact match to reference data (i.e. noise level is 0).
+comparisons. However, for a score to be considered valid, it must pass the
+unit tests. These tests permit at most 50 dB of SNR, a failure of a unit
+test means the optimizations have gone too far to be considered a fair
+comparison.
 
 ## EEMBC port layer
 
@@ -123,7 +136,7 @@ reference can be found in `ports/arm_cmsis`.
 
 The `th_types.h` file defines the floating-point type, as well as 2D matrix 
 object type, and both real and complex FFT object types.
- 
+
 The `th_api.c` file contains the definition of the following functions:
 
 ### Standard library overrides
@@ -159,6 +172,7 @@ FFTs.
 * th_cmplx_dot_prod_f32
 * th_cmplx_mag_f32
 * th_add_f32
+* th_add_q15 (added by CMSIS-Stream variant)
 * th_subtract_f32
 * th_multiply_f32
 * th_dot_prod_f32
@@ -220,7 +234,7 @@ optimization through C with intrinsic or even assembly to reach peak
 performance.
 
 As a first example, the AEC power_spectrum routine, which is essentially 
-computing the squared magnitude of a complex signal, could use the CMSIS-DSP 
+computing the squared magnitude of a complex signal, could use the CMSIS DSP 
 `arm_cmplx_mag_squared_f32` function and for this defining the 
 `OVERRIDE_MDF_POWER_SPECTRUM` would deactivate original definition and use the 
 optimized variant that will be placed in the 
@@ -331,7 +345,7 @@ been activated.
 
 ### Complete list of overrides, functions, and behavior.
 
-| Override | Function | Beahvior |
+| Override | Function | Behavior |
 | -------- | -------- | ------------------------ |
 | OVERRIDE_MDF_ADJUST_PROP | mdf_adjust_prop | Computes filter adaptation rate, proportional to inverse of weight filter energy. |
 | OVERRIDE_MDF_CONVERG_LEARN_RATE_CALC | mdf_non_adapt_learning_rate_calc | Part of the process of the computing the adaption rate when filter is not yet adapted enough. This routine divides the adaptation rate by Far End power over the whole subframe. |
@@ -390,9 +404,9 @@ used for propagate the AEC output.
 
 ## Inter-component buffers
 
-Each component connects to the other components or inputs via one or more
-buffers. These statically allocated buffers' storage is defined in `th_api.c`
-to allow the system integrator to better control placement.
+**With CMSIS-Stream, inter-component buffers (or FIFOs) are created by CMSIS-Stream.**
+
+The memory section where to map those buffer can be controlled with the macro `CG_BEFORE_BUFFER` to be defined in the CMSIS-Stream`custom.h` header
 
 ## Table constants
 
@@ -405,19 +419,11 @@ several large tables of constants.
 
 ## Dynamic allocation for scratch memory
 
-Each component needs a certain amount of scratch memory. The components are
-written in such a way that they are first queried to indicate how much
-memory they require, and then that is allocated by the framework and provided
-via buffers during reset and run. This has been abstracted down to the 
-`th_malloc` function. The parameters to this function are the number of
-required bytes and the component that is requesting it. The system integrator
-can use the default STDLIB `malloc` function, or allocate their own memory
-buffers to target different types of memory. **The memory is never freed so
-there is no need to install a sophisticated memory manager.** Simply assigning
-subsequent address pointers is sufficient (provided there is enough memory).
+**Memory allocation has been totally changed compared to the original version of the benchmark.** Memory is now freed.
 
-Both the LibSpeexDSP and EEMBC-provided components utilize this dynamic
-allocation pattern.
+No pointer arithmetic is used anymore. Size of structs are only using `sizeof` to be computed.
+
+Memory requested by each node is still computed as information only. Each node is responsible for allocating and freeing its memory. It is no more under responsibility of the framework.
 
 # Coding conventions
 
@@ -449,11 +455,11 @@ illustrates this by separating all of the Arm-specific code into `th_api.c`.
 
 3. Only functions and files starting with `th_*` may be altered. In the case of the `th_api`, this is required. The one exception to this is the SpeeX DSP library code, where the user may modify the `wrapfft.c` to install the optimal FFT, change the override macros and provide their own associated functionality, or modify the primitive DSP math macros. All of the EEMBC provided `ee_` functions ultimately perform DSP computation through a subset of functions declared in the `ee_api.h` header, and implemented however the system integrator choses (the example puts all of the implementation reference code in the `th_api.c` file).
 
-4. For a score to be considered valid, it must pass the AEC, ANR, ABF, MFCC and KWS regression tests found in the `tests/` directory. The AEC, ANR, MFCC and ABF tests utilize a SNR ratio check of -50 dB over 62.5 ms frames of data. The KWS expects the softmax output to match the Top-1 prediction for each inference, and not the actual probability. This allows for flexibility in optimizing the API functions which may not be bit-exact, but still achieve roughly the same fidelity.
+4. For a score to be considered valid, it must pass the AEC, ANR, ABF, and KWS regression tests found in the `tests/` directory. The AEC, ANR, and ABF tests utilize a SNR ratio check of -50 dB over 62.5 ms frames of data. The KWS expects the softmax output to match the Top-1 prediction for each inference, and not the actual probability. This allows for flexibility in optimizing the API functions which may not be bit-exact, but still achieve roughly the same fidelity.
 
 5. All processing must be carried out on the platform locally and not sent to the cloud. The definition of a device includes single chip silicon, and multi-die modules, and multi-chip platforms. External memories are allowed.
 
-6. The AudioMark score shall be computed as "iterations per second * 1000 / 1.5". AudioMark/MHz is simply AudioMark divided by the highest core frequency in MHz. For example, if the benchmark is running on Core A at 100 Mhz and Core A uses a DSP peripheral running at 300 MHz, the highest frequency is used in the computation; in this case, 300 MHz. See footnote #1 below.
+6. The AudioMark score shall be computed as "iterations per second * 1000 * 1.5". AudioMark/MHz is simply AudioMark divided by the highest core frequency in MHz. For example, if the benchmark is running on Core A at 100 Mhz and Core A uses a DSP peripheral running at 300 MHz, the highest frequency is used in the computation; in this case, 300 MHz. See footnote #1 below.
 
 
 7. The benchmark score shall be obtained with the serial computation of the following components--ABF, AEC, ANR, KWS--with execution proceeding from one component to another, on completion. The benchmark shall not be altered or implemented in any way that causes any of the components to execute in parallel.
@@ -469,32 +475,15 @@ illustrates this by separating all of the Arm-specific code into `th_api.c`.
 
 **Footnote #1: Explanation of scoring equation**
 
-First, the 1000 factor is introduced to scale the score into a preferred integer range, this is a common EEMBC technique to avoid comparing small fractional numbers. Second, a scaling ratio is added, which was originally intended to compensate for the ratio between the sampling rate and the number of samples being processed in each iteration. The benchmark assumes a pipeline operating on 16 kHz audio input, and the idea is that a platform that is operating efficiently would score 1.0 (with no scalar): it is running exactly at the speed needed, no faster, no slower. A platform with half the performance would measure 0.5 iterations per second. However, the benchmark input dataset is actually 24000 samples worth of data not 16000, so if one iteration completes in one second, the benchmark has in reality performed better than the 16 kHz design goal. To adjust for this, the score should have been multiplied by 1.5. (Note: The benchmark could reduce the number of samples to one second (or 16k samples), however, the lead-in silence is needed to stabilize the ANR, and the keyword utterance spills over the one-second mark of the sample.). However, due to an error a divisor of 1.5 was used in the released code. To avoid confusion for people that are already using AudioMark in their projects, we have decided to keep the current code.
+First, the 1000 factor is introduced to scale the score into a preferred integer range, this is a common EEMBC technique to avoid comparing small fractional numbers. Second, notice that the benchmark assumes a pipeline operating on 16 kHz audio input, and a platform that is operating efficiently would score 1.0 (with no scalar): it is running exactly at the speed needed, no faster, no slower. A platform with half the performance would measure 0.5 iterations per second. However, the benchmark input dataset is actually 24000 samples worth of data not 16000, so if one iteration completes in one second, the benchmark has in reality performed better than the 16 kHz design goal. To adjust for this, the score is multiplied by 1.5. (Note: The benchmark could reduce the number of samples to one second (or 16k samples), however, the lead-in silence is needed to stabilize the ANR, and the keyword utterance spills over the one-second mark of the sample.)
 
 # Submitting scores
 
-1. A score must be submitted to the website before it can be used in any external publication such as: academic journals, technical papers, and marketing assets. An unsubmitted score may only be discussed internally or with a 3rd party under NDA (Non-Disclosure Agreement), but not presented to the public in any way. Note: the score may be submitted but not go live (i.e., visible on the web) until a certain date agreed to between the submitter and EEMBC. This is to account for product launch schedules.
+1. A score must be submitted to the website before it can be used in any external publication such as: academic journals, technical papers, and marketing assets. An unsubmitted score may only be discussed internally or with a 3rd party under NDA, but not presented to the public in any way. Note: the score may be submitted but not go live (i.e., visible on the web) until a certain date agreed to between the submitter and EEMBC. This is to account for product launch schedules.
 
 2. A submitted score shall be from hardware that is available for purchase to any member of the general public. Scores for hardware that is yet to be announced must be marked "preliminary". This score may be superseded by a new score on the released product, or cleared by request to EEMBC after the product is launched.
 
-3. A score collected from simulation cannot be submitted. The measured score must come from actual silicon. This includes CPU, MCU, MPU, SoC, and FPGA prototypes.
-
-# Revision history
-
-- v1.0.0 First release (4 Feb 2023)
-- v1.0.1 (6 Feb 2023)
-  - Fixes a potential bug where a multiply may goes out of bound
-- v1.0.2 (6 Sept 2023)
-  - Fix an issue in the KWS NN model. The reference C model was converted from the KWS NN TensorFlow Lite model, and there is a small lost of accuracy in the conversion process. After the code update, the reference C model fully match the original model.
-- v1.0.3 (14 June 2024)
-  - Fix incorrect use of restrict keyword https://github.com/eembc/audiomark/issues/61
-  - KWS unit test switched from bit exact checking to Noise to Signal ratio checking.
-  - Most of the double precision floating-point operations in SpeexLib library code replaced by single precision.
-  - Changes in unit test to clarify the use of Noise-to-Signal ratio instead of Signal-to-Noise (SNR) ratio
-  - Documentation update: Score calculation formula uses 1/1.5 scaling rather than 1*1.5.
-  - Documentation update: Clarify that only float version of SpeexDSP is supported.
-  - Documentation update: KWS unit test description (changed to use Noise-to-Signal ratio)
-  - Other minor documentation improvements.
+3. A score collected from simulation cannot be submitted. The measured score must come from actual silicon. This includes CPU, MCU, MPU, SoC, and FPGA prototype.
 
 # Credits
 

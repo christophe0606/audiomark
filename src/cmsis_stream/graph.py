@@ -150,6 +150,7 @@ conf.cOptionalArgs=["int iterations",
 conf.heapAllocation = True
 conf.nodeIdentification = True
 conf.prefix="audiomark_"
+#conf.horizontal = False
 
 generateGenericNodes(".")
 generateCGStatus(".")
@@ -164,6 +165,11 @@ print("Memory usage %d bytes" % sched.memory)
 
 sched.ccode(".",conf)
 
+
+style = {
+     "edge_label_size" : "10.0"
+    ,"port_sample_font_size"       : "12.0" 
+}
 
 # Style for KWS nodes in original demo
 class MyStyle(Style):
@@ -201,8 +207,8 @@ class MyStyle(Style):
         
         return(normal)
 
-myStyle = MyStyle()
+myStyle = MyStyle(style)
 
 with open("audiomark.dot","w") as f:
-    sched.graphviz(f,style=myStyle)
+    sched.graphviz(f,style=myStyle,config=conf)
 

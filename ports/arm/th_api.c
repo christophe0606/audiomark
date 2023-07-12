@@ -30,17 +30,6 @@ const int16_t left_microphone_capture[NINPUT_SAMPLES] = {
 const int16_t right_microphone_capture[NINPUT_SAMPLES] = {
 #include "ee_data/right0.txt"
 };
-int16_t for_asr[NINPUT_SAMPLES];
-
-// These are the inter-component buffers
-int16_t audio_input[SAMPLES_PER_AUDIO_FRAME];       // 1
-int16_t left_capture[SAMPLES_PER_AUDIO_FRAME];      // 2
-int16_t right_capture[SAMPLES_PER_AUDIO_FRAME];     // 3
-int16_t beamformer_output[SAMPLES_PER_AUDIO_FRAME]; // 4
-int16_t aec_output[SAMPLES_PER_AUDIO_FRAME];        // 5
-int16_t audio_fifo[AUDIO_FIFO_SAMPLES];             // 6
-int8_t  mfcc_fifo[MFCC_FIFO_BYTES];                 // 7
-int8_t  classes[OUT_DIM];                           // 8
 
 void *
 th_malloc(size_t size, int req)
