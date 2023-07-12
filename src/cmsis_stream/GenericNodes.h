@@ -293,7 +293,7 @@ public:
     virtual int run()=0;
     virtual int prepareForRunning()=0;
     void setID(int id){mNodeID = id;};
-    int nodeID(){return(mNodeID);};
+    int nodeID() const {return(mNodeID);};
 protected:
     int mNodeID = UNIDENTIFIED_NODE;
 };
