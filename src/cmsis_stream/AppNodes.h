@@ -32,8 +32,9 @@ extern "C" {
 #include "ee_mfcc_f32.h"
 }
 
-#include "SlidingBuffer.h"
+using namespace arm_cmsis_stream;
 
+#include "SlidingBuffer.h"
 
 
 class AudioMarkNode

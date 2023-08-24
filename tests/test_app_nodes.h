@@ -1,6 +1,8 @@
 #ifndef _TEST_APPNODES_H_
 #define _TEST_APPNODES_H_
 
+using namespace arm_cmsis_stream;
+
 #include "AppNodes.h"
 
 template<typename IN, int inputSize>

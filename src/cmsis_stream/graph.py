@@ -155,6 +155,7 @@ conf.prefix="audiomark_"
 generateGenericNodes(".")
 generateCGStatus(".")
 
+
 with open("pre_schedule_audiomark.dot","w") as f:
     g.graphviz(f)
 
@@ -212,3 +213,11 @@ myStyle = MyStyle(style)
 with open("audiomark.dot","w") as f:
     sched.graphviz(f,style=myStyle,config=conf)
 
+#with open(args.others[0],"r") as f:
+#        r = safe_load(f)
+#        the_graph = importGraph(r)
+#
+#    with open(args.others[1],"r") as f:
+#        r = safe_load(f)
+#        conf = importConfig(r)
+    
