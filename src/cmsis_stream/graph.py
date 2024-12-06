@@ -133,7 +133,7 @@ g.connect(aec.o,anr.i)
 g.connect(anr.o,audioWin.i)
 g.connect(audioWin.o,mfcc.i)
 g.connect(mfcc.o,mfccWin.i)
-g.connect(mfccWin.o,dsnn.i)
+g.connect(mfccWin.o,dsnn.i,buffer="dsnn_input",customBufferMustBeArray=True)
 g.connect(dsnn.o,result.i)
 
 
@@ -150,7 +150,7 @@ conf.cOptionalArgs=["int iterations",
 conf.heapAllocation = True
 conf.nodeIdentification = True
 conf.prefix="audiomark_"
-#conf.horizontal = False
+conf.horizontal = False
 
 generateGenericNodes(".")
 generateCGStatus(".")
@@ -178,6 +178,12 @@ class MyStyle(Style):
     #
     # NORMAL NODE CUSTOMIZATION
     #
+
+    def edge_label(self,fifo,typeName,length):
+        if fifo.customBuffer is not None:
+           return fifo.customBuffer._name
+        else:
+            return super().edge_label(fifo,typeName,length)
 
     def node_color(self,node):
        

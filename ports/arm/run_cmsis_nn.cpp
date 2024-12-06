@@ -53,7 +53,6 @@ static DSCNNModel ds_cnn_model;
 
 void cmsis_nn_init(void) {
 
-
     if (!ds_cnn_model.Init(tensorArena,
                            sizeof(tensorArena),
                            GetModelPointer(),
@@ -61,6 +60,10 @@ void cmsis_nn_init(void) {
         printf_err("Failed to initialise model\n");
         return;
     }
+
+    TfLiteTensor *inputTensor = ds_cnn_model.GetInputTensor(0);
+    uint8_t *const input_to_nn = tflite::GetTensorData<uint8_t>(inputTensor);
+    return input_to_nn;
 }
 
 int classify_on_cmsis_nn(const input_tensor_t in_data, output_tensor_t out_data) {

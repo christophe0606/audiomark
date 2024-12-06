@@ -5,40 +5,39 @@
 digraph structs {
     bgcolor = "white"
     node [shape=plaintext,color="black",fontcolor="black",fontname="Times-Roman"]
-    rankdir=LR
     edge [arrowsize="0.5",color="black",fontcolor="black",fontname="Times-Roman"]
+
 
 
 
 abf [label=<
 <TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-    <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
-    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">abf<BR/>(ABF)</FONT></TD>
-    <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+        <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
+        <TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
+      </TR>
+  <TR>
+    <TD ALIGN="CENTER" COLSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">abf<BR/>(ABF)</FONT></TD>
   </TR>
-<TR>
-<TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
-
- 
-<TD></TD></TR>
-
+  <TR>
+        <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+        <TD></TD>  </TR>
 </TABLE>>];
+
 
 
 aec [label=<
 <TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-    <TD PORT="i"><FONT POINT-SIZE="12.0" COLOR="black">i</FONT></TD>
-    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">aec<BR/>(AEC)</FONT></TD>
-    <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+        <TD PORT="i"><FONT POINT-SIZE="12.0" COLOR="black">i</FONT></TD>
+        <TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
+      </TR>
+  <TR>
+    <TD ALIGN="CENTER" COLSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">aec<BR/>(AEC)</FONT></TD>
   </TR>
-<TR>
-<TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
-
- 
-<TD></TD></TR>
-
+  <TR>
+        <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+        <TD></TD>  </TR>
 </TABLE>>];
 
 anr [label=<
@@ -107,35 +106,35 @@ speaker [label=<
 </TABLE>>];
 
 
+
 th_add_q151 [label=<
 <TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-    <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
-    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
-    <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+        <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
+        <TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
+      </TR>
+  <TR>
+    <TD ALIGN="CENTER" COLSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
   </TR>
-<TR>
-<TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
-
- 
-<TD></TD></TR>
-
+  <TR>
+        <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+        <TD></TD>  </TR>
 </TABLE>>];
+
 
 
 th_add_q152 [label=<
 <TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-    <TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
-    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
-    <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+        <TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
+        <TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
+      </TR>
+  <TR>
+    <TD ALIGN="CENTER" COLSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
   </TR>
-<TR>
-<TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
-
- 
-<TD></TD></TR>
-
+  <TR>
+        <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+        <TD></TD>  </TR>
 </TABLE>>];
 
 
@@ -194,7 +193,7 @@ mfcc:i -> mfccWin:i [style="solid",color="black",fontsize="10.0",fontcolor="blac
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >10</FONT>
 </TD></TR></TABLE>>]
 
-mfccWin:i -> dsnn:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<s8(490)>
+mfccWin:i -> dsnn:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<dsnn_input>
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >490</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >490</FONT>

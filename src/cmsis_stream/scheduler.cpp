@@ -10,8 +10,8 @@ The support classes and code are covered by CMSIS-Stream license.
 
 #include <cstdint>
 #include "custom.h"
-#include "GenericNodes.h"
 #include "cg_status.h"
+#include "GenericNodes.h"
 #include "AppNodes.h"
 #include "scheduler.h"
 
@@ -22,6 +22,7 @@ The support classes and code are covered by CMSIS-Stream license.
        }
 
 #endif
+
 
 #if !defined(CG_BEFORE_ITERATION)
 #define CG_BEFORE_ITERATION
@@ -73,6 +74,8 @@ The support classes and code are covered by CMSIS-Stream license.
 
 
 
+
+
 CG_AFTER_INCLUDES
 
 
@@ -88,6 +91,25 @@ static uint8_t schedule[65]=
 6,10,11,5,12,13,0,1,2,6,10,11,5,12,13,0,1,2,3,7,8,4,9,6,10,11,5,12,13,0,1,2,3,7,8,4,9,6,10,11,
 5,12,13,0,1,2,3,7,8,4,9,6,10,11,5,12,13,0,1,2,3,7,8,4,9,
 };
+
+/*
+
+Internal ID identification for the nodes
+
+*/
+#define ABF_INTERNAL_ID 0
+#define AEC_INTERNAL_ID 1
+#define ANR_INTERNAL_ID 2
+#define AUDIOWIN_INTERNAL_ID 3
+#define DSNN_INTERNAL_ID 4
+#define DUP0_INTERNAL_ID 5
+#define LEFT_INTERNAL_ID 6
+#define MFCC_INTERNAL_ID 7
+#define MFCCWIN_INTERNAL_ID 8
+#define RESULT_INTERNAL_ID 9
+#define RIGHT_INTERNAL_ID 10
+#define SPEAKER_INTERNAL_ID 11
+
 
 /***********
 
@@ -118,6 +140,10 @@ FIFO buffers
 #define FIFOSIZE13 256
 #define FIFOSIZE14 256
 
+#define BUFFERSIZE0 256
+CG_BEFORE_BUFFER
+int16_t audiomark_buf0[BUFFERSIZE0]={0};
+
 #define BUFFERSIZE1 256
 CG_BEFORE_BUFFER
 int16_t audiomark_buf1[BUFFERSIZE1]={0};
@@ -138,29 +164,29 @@ int16_t audiomark_buf4[BUFFERSIZE4]={0};
 CG_BEFORE_BUFFER
 int16_t audiomark_buf5[BUFFERSIZE5]={0};
 
-#define BUFFERSIZE6 256
+#define BUFFERSIZE6 512
 CG_BEFORE_BUFFER
 int16_t audiomark_buf6[BUFFERSIZE6]={0};
 
-#define BUFFERSIZE7 512
+#define BUFFERSIZE7 640
 CG_BEFORE_BUFFER
 int16_t audiomark_buf7[BUFFERSIZE7]={0};
 
-#define BUFFERSIZE8 640
+#define BUFFERSIZE8 10
 CG_BEFORE_BUFFER
-int16_t audiomark_buf8[BUFFERSIZE8]={0};
+int8_t audiomark_buf8[BUFFERSIZE8]={0};
 
-#define BUFFERSIZE9 10
+#define BUFFERSIZE9 12
 CG_BEFORE_BUFFER
 int8_t audiomark_buf9[BUFFERSIZE9]={0};
 
-#define BUFFERSIZE10 490
+#define BUFFERSIZE10 256
 CG_BEFORE_BUFFER
-int8_t audiomark_buf10[BUFFERSIZE10]={0};
+int16_t audiomark_buf10[BUFFERSIZE10]={0};
 
-#define BUFFERSIZE11 12
+#define BUFFERSIZE11 256
 CG_BEFORE_BUFFER
-int8_t audiomark_buf11[BUFFERSIZE11]={0};
+int16_t audiomark_buf11[BUFFERSIZE11]={0};
 
 #define BUFFERSIZE12 256
 CG_BEFORE_BUFFER
@@ -169,14 +195,6 @@ int16_t audiomark_buf12[BUFFERSIZE12]={0};
 #define BUFFERSIZE13 256
 CG_BEFORE_BUFFER
 int16_t audiomark_buf13[BUFFERSIZE13]={0};
-
-#define BUFFERSIZE14 256
-CG_BEFORE_BUFFER
-int16_t audiomark_buf14[BUFFERSIZE14]={0};
-
-#define BUFFERSIZE15 256
-CG_BEFORE_BUFFER
-int16_t audiomark_buf15[BUFFERSIZE15]={0};
 
 
 typedef struct {
@@ -236,78 +254,79 @@ int init_scheduler(int iterations,
                               const int16_t *right_microphone_capture,
                               const int16_t *downlink_audio)
 {
+
     CG_BEFORE_FIFO_INIT;
-    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,1,0>(audiomark_buf1);
+    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,1,0>(audiomark_buf0);
     if (fifos.fifo0==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(audiomark_buf2);
+    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(audiomark_buf1);
     if (fifos.fifo1==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo2 = new FIFO<int16_t,FIFOSIZE2,1,0>(audiomark_buf3);
+    fifos.fifo2 = new FIFO<int16_t,FIFOSIZE2,1,0>(audiomark_buf2);
     if (fifos.fifo2==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo3 = new FIFO<int16_t,FIFOSIZE3,1,0>(audiomark_buf4);
+    fifos.fifo3 = new FIFO<int16_t,FIFOSIZE3,1,0>(audiomark_buf3);
     if (fifos.fifo3==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo4 = new FIFO<int16_t,FIFOSIZE4,1,0>(audiomark_buf5);
+    fifos.fifo4 = new FIFO<int16_t,FIFOSIZE4,1,0>(audiomark_buf4);
     if (fifos.fifo4==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo5 = new FIFO<int16_t,FIFOSIZE5,1,0>(audiomark_buf6);
+    fifos.fifo5 = new FIFO<int16_t,FIFOSIZE5,1,0>(audiomark_buf5);
     if (fifos.fifo5==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo6 = new FIFO<int16_t,FIFOSIZE6,0,0>(audiomark_buf7);
+    fifos.fifo6 = new FIFO<int16_t,FIFOSIZE6,0,0>(audiomark_buf6);
     if (fifos.fifo6==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo7 = new FIFO<int16_t,FIFOSIZE7,1,0>(audiomark_buf8);
+    fifos.fifo7 = new FIFO<int16_t,FIFOSIZE7,1,0>(audiomark_buf7);
     if (fifos.fifo7==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo8 = new FIFO<int8_t,FIFOSIZE8,1,0>(audiomark_buf9);
+    fifos.fifo8 = new FIFO<int8_t,FIFOSIZE8,1,0>(audiomark_buf8);
     if (fifos.fifo8==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo9 = new FIFO<int8_t,FIFOSIZE9,1,0>(audiomark_buf10);
+    fifos.fifo9 = new FIFO<int8_t,FIFOSIZE9,1,0>(dsnn_input);
     if (fifos.fifo9==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo10 = new FIFO<int8_t,FIFOSIZE10,1,0>(audiomark_buf11);
+    fifos.fifo10 = new FIFO<int8_t,FIFOSIZE10,1,0>(audiomark_buf9);
     if (fifos.fifo10==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo11 = new FIFO<int16_t,FIFOSIZE11,1,0>(audiomark_buf12);
+    fifos.fifo11 = new FIFO<int16_t,FIFOSIZE11,1,0>(audiomark_buf10);
     if (fifos.fifo11==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo12 = new FIFO<int16_t,FIFOSIZE12,1,0>(audiomark_buf13);
+    fifos.fifo12 = new FIFO<int16_t,FIFOSIZE12,1,0>(audiomark_buf11);
     if (fifos.fifo12==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo13 = new FIFO<int16_t,FIFOSIZE13,1,0>(audiomark_buf14);
+    fifos.fifo13 = new FIFO<int16_t,FIFOSIZE13,1,0>(audiomark_buf12);
     if (fifos.fifo13==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo14 = new FIFO<int16_t,FIFOSIZE14,1,0>(audiomark_buf15);
+    fifos.fifo14 = new FIFO<int16_t,FIFOSIZE14,1,0>(audiomark_buf13);
     if (fifos.fifo14==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -525,92 +544,106 @@ uint32_t scheduler(int *error,int iterations,
     int32_t debugCounter=1;
 
 
+
     /* Run several schedule iterations */
     CG_BEFORE_SCHEDULE;
     while((cgStaticError==0) && (debugCounter > 0))
     {
         /* Run a schedule iteration */
         CG_BEFORE_ITERATION;
-        for(unsigned long id=0 ; id < 65; id++)
+        unsigned long id=0;
+        for(; id < 65; id++)
         {
             CG_BEFORE_NODE_EXECUTION(schedule[id]);
-
             switch(schedule[id])
             {
                 case 0:
                 {
+                    
                    cgStaticError = nodes.abf->run();
                 }
                 break;
 
                 case 1:
                 {
+                    
                    cgStaticError = nodes.aec->run();
                 }
                 break;
 
                 case 2:
                 {
+                    
                    cgStaticError = nodes.anr->run();
                 }
                 break;
 
                 case 3:
                 {
+                    
                    cgStaticError = nodes.audioWin->run();
                 }
                 break;
 
                 case 4:
                 {
+                    
                    cgStaticError = nodes.dsnn->run();
                 }
                 break;
 
                 case 5:
                 {
+                    
                    cgStaticError = nodes.dup0->run();
                 }
                 break;
 
                 case 6:
                 {
+                    
                    cgStaticError = nodes.left->run();
                 }
                 break;
 
                 case 7:
                 {
+                    
                    cgStaticError = nodes.mfcc->run();
                 }
                 break;
 
                 case 8:
                 {
+                    
                    cgStaticError = nodes.mfccWin->run();
                 }
                 break;
 
                 case 9:
                 {
+                    
                    cgStaticError = nodes.result->run();
                 }
                 break;
 
                 case 10:
                 {
+                    
                    cgStaticError = nodes.right->run();
                 }
                 break;
 
                 case 11:
                 {
+                    
                    cgStaticError = nodes.speaker->run();
                 }
                 break;
 
                 case 12:
                 {
+                    
                    
                   {
 
@@ -628,6 +661,7 @@ uint32_t scheduler(int *error,int iterations,
 
                 case 13:
                 {
+                    
                    
                   {
 
@@ -647,7 +681,7 @@ uint32_t scheduler(int *error,int iterations,
                 break;
             }
             CG_AFTER_NODE_EXECUTION(schedule[id]);
-            CHECKERROR;
+                        CHECKERROR;
         }
        debugCounter--;
        CG_AFTER_ITERATION;

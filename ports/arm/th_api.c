@@ -410,15 +410,15 @@ cmsis_nn_context ctx;
     #endif
 #endif
 
-void
+char*
 th_nn_init(void) {
 
 
 #if defined(TF_INTERPRETER)
     #if defined(ETHOSU_ARCH)
-        ethosu_nn_init();
+        return(ethosu_nn_init());
     #else
-        cmsis_nn_init();
+        return(cmsis_nn_init());
     #endif
 #else
     // unused const arm_cmsis_nn_status expected = ARM_CMSIS_NN_SUCCESS;
@@ -426,6 +426,7 @@ th_nn_init(void) {
 
     /* N.B. The developer owns this file so they can allocate how they like. */
     ctx.buf = malloc(ctx.size);
+    return(ctx.buf);
 
     // we don't free in audiomark
 #endif
@@ -435,10 +436,10 @@ th_nn_init(void) {
 void
 th_nn_free(void)
 {
-   
+#if !defined(TF_INTERPRETER)
     free(ctx.buf );
+#endif 
 
->>>>>>> 17ad461 (Added memory statistics)
 }
 
 ee_status_t

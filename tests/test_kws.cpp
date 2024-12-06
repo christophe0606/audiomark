@@ -93,7 +93,7 @@ main(int argc, char *argv[])
     free_test_scheduler(NBUFFERS/5,1,
                    (const int16_t*)p_input,
                    (const int8_t*)p_expected);
-
+    th_nn_free();
 
     if (err)
     {

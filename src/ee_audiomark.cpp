@@ -60,6 +60,7 @@ ee_audiomark_release(void)
     free_scheduler(1,left_microphone_capture,
                              right_microphone_capture,
                              downlink_audio);
+    th_nn_free();
 }
 
 

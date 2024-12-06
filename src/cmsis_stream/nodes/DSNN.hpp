@@ -3,6 +3,8 @@ extern "C" {
     extern int ds_cnn_s_s8_get_buffer_size(void);
 }
 
+static char *dsnn_input;
+
 template<typename IN, int inputSize,
          typename OUT, int outputSize>
 class DSNN;
@@ -17,16 +19,10 @@ public:
     DSNN(FIFOBase<int8_t> &src,FIFOBase<int8_t> &dst,int testMode=0):
     GenericNode<int8_t,inputSize,
                 int8_t,OUT_DIM>(src,dst),AudioMarkNode(),mTestMode(testMode){
-        th_nn_init();
-
         nbNNRun = 0;
         inferences = 0;
     };
 
-    ~DSNN()
-    {
-        th_nn_free();
-    }
 
     int getNbInferences() const
     {

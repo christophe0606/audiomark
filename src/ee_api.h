@@ -28,7 +28,7 @@ void *th_memset(void *b, int c, size_t len);
 
 void *th_memmove(void *__RESTRICT dst, const void *__RESTRICT src, size_t n);
 
-void th_nn_init(void);
+char* th_nn_init(void);
 void th_nn_free(void);
 
 ee_status_t th_nn_classify(const int8_t p_input[490], int8_t p_output[12]);

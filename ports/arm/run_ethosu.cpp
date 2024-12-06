@@ -53,7 +53,7 @@ extern size_t GetModelLen();
 static DSCNNModel ds_cnn_model;
 
 
-void ethosu_nn_init(void) {
+char* ethosu_nn_init(void) {
 
     int status = ethosu_npu_init();
     if (status != 0) {
@@ -68,6 +68,10 @@ void ethosu_nn_init(void) {
         printf_err("Failed to initialise model\n");
         return;
     }
+
+    TfLiteTensor *inputTensor = ds_cnn_model.GetInputTensor(0);
+    uint8_t *const input_to_nn = tflite::GetTensorData<uint8_t>(inputTensor);
+    return input_to_nn;
 }
 
 int classify_on_ethosu(const input_tensor_t in_data, output_tensor_t out_data) {
