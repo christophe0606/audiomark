@@ -16,6 +16,8 @@ extern const int16_t left_microphone_capture[NINPUT_SAMPLES];
 extern const int16_t right_microphone_capture[NINPUT_SAMPLES];
 }
 
+#if !defined(GST)
+
 int
 ee_audiomark_initialize(short printMem)
 {
@@ -52,7 +54,9 @@ ee_audiomark_initialize(short printMem)
 
     return(err);
 }
+#endif 
 
+#if !defined(GST)
 void
 ee_audiomark_release(void)
 {
@@ -61,7 +65,7 @@ ee_audiomark_release(void)
                              downlink_audio);
     th_nn_free();
 }
-
+#endif
 
 int
 ee_audiomark_run(int iterations)

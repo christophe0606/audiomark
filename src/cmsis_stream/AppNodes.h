@@ -56,13 +56,23 @@ extern "C" {
 #include "os_support_custom.h"
 }
 
+#if defined(GST)
+#include "GstConfig.h"
+#endif 
+
+#if !defined(GST)
 #include "nodes/Source.hpp"
+#endif 
+
 #include "nodes/ABF.hpp"
 #include "nodes/AEC.hpp"
 #include "nodes/ANR.hpp"
 #include "nodes/MFCC.hpp"
 #include "nodes/DSNN.hpp"
+#if defined(GST)
+#include "nodes/GstResult.hpp"
+#else
 #include "nodes/Result.hpp"
-
+#endif
 
 #endif

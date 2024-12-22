@@ -5,39 +5,40 @@
 digraph structs {
     bgcolor = "white"
     node [shape=plaintext,color="black",fontcolor="black",fontname="Times-Roman"]
+    rankdir=LR
     edge [arrowsize="0.5",color="black",fontcolor="black",fontname="Times-Roman"]
-
 
 
 
 abf [label=<
 <TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-        <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
-        <TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
-      </TR>
-  <TR>
-    <TD ALIGN="CENTER" COLSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">abf<BR/>(ABF)</FONT></TD>
+    <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
+    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">abf<BR/>(ABF)</FONT></TD>
+    <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
   </TR>
-  <TR>
-        <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
-        <TD></TD>  </TR>
-</TABLE>>];
+<TR>
+<TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
 
+ 
+<TD></TD></TR>
+
+</TABLE>>];
 
 
 aec [label=<
 <TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-        <TD PORT="i"><FONT POINT-SIZE="12.0" COLOR="black">i</FONT></TD>
-        <TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
-      </TR>
-  <TR>
-    <TD ALIGN="CENTER" COLSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">aec<BR/>(AEC)</FONT></TD>
+    <TD PORT="i"><FONT POINT-SIZE="12.0" COLOR="black">i</FONT></TD>
+    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">aec<BR/>(AEC)</FONT></TD>
+    <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
   </TR>
-  <TR>
-        <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
-        <TD></TD>  </TR>
+<TR>
+<TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
+
+ 
+<TD></TD></TR>
+
 </TABLE>>];
 
 anr [label=<
@@ -66,7 +67,7 @@ dup0 [shape=point,label="dup0"]
 left [label=<
 <TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">left<BR/>(Source)</FONT></TD>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">left<BR/>(GstSource)</FONT></TD>
   </TR>
 </TABLE>>];
 
@@ -84,57 +85,82 @@ mfccWin [label=<
   </TR>
 </TABLE>>];
 
+
 result [label=<
 <TABLE color="black" bgcolor="aquamarine" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">result<BR/>(Result)</FONT></TD>
+    <TD PORT="i"><FONT POINT-SIZE="12.0" COLOR="black">i</FONT></TD>
+    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">result<BR/>(GstResult)</FONT></TD>
+    <TD PORT="d"><FONT POINT-SIZE="12.0" COLOR="black">d</FONT></TD>
   </TR>
+<TR>
+ 
+<TD></TD>
+<TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+</TR>
+
 </TABLE>>];
 
 right [label=<
 <TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">right<BR/>(Source)</FONT></TD>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">right<BR/>(GstSource)</FONT></TD>
   </TR>
+</TABLE>>];
+
+
+sink [label=<
+<TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <TR>
+    <TD PORT="d"><FONT POINT-SIZE="12.0" COLOR="black">d</FONT></TD>
+    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">sink<BR/>(GstDurationSink)</FONT></TD>
+    <TD></TD>
+  </TR>
+<TR>
+<TD PORT="i"><FONT POINT-SIZE="12.0" COLOR="black">i</FONT></TD>
+
+ 
+<TD></TD></TR>
+
 </TABLE>>];
 
 speaker [label=<
 <TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">speaker<BR/>(Source)</FONT></TD>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">speaker<BR/>(GstSource)</FONT></TD>
   </TR>
 </TABLE>>];
-
 
 
 th_add_q151 [label=<
 <TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-        <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
-        <TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
-      </TR>
-  <TR>
-    <TD ALIGN="CENTER" COLSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
+    <TD PORT="l"><FONT POINT-SIZE="12.0" COLOR="black">l</FONT></TD>
+    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
+    <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
   </TR>
-  <TR>
-        <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
-        <TD></TD>  </TR>
-</TABLE>>];
+<TR>
+<TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
 
+ 
+<TD></TD></TR>
+
+</TABLE>>];
 
 
 th_add_q152 [label=<
 <TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-        <TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
-        <TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
-      </TR>
-  <TR>
-    <TD ALIGN="CENTER" COLSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
+    <TD PORT="r"><FONT POINT-SIZE="12.0" COLOR="black">r</FONT></TD>
+    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">th_add_q15<BR/>(Function)</FONT></TD>
+    <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
   </TR>
-  <TR>
-        <TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
-        <TD></TD>  </TR>
+<TR>
+<TD PORT="s"><FONT POINT-SIZE="12.0" COLOR="black">s</FONT></TD>
+
+ 
+<TD></TD></TR>
+
 </TABLE>>];
 
 
@@ -203,6 +229,18 @@ dsnn:i -> result:i [style="solid",color="black",fontsize="10.0",fontcolor="black
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >12</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >12</FONT>
+</TD></TR></TABLE>>]
+
+result:o -> sink:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<u8(8)>
+,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >8</FONT>
+</TD></TR></TABLE>>
+,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >8</FONT>
+</TD></TR></TABLE>>]
+
+result:d -> sink:d [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<f32(2)>
+,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >2</FONT>
+</TD></TR></TABLE>>
+,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >2</FONT>
 </TD></TR></TABLE>>]
 
 speaker:i ->  

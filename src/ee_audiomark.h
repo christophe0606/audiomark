@@ -37,8 +37,10 @@ enum _component_req
 #define SAMPLES_PER_AUDIO_FRAME 256
 #define BYTES_PER_AUDIO_FRAME   (SAMPLES_PER_AUDIO_FRAME * BYTES_PER_SAMPLE)
 
+#if !defined(GST)
 int  ee_audiomark_initialize(short b);
 int  ee_audiomark_run(int i);
 void ee_audiomark_release();
+#endif
 
 #endif

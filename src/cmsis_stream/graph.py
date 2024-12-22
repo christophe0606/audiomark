@@ -1,4 +1,10 @@
 from cmsis_stream.cg.scheduler import *
+import sys 
+
+sys.path.append("/Volumes/Ext/Embedded/GCMSISStream")
+from nodes import * 
+
+GST = True 
 
 ### Define new types of Nodes 
 
@@ -63,6 +69,17 @@ class Result(GenericSink):
     def typeName(self):
         return "Result"
 
+class GstResult(GenericNode):
+    def __init__(self,name):
+        GenericNode.__init__(self,name)
+        self.addInput("i",CType(SINT8),12)
+        self.addOutput("o",CType(UINT8),8)
+        self.addOutput("d",CType(F32),2)
+        
+    @property
+    def typeName(self):
+        return "GstResult"
+
 class Source(GenericSource):
     def __init__(self,name,inLength,buf):
         GenericSource.__init__(self,name)
@@ -90,9 +107,15 @@ NB = NB_AUDIO_SAMPLES
 MFCC_FEATURES = 10
 NN_FEATURES = 49
 
-left=Source("left",NB,"left_microphone_capture")
-right=Source("right",NB,"right_microphone_capture")
-speaker=Source("speaker",NB,"downlink_audio")
+if GST:
+  left=GstSource("left",CType(SINT16),NB,cap="audio/x-raw, layout=interleaved, channels=1, format=S16LE, rate=16000")
+  right=GstSource("right",CType(SINT16),NB,cap="audio/x-raw, layout=interleaved, channels=1, format=S16LE, rate=16000")
+  speaker=GstSource("speaker",CType(SINT16),NB,cap="audio/x-raw, layout=interleaved, channels=1, format=S16LE, rate=16000")
+
+else:
+  left=Source("left",NB,"left_microphone_capture")
+  right=Source("right",NB,"right_microphone_capture")
+  speaker=Source("speaker",NB,"downlink_audio")
 
 
 addl = Binary("th_add_q15",CType(SINT16),NB,input_names=["l","s"])
@@ -111,7 +134,12 @@ audioWin.identified=False
 mfccWin.identified=False 
 
 dsnn=DSNN("dsnn",MFCC_FEATURES*NN_FEATURES)
-result=Result("result")
+
+if GST:
+   result=GstResult("result")
+   sink=GstDurationSink("sink",CType(UINT8),8,cap="text/x-raw, format=utf8")
+else:
+   result=Result("result")
 
 
 g = Graph()
@@ -134,23 +162,35 @@ g.connect(anr.o,audioWin.i)
 g.connect(audioWin.o,mfcc.i)
 g.connect(mfcc.o,mfccWin.i)
 g.connect(mfccWin.o,dsnn.i)
-g.connect(dsnn.o,result.i)
+
+if GST:
+  g.connect(dsnn.o,result.i)
+  g.connect(result.o,sink.i)
+  g.connect(result.d,sink.d)
+else:
+   g.connect(dsnn.o,result.i)
 
 
 
 print("Generate graphviz and code")
 
 conf=Configuration()
-conf.debugLimit=1
-conf.cOptionalArgs=["int iterations",
-                    "const int16_t *left_microphone_capture",
-                    "const int16_t *right_microphone_capture",
-                    "const int16_t *downlink_audio"]
-#conf.memoryOptimization=True
-conf.heapAllocation = True
-conf.nodeIdentification = True
-conf.prefix="audiomark_"
-conf.horizontal = False
+if GST:
+    conf.asynchronous = False
+    conf.callback = True
+    conf.cOptionalArgs="void *node,gst_api *gst"
+
+else:
+   conf.debugLimit=1
+   conf.cOptionalArgs=["int iterations",
+                       "const int16_t *left_microphone_capture",
+                       "const int16_t *right_microphone_capture",
+                       "const int16_t *downlink_audio"]
+   #conf.memoryOptimization=True
+   conf.heapAllocation = True
+   conf.nodeIdentification = True
+   conf.prefix="audiomark_"
+   conf.horizontal = False
 
 generateGenericNodes(".")
 generateCGStatus(".")
