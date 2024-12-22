@@ -64,7 +64,7 @@ class Result(GenericSink):
     def __init__(self,name):
         GenericSink.__init__(self,name)
         self.addInput("i",CType(SINT8),12)
-        
+
     @property
     def typeName(self):
         return "Result"
@@ -73,12 +73,22 @@ class GstResult(GenericNode):
     def __init__(self,name):
         GenericNode.__init__(self,name)
         self.addInput("i",CType(SINT8),12)
+        self.addOutput("o",CType(UINT8),1)
+
+    @property
+    def typeName(self):
+        return "GstResult"
+
+class MajorityVote(GenericNode):
+    def __init__(self,name,inputLength):
+        GenericNode.__init__(self,name)
+        self.addInput("i",CType(UINT8),inputLength)
         self.addOutput("o",CType(UINT8),8)
         self.addOutput("d",CType(F32),2)
         
     @property
     def typeName(self):
-        return "GstResult"
+        return "MajorityVote"
 
 class Source(GenericSource):
     def __init__(self,name,inLength,buf):
@@ -137,6 +147,8 @@ dsnn=DSNN("dsnn",MFCC_FEATURES*NN_FEATURES)
 
 if GST:
    result=GstResult("result")
+   vote=MajorityVote("vote",5)
+
    sink=GstDurationSink("sink",CType(UINT8),8,cap="text/x-raw, format=utf8")
 else:
    result=Result("result")
@@ -165,8 +177,9 @@ g.connect(mfccWin.o,dsnn.i)
 
 if GST:
   g.connect(dsnn.o,result.i)
-  g.connect(result.o,sink.i)
-  g.connect(result.d,sink.d)
+  g.connect(result.o,vote.i)
+  g.connect(vote.o,sink.i)
+  g.connect(vote.d,sink.d)
 else:
    g.connect(dsnn.o,result.i)
 

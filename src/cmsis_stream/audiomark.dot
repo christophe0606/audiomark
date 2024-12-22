@@ -85,20 +85,11 @@ mfccWin [label=<
   </TR>
 </TABLE>>];
 
-
 result [label=<
 <TABLE color="black" bgcolor="aquamarine" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
-    <TD PORT="i"><FONT POINT-SIZE="12.0" COLOR="black">i</FONT></TD>
-    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">result<BR/>(GstResult)</FONT></TD>
-    <TD PORT="d"><FONT POINT-SIZE="12.0" COLOR="black">d</FONT></TD>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">result<BR/>(GstResult)</FONT></TD>
   </TR>
-<TR>
- 
-<TD></TD>
-<TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
-</TR>
-
 </TABLE>>];
 
 right [label=<
@@ -160,6 +151,22 @@ th_add_q152 [label=<
 
  
 <TD></TD></TR>
+
+</TABLE>>];
+
+
+vote [label=<
+<TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <TR>
+    <TD PORT="i"><FONT POINT-SIZE="12.0" COLOR="black">i</FONT></TD>
+    <TD ALIGN="CENTER" ROWSPAN="2"><FONT COLOR="black" POINT-SIZE="14.0">vote<BR/>(MajorityVote)</FONT></TD>
+    <TD PORT="d"><FONT POINT-SIZE="12.0" COLOR="black">d</FONT></TD>
+  </TR>
+<TR>
+ 
+<TD></TD>
+<TD PORT="o"><FONT POINT-SIZE="12.0" COLOR="black">o</FONT></TD>
+</TR>
 
 </TABLE>>];
 
@@ -231,13 +238,18 @@ dsnn:i -> result:i [style="solid",color="black",fontsize="10.0",fontcolor="black
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >12</FONT>
 </TD></TR></TABLE>>]
 
-result:o -> sink:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<u8(8)>
+result:i -> vote:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<u8(5)>
+,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >5</FONT>
+</TD></TR></TABLE>>
+]
+
+vote:o -> sink:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<u8(8)>
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >8</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >8</FONT>
 </TD></TR></TABLE>>]
 
-result:d -> sink:d [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<f32(2)>
+vote:d -> sink:d [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<f32(2)>
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >2</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >2</FONT>

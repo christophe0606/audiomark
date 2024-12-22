@@ -71,6 +71,7 @@ extern "C" {
 #include "nodes/DSNN.hpp"
 #if defined(GST)
 #include "nodes/GstResult.hpp"
+#include "nodes/MajorityVote.hpp"
 #else
 #include "nodes/Result.hpp"
 #endif
