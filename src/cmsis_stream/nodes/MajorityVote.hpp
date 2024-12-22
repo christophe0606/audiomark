@@ -48,8 +48,8 @@ public:
         float *d=this->getWriteBufferDuration();
 
         const char output_class[OUT_DIM][outputSize+1]
-            = { "Silence ", "Unknown ", "yes     ", "no      ",  "up      ", "down    ",
-                "left    ", "right   ", "on      ", "off     ",  "stop    ", "go      " };
+            = { "Silence ", "Unknown ", "   yes  ", "   no   ",  "   up   ", "  down  ",
+                " left   ", " right  ", "   on   ", "   off  ",  "  stop  ", "   go   " };
         
         d[0] = 0.0;
 
@@ -84,6 +84,7 @@ public:
         {
           strcpy((char*)dst,output_class[idx]);
           d[0]=300;
+          // 320
           d[1] = (unsigned long)(320.0*1000/16000*clock);
         }
 
