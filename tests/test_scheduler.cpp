@@ -10,8 +10,8 @@ The support classes and code are covered by CMSIS-Stream license.
 
 #include <cstdint>
 #include "kws_test_custom.h"
-#include "GenericNodes.h"
 #include "cg_status.h"
+#include "GenericNodes.h"
 #include "test_app_nodes.h"
 #include "test_scheduler.h"
 
@@ -22,6 +22,7 @@ The support classes and code are covered by CMSIS-Stream license.
        }
 
 #endif
+
 
 #if !defined(CG_BEFORE_ITERATION)
 #define CG_BEFORE_ITERATION
@@ -73,6 +74,8 @@ The support classes and code are covered by CMSIS-Stream license.
 
 
 
+
+
 CG_AFTER_INCLUDES
 
 
@@ -87,6 +90,19 @@ static uint8_t schedule[25]=
 { 
 4,4,0,2,3,1,5,4,0,2,3,1,5,4,0,2,3,1,5,4,0,2,3,1,5,
 };
+
+/*
+
+Internal ID identification for the nodes
+
+*/
+#define AUDIOWIN_INTERNAL_ID 0
+#define DSNN_INTERNAL_ID 1
+#define MFCC_INTERNAL_ID 2
+#define MFCCWIN_INTERNAL_ID 3
+#define SRC_INTERNAL_ID 4
+#define TEST_INTERNAL_ID 5
+
 
 /***********
 
@@ -107,25 +123,25 @@ FIFO buffers
 #define FIFOSIZE3 490
 #define FIFOSIZE4 12
 
-#define BUFFERSIZE1 512
+#define BUFFERSIZE0 512
+CG_BEFORE_BUFFER
+int16_t buf0[BUFFERSIZE0]={0};
+
+#define BUFFERSIZE1 640
 CG_BEFORE_BUFFER
 int16_t buf1[BUFFERSIZE1]={0};
 
-#define BUFFERSIZE2 640
+#define BUFFERSIZE2 10
 CG_BEFORE_BUFFER
-int16_t buf2[BUFFERSIZE2]={0};
+int8_t buf2[BUFFERSIZE2]={0};
 
-#define BUFFERSIZE3 10
+#define BUFFERSIZE3 490
 CG_BEFORE_BUFFER
 int8_t buf3[BUFFERSIZE3]={0};
 
-#define BUFFERSIZE4 490
+#define BUFFERSIZE4 12
 CG_BEFORE_BUFFER
 int8_t buf4[BUFFERSIZE4]={0};
-
-#define BUFFERSIZE5 12
-CG_BEFORE_BUFFER
-int8_t buf5[BUFFERSIZE5]={0};
 
 
 typedef struct {
@@ -169,28 +185,29 @@ int init_test_scheduler(int iterations,
                               const int16_t *p_input,
                               const int8_t *p_expected)
 {
+
     CG_BEFORE_FIFO_INIT;
-    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,0,0>(buf1);
+    fifos.fifo0 = new FIFO<int16_t,FIFOSIZE0,0,0>(buf0);
     if (fifos.fifo0==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(buf2);
+    fifos.fifo1 = new FIFO<int16_t,FIFOSIZE1,1,0>(buf1);
     if (fifos.fifo1==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo2 = new FIFO<int8_t,FIFOSIZE2,1,0>(buf3);
+    fifos.fifo2 = new FIFO<int8_t,FIFOSIZE2,1,0>(buf2);
     if (fifos.fifo2==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo3 = new FIFO<int8_t,FIFOSIZE3,1,0>(buf4);
+    fifos.fifo3 = new FIFO<int8_t,FIFOSIZE3,1,0>(buf3);
     if (fifos.fifo3==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo4 = new FIFO<int8_t,FIFOSIZE4,1,0>(buf5);
+    fifos.fifo4 = new FIFO<int8_t,FIFOSIZE4,1,0>(buf4);
     if (fifos.fifo4==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -308,50 +325,57 @@ uint32_t test_scheduler(int *error,int iterations,
     int32_t debugCounter=1;
 
 
+
     /* Run several schedule iterations */
     CG_BEFORE_SCHEDULE;
     while((cgStaticError==0) && (debugCounter > 0))
     {
         /* Run a schedule iteration */
         CG_BEFORE_ITERATION;
-        for(unsigned long id=0 ; id < 25; id++)
+        unsigned long id=0;
+        for(; id < 25; id++)
         {
             CG_BEFORE_NODE_EXECUTION(schedule[id]);
-
             switch(schedule[id])
             {
                 case 0:
                 {
+                    
                    cgStaticError = nodes.audioWin->run();
                 }
                 break;
 
                 case 1:
                 {
+                    
                    cgStaticError = nodes.dsnn->run();
                 }
                 break;
 
                 case 2:
                 {
+                    
                    cgStaticError = nodes.mfcc->run();
                 }
                 break;
 
                 case 3:
                 {
+                    
                    cgStaticError = nodes.mfccWin->run();
                 }
                 break;
 
                 case 4:
                 {
+                    
                    cgStaticError = nodes.src->run();
                 }
                 break;
 
                 case 5:
                 {
+                    
                    cgStaticError = nodes.test->run();
                 }
                 break;
@@ -360,7 +384,7 @@ uint32_t test_scheduler(int *error,int iterations,
                 break;
             }
             CG_AFTER_NODE_EXECUTION(schedule[id]);
-            CHECKERROR;
+                        CHECKERROR;
         }
        debugCounter--;
        CG_AFTER_ITERATION;

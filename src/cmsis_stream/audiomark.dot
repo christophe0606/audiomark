@@ -193,7 +193,7 @@ mfcc:i -> mfccWin:i [style="solid",color="black",fontsize="10.0",fontcolor="blac
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >10</FONT>
 </TD></TR></TABLE>>]
 
-mfccWin:i -> dsnn:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<dsnn_input>
+mfccWin:i -> dsnn:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<s8(490)>
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >490</FONT>
 </TD></TR></TABLE>>
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >490</FONT>

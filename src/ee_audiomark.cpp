@@ -5,9 +5,8 @@ extern "C" {
 
 #include "custom.h"
 
-
-#include "GenericNodes.h"
 #include "cg_status.h"
+#include "GenericNodes.h"
 #include "AppNodes.h"
 #include "scheduler.h"
 
@@ -18,7 +17,7 @@ extern const int16_t right_microphone_capture[NINPUT_SAMPLES];
 }
 
 int
-ee_audiomark_initialize(bool printMem)
+ee_audiomark_initialize(short printMem)
 {
     int err = init_scheduler(1,left_microphone_capture,
                              right_microphone_capture,

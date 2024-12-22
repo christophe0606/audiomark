@@ -37,8 +37,8 @@ enum _component_req
 #define SAMPLES_PER_AUDIO_FRAME 256
 #define BYTES_PER_AUDIO_FRAME   (SAMPLES_PER_AUDIO_FRAME * BYTES_PER_SAMPLE)
 
-int  ee_audiomark_initialize(bool);
-int  ee_audiomark_run(int);
-void ee_audiomark_release(void);
+int  ee_audiomark_initialize(short b);
+int  ee_audiomark_run(int i);
+void ee_audiomark_release();
 
 #endif

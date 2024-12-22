@@ -18,8 +18,8 @@ extern "C" {
 }
 
 #include "kws_test_custom.h"
-#include "GenericNodes.h"
 #include "cg_status.h"
+#include "GenericNodes.h"
 #include "test_app_nodes.h"
 #include "test_scheduler.h"
 

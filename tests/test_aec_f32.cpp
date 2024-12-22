@@ -18,8 +18,8 @@ extern "C" {
 #include "ee_audiomark.h"
 }
 #include "custom.h"
-#include "GenericNodes.h"
 #include "cg_status.h"
+#include "GenericNodes.h"
 #include "AppNodes.h"
 
 #define TEST_NBUFFERS 104U

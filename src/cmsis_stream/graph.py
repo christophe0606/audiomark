@@ -133,7 +133,7 @@ g.connect(aec.o,anr.i)
 g.connect(anr.o,audioWin.i)
 g.connect(audioWin.o,mfcc.i)
 g.connect(mfcc.o,mfccWin.i)
-g.connect(mfccWin.o,dsnn.i,buffer="dsnn_input",customBufferMustBeArray=True)
+g.connect(mfccWin.o,dsnn.i)
 g.connect(dsnn.o,result.i)
 
 

@@ -17,8 +17,8 @@ extern "C" {
 }
 
 #include "custom.h"
-#include "GenericNodes.h"
 #include "cg_status.h"
+#include "GenericNodes.h"
 #include "AppNodes.h"
 
 extern "C" {

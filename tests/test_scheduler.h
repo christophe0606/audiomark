@@ -26,6 +26,7 @@ extern "C"
 
 extern void *get_test_scheduler_node(int32_t nodeID);
 
+
 extern int init_test_scheduler(int iterations,
                               int testMode,
                               const int16_t *p_input,
@@ -34,6 +35,7 @@ extern void free_test_scheduler(int iterations,
                               int testMode,
                               const int16_t *p_input,
                               const int8_t *p_expected);
+
 extern uint32_t test_scheduler(int *error,int iterations,
                               int testMode,
                               const int16_t *p_input,

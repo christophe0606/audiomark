@@ -1,10 +1,12 @@
 #ifndef _CUSTOM_H_
 
+#define CG_BEFORE_BUFFER \
+__attribute__((aligned(16)))
 
 #define CG_BEFORE_SCHEDULE \
 debugCounter = iterations;
 
 #define CG_BEFORE_FIFO_INIT \
-dsnn_input=th_nn_init();
+th_nn_init();
 
 #endif 

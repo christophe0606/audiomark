@@ -114,7 +114,7 @@ main(void)
 
     printf("Initializing\n");
 
-    if (ee_audiomark_initialize(true))
+    if (ee_audiomark_initialize(1))
     {
         printf("Failed to initialize\n");
         return -1;

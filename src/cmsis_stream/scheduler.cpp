@@ -176,13 +176,13 @@ int16_t audiomark_buf7[BUFFERSIZE7]={0};
 CG_BEFORE_BUFFER
 int8_t audiomark_buf8[BUFFERSIZE8]={0};
 
-#define BUFFERSIZE9 12
+#define BUFFERSIZE9 490
 CG_BEFORE_BUFFER
 int8_t audiomark_buf9[BUFFERSIZE9]={0};
 
-#define BUFFERSIZE10 256
+#define BUFFERSIZE10 12
 CG_BEFORE_BUFFER
-int16_t audiomark_buf10[BUFFERSIZE10]={0};
+int8_t audiomark_buf10[BUFFERSIZE10]={0};
 
 #define BUFFERSIZE11 256
 CG_BEFORE_BUFFER
@@ -195,6 +195,10 @@ int16_t audiomark_buf12[BUFFERSIZE12]={0};
 #define BUFFERSIZE13 256
 CG_BEFORE_BUFFER
 int16_t audiomark_buf13[BUFFERSIZE13]={0};
+
+#define BUFFERSIZE14 256
+CG_BEFORE_BUFFER
+int16_t audiomark_buf14[BUFFERSIZE14]={0};
 
 
 typedef struct {
@@ -301,32 +305,32 @@ int init_scheduler(int iterations,
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo9 = new FIFO<int8_t,FIFOSIZE9,1,0>(dsnn_input);
+    fifos.fifo9 = new FIFO<int8_t,FIFOSIZE9,1,0>(audiomark_buf9);
     if (fifos.fifo9==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo10 = new FIFO<int8_t,FIFOSIZE10,1,0>(audiomark_buf9);
+    fifos.fifo10 = new FIFO<int8_t,FIFOSIZE10,1,0>(audiomark_buf10);
     if (fifos.fifo10==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo11 = new FIFO<int16_t,FIFOSIZE11,1,0>(audiomark_buf10);
+    fifos.fifo11 = new FIFO<int16_t,FIFOSIZE11,1,0>(audiomark_buf11);
     if (fifos.fifo11==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo12 = new FIFO<int16_t,FIFOSIZE12,1,0>(audiomark_buf11);
+    fifos.fifo12 = new FIFO<int16_t,FIFOSIZE12,1,0>(audiomark_buf12);
     if (fifos.fifo12==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo13 = new FIFO<int16_t,FIFOSIZE13,1,0>(audiomark_buf12);
+    fifos.fifo13 = new FIFO<int16_t,FIFOSIZE13,1,0>(audiomark_buf13);
     if (fifos.fifo13==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo14 = new FIFO<int16_t,FIFOSIZE14,1,0>(audiomark_buf13);
+    fifos.fifo14 = new FIFO<int16_t,FIFOSIZE14,1,0>(audiomark_buf14);
     if (fifos.fifo14==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
