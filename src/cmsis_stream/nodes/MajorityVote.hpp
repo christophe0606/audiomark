@@ -84,7 +84,7 @@ public:
         {
           strcpy((char*)dst,output_class[idx]);
           d[0]=300;
-          d[1] = (unsigned long)(330.0*1000/16000*clock);
+          d[1] = (unsigned long)(320.0*1000/16000*clock);
         }
 
         last=idx;

@@ -93,17 +93,10 @@ using namespace arm_cmsis_stream;
 Description of the scheduling. 
 
 */
-static uint16_t schedule[333]=
+static uint8_t schedule[77]=
 { 
-6,10,12,5,13,14,0,1,2,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,
-5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,6,10,12,5,13,14,
-0,1,2,3,7,8,4,9,15,11,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,
-12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,
-14,0,1,2,3,7,8,4,9,15,11,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,
-10,12,5,13,14,0,1,2,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,
-13,14,0,1,2,3,7,8,4,9,15,11,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,6,10,12,5,13,
-14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,5,13,14,0,1,2,3,7,8,4,9,6,10,12,
-5,13,14,0,1,2,3,7,8,4,9,15,11,
+6,11,13,5,14,15,0,1,2,6,11,13,5,14,15,0,1,2,3,7,8,4,9,10,16,12,6,11,13,5,14,15,0,1,2,3,7,8,4,9,
+10,16,12,6,11,13,5,14,15,0,1,2,3,7,8,4,9,10,16,12,6,11,13,5,14,15,0,1,2,3,7,8,4,9,10,16,12,
 };
 
 /*
@@ -121,10 +114,11 @@ Internal ID identification for the nodes
 #define MFCC_INTERNAL_ID 7
 #define MFCCWIN_INTERNAL_ID 8
 #define RESULT_INTERNAL_ID 9
-#define RIGHT_INTERNAL_ID 10
-#define SINK_INTERNAL_ID 11
-#define SPEAKER_INTERNAL_ID 12
-#define VOTE_INTERNAL_ID 15
+#define RESULTWIN_INTERNAL_ID 10
+#define RIGHT_INTERNAL_ID 11
+#define SINK_INTERNAL_ID 12
+#define SPEAKER_INTERNAL_ID 13
+#define VOTE_INTERNAL_ID 16
 
 /* For callback management */
 
@@ -169,13 +163,14 @@ FIFO buffers
 #define FIFOSIZE8 10
 #define FIFOSIZE9 490
 #define FIFOSIZE10 12
-#define FIFOSIZE11 5
-#define FIFOSIZE12 8
-#define FIFOSIZE13 2
-#define FIFOSIZE14 256
+#define FIFOSIZE11 1
+#define FIFOSIZE12 10
+#define FIFOSIZE13 8
+#define FIFOSIZE14 2
 #define FIFOSIZE15 256
 #define FIFOSIZE16 256
 #define FIFOSIZE17 256
+#define FIFOSIZE18 256
 
 #define BUFFERSIZE0 256
 CG_BEFORE_BUFFER
@@ -221,21 +216,21 @@ int8_t buf9[BUFFERSIZE9]={0};
 CG_BEFORE_BUFFER
 int8_t buf10[BUFFERSIZE10]={0};
 
-#define BUFFERSIZE11 5
+#define BUFFERSIZE11 1
 CG_BEFORE_BUFFER
 uint8_t buf11[BUFFERSIZE11]={0};
 
-#define BUFFERSIZE12 8
+#define BUFFERSIZE12 10
 CG_BEFORE_BUFFER
 uint8_t buf12[BUFFERSIZE12]={0};
 
-#define BUFFERSIZE13 2
+#define BUFFERSIZE13 8
 CG_BEFORE_BUFFER
-float buf13[BUFFERSIZE13]={0};
+uint8_t buf13[BUFFERSIZE13]={0};
 
-#define BUFFERSIZE14 256
+#define BUFFERSIZE14 2
 CG_BEFORE_BUFFER
-int16_t buf14[BUFFERSIZE14]={0};
+float buf14[BUFFERSIZE14]={0};
 
 #define BUFFERSIZE15 256
 CG_BEFORE_BUFFER
@@ -248,6 +243,10 @@ int16_t buf16[BUFFERSIZE16]={0};
 #define BUFFERSIZE17 256
 CG_BEFORE_BUFFER
 int16_t buf17[BUFFERSIZE17]={0};
+
+#define BUFFERSIZE18 256
+CG_BEFORE_BUFFER
+int16_t buf18[BUFFERSIZE18]={0};
 
 
 typedef struct {
@@ -262,13 +261,14 @@ FIFO<int16_t,FIFOSIZE7,1,0> *fifo7;
 FIFO<int8_t,FIFOSIZE8,1,0> *fifo8;
 FIFO<int8_t,FIFOSIZE9,1,0> *fifo9;
 FIFO<int8_t,FIFOSIZE10,1,0> *fifo10;
-FIFO<uint8_t,FIFOSIZE11,0,0> *fifo11;
+FIFO<uint8_t,FIFOSIZE11,1,0> *fifo11;
 FIFO<uint8_t,FIFOSIZE12,1,0> *fifo12;
-FIFO<float,FIFOSIZE13,1,0> *fifo13;
-FIFO<int16_t,FIFOSIZE14,1,0> *fifo14;
+FIFO<uint8_t,FIFOSIZE13,1,0> *fifo13;
+FIFO<float,FIFOSIZE14,1,0> *fifo14;
 FIFO<int16_t,FIFOSIZE15,1,0> *fifo15;
 FIFO<int16_t,FIFOSIZE16,1,0> *fifo16;
 FIFO<int16_t,FIFOSIZE17,1,0> *fifo17;
+FIFO<int16_t,FIFOSIZE18,1,0> *fifo18;
 } fifos_t;
 
 typedef struct {
@@ -282,10 +282,11 @@ typedef struct {
     MFCC<int16_t,640,int8_t,10> *mfcc;
     SlidingBuffer<int8_t,490,480> *mfccWin;
     GstResult<int8_t,12,uint8_t,1> *result;
+    SlidingBuffer<uint8_t,10,9> *resultWin;
     GstSource<int16_t,256> *right;
     GstDurationSink<float,2,uint8_t,8> *sink;
     GstSource<int16_t,256> *speaker;
-    MajorityVote<uint8_t,5,float,2,uint8_t,8> *vote;
+    MajorityVote<uint8_t,10,float,2,uint8_t,8> *vote;
 } nodes_t;
 
 CG_BEFORE_BUFFER
@@ -355,7 +356,7 @@ init_cb_state();
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo11 = new FIFO<uint8_t,FIFOSIZE11,0,0>(buf11);
+    fifos.fifo11 = new FIFO<uint8_t,FIFOSIZE11,1,0>(buf11);
     if (fifos.fifo11==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -365,12 +366,12 @@ init_cb_state();
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo13 = new FIFO<float,FIFOSIZE13,1,0>(buf13);
+    fifos.fifo13 = new FIFO<uint8_t,FIFOSIZE13,1,0>(buf13);
     if (fifos.fifo13==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    fifos.fifo14 = new FIFO<int16_t,FIFOSIZE14,1,0>(buf14);
+    fifos.fifo14 = new FIFO<float,FIFOSIZE14,1,0>(buf14);
     if (fifos.fifo14==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -390,6 +391,11 @@ init_cb_state();
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
+    fifos.fifo18 = new FIFO<int16_t,FIFOSIZE18,1,0>(buf18);
+    if (fifos.fifo18==NULL)
+    {
+        return(CG_MEMORY_ALLOCATION_FAILURE);
+    }
 
     CG_BEFORE_NODE_INIT;
     nodes.abf = new ABF<int16_t,256,int16_t,256,int16_t,256>(*(fifos.fifo2),*(fifos.fifo3),*(fifos.fifo4));
@@ -397,7 +403,7 @@ init_cb_state();
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.aec = new AEC<int16_t,256,int16_t,256,int16_t,256>(*(fifos.fifo4),*(fifos.fifo17),*(fifos.fifo5));
+    nodes.aec = new AEC<int16_t,256,int16_t,256,int16_t,256>(*(fifos.fifo4),*(fifos.fifo18),*(fifos.fifo5));
     if (nodes.aec==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -417,7 +423,7 @@ init_cb_state();
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.dup0 = new Duplicate<int16_t,256,int16_t,256>(*(fifos.fifo14),{fifos.fifo15,fifos.fifo16,fifos.fifo17});
+    nodes.dup0 = new Duplicate<int16_t,256,int16_t,256>(*(fifos.fifo15),{fifos.fifo16,fifos.fifo17,fifos.fifo18});
     if (nodes.dup0==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -442,22 +448,27 @@ init_cb_state();
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
+    nodes.resultWin = new SlidingBuffer<uint8_t,10,9>(*(fifos.fifo11),*(fifos.fifo12));
+    if (nodes.resultWin==NULL)
+    {
+        return(CG_MEMORY_ALLOCATION_FAILURE);
+    }
     nodes.right = new GstSource<int16_t,256>(*(fifos.fifo1),node,gst,"right","audio/x-raw, layout=interleaved, channels=1, format=S16LE, rate=16000");
     if (nodes.right==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.sink = new GstDurationSink<float,2,uint8_t,8>(*(fifos.fifo13),*(fifos.fifo12),node,gst,"sink","text/x-raw, format=utf8");
+    nodes.sink = new GstDurationSink<float,2,uint8_t,8>(*(fifos.fifo14),*(fifos.fifo13),node,gst,"sink","text/x-raw, format=utf8");
     if (nodes.sink==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.speaker = new GstSource<int16_t,256>(*(fifos.fifo14),node,gst,"speaker","audio/x-raw, layout=interleaved, channels=1, format=S16LE, rate=16000");
+    nodes.speaker = new GstSource<int16_t,256>(*(fifos.fifo15),node,gst,"speaker","audio/x-raw, layout=interleaved, channels=1, format=S16LE, rate=16000");
     if (nodes.speaker==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
     }
-    nodes.vote = new MajorityVote<uint8_t,5,float,2,uint8_t,8>(*(fifos.fifo11),*(fifos.fifo13),*(fifos.fifo12));
+    nodes.vote = new MajorityVote<uint8_t,10,float,2,uint8_t,8>(*(fifos.fifo12),*(fifos.fifo14),*(fifos.fifo13));
     if (nodes.vote==NULL)
     {
         return(CG_MEMORY_ALLOCATION_FAILURE);
@@ -541,6 +552,10 @@ void free_scheduler(void *node,gst_api *gst)
     {
        delete fifos.fifo17;
     }
+    if (fifos.fifo18!=NULL)
+    {
+       delete fifos.fifo18;
+    }
 
     if (nodes.abf!=NULL)
     {
@@ -581,6 +596,10 @@ void free_scheduler(void *node,gst_api *gst)
     if (nodes.result!=NULL)
     {
         delete nodes.result;
+    }
+    if (nodes.resultWin!=NULL)
+    {
+        delete nodes.resultWin;
     }
     if (nodes.right!=NULL)
     {
@@ -627,7 +646,7 @@ CG_RESTORE_STATE_MACHINE_STATE;
             id = cb_state.scheduleStateID;
             cb_state.status = CG_SCHEDULER_RUNNING_ID;
         }
-        for(; id < 333; id++)
+        for(; id < 77; id++)
         {
             CG_BEFORE_NODE_EXECUTION(schedule[id]);
             switch(schedule[id])
@@ -704,40 +723,29 @@ CG_RESTORE_STATE_MACHINE_STATE;
 
                 case 10:
                 {
+                    nodes.resultWin->setExecutionStatus(cb_state.running);
+                   cgStaticError = nodes.resultWin->run();
+                }
+                break;
+
+                case 11:
+                {
                     nodes.right->setExecutionStatus(cb_state.running);
                    cgStaticError = nodes.right->run();
                 }
                 break;
 
-                case 11:
+                case 12:
                 {
                     nodes.sink->setExecutionStatus(cb_state.running);
                    cgStaticError = nodes.sink->run();
                 }
                 break;
 
-                case 12:
+                case 13:
                 {
                     nodes.speaker->setExecutionStatus(cb_state.running);
                    cgStaticError = nodes.speaker->run();
-                }
-                break;
-
-                case 13:
-                {
-                    
-                   
-                  {
-
-                   int16_t* i0;
-                   int16_t* i1;
-                   int16_t* o2;
-                   i0=fifos.fifo0->getReadBuffer(256);
-                   i1=fifos.fifo15->getReadBuffer(256);
-                   o2=fifos.fifo2->getWriteBuffer(256);
-                   th_add_q15(i0,i1,o2,256);
-                   cgStaticError = 0;
-                  }
                 }
                 break;
 
@@ -750,9 +758,9 @@ CG_RESTORE_STATE_MACHINE_STATE;
                    int16_t* i0;
                    int16_t* i1;
                    int16_t* o2;
-                   i0=fifos.fifo1->getReadBuffer(256);
+                   i0=fifos.fifo0->getReadBuffer(256);
                    i1=fifos.fifo16->getReadBuffer(256);
-                   o2=fifos.fifo3->getWriteBuffer(256);
+                   o2=fifos.fifo2->getWriteBuffer(256);
                    th_add_q15(i0,i1,o2,256);
                    cgStaticError = 0;
                   }
@@ -760,6 +768,24 @@ CG_RESTORE_STATE_MACHINE_STATE;
                 break;
 
                 case 15:
+                {
+                    
+                   
+                  {
+
+                   int16_t* i0;
+                   int16_t* i1;
+                   int16_t* o2;
+                   i0=fifos.fifo1->getReadBuffer(256);
+                   i1=fifos.fifo17->getReadBuffer(256);
+                   o2=fifos.fifo3->getWriteBuffer(256);
+                   th_add_q15(i0,i1,o2,256);
+                   cgStaticError = 0;
+                  }
+                }
+                break;
+
+                case 16:
                 {
                     nodes.vote->setExecutionStatus(cb_state.running);
                    cgStaticError = nodes.vote->run();

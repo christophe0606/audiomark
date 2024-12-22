@@ -92,6 +92,13 @@ result [label=<
   </TR>
 </TABLE>>];
 
+resultWin [label=<
+<TABLE color="black" bgcolor="lightskyblue" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+  <TR>
+    <TD ALIGN="CENTER" PORT="i"><FONT COLOR="black" POINT-SIZE="14.0">resultWin<BR/>(SlidingBuffer)</FONT></TD>
+  </TR>
+</TABLE>>];
+
 right [label=<
 <TABLE color="black" bgcolor="gray83" BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
   <TR>
@@ -238,10 +245,15 @@ dsnn:i -> result:i [style="solid",color="black",fontsize="10.0",fontcolor="black
 ,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >12</FONT>
 </TD></TR></TABLE>>]
 
-result:i -> vote:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<u8(5)>
-,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >5</FONT>
-</TD></TR></TABLE>>
+result:i -> resultWin:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<u8>
+
 ]
+
+resultWin:i -> vote:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<u8(10)>
+,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >10</FONT>
+</TD></TR></TABLE>>
+,taillabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >10</FONT>
+</TD></TR></TABLE>>]
 
 vote:o -> sink:i [style="solid",color="black",fontsize="10.0",fontcolor="black",label=<u8(8)>
 ,headlabel=<<TABLE BORDER="0" CELLPADDING="4"><TR><TD><FONT COLOR="blue" POINT-SIZE="12.0" >8</FONT>

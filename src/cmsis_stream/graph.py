@@ -146,8 +146,10 @@ mfccWin.identified=False
 dsnn=DSNN("dsnn",MFCC_FEATURES*NN_FEATURES)
 
 if GST:
+   NBMAJ = 10
    result=GstResult("result")
-   vote=MajorityVote("vote",5)
+   resultWin=SlidingBuffer("resultWin",CType(UINT8),NBMAJ,NBMAJ-1)
+   vote=MajorityVote("vote",NBMAJ)
 
    sink=GstDurationSink("sink",CType(UINT8),8,cap="text/x-raw, format=utf8")
 else:
@@ -177,7 +179,8 @@ g.connect(mfccWin.o,dsnn.i)
 
 if GST:
   g.connect(dsnn.o,result.i)
-  g.connect(result.o,vote.i)
+  g.connect(result.o,resultWin.i)
+  g.connect(resultWin.o,vote.i)
   g.connect(vote.o,sink.i)
   g.connect(vote.d,sink.d)
 else:
